@@ -12,6 +12,7 @@ class MainViewModel {
     
     var cellDataSource: Observable<[Title]> = Observable(nil)
     var dataSourcePopular: TitleMovie?
+    var dataSourcePopular2: TitleMovie?
     
     let titleForHeaderSection = ["Популярные фильмы", "Высокий рейтинг", "Скоро в прокате", "Смотрят сейчас", "TV шоу"]
     
@@ -26,21 +27,23 @@ class MainViewModel {
     func heightForHeaderInSection() -> Float {
         return 40
     }
-//
-//    func getData() {
-//
-//        APICaller.shared.getPopularMovies {[weak self] result in
-//            switch result {
-//            case .success(let data):
-//                self?.dataSourcePopular?.results = data
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-//    func mapCellData() {
-//        self.cellDataSource.value = self.dataSourcePopular?.results ?? []
-//    }
+
+    func getData() {
+
+        APICaller.shared.getPopularMovies {[weak self] result in
+            switch result {
+            case .success(let data):
+                self?.dataSourcePopular?.results = data
+                print(data)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+    }
+    func mapCellData() {
+        self.cellDataSource.value = self.dataSourcePopular?.results
+    }
     
     
     func getPopularMovie (cell: CollectionViewTableViewCell) {

@@ -114,13 +114,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifire , for: indexPath) as? CollectionViewTableViewCell else {
             return UITableViewCell()
         }
-        
         cell.delegate = self
         
         switch indexPath.section {
         case Section.PopularMovies.rawValue:
             mainViewModel.getPopularMovie(cell: cell)
-            
+         
         case Section.TopRateMovie.rawValue:
             mainViewModel.getTopRateMovie(cell: cell)
             
