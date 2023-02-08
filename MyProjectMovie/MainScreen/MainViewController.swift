@@ -38,6 +38,11 @@ class MainViewController: UIViewController {
         setUpView()
     }
     
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        mainViewModel.getData()
+//    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
@@ -73,6 +78,7 @@ class MainViewController: UIViewController {
 // MARK: Extension for Delegate and DataSource.
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         mainViewModel.titleForHeaderSection[section]
     }
@@ -92,15 +98,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        mainViewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        200.0
+        CGFloat(mainViewModel.heightForRowAt())
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        40
+        CGFloat(mainViewModel.heightForHeaderInSection())
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

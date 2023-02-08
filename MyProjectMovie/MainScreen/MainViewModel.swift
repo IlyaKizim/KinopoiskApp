@@ -10,7 +10,38 @@ import Foundation
 
 class MainViewModel {
     
+    var cellDataSource: Observable<[Title]> = Observable(nil)
+    var dataSourcePopular: TitleMovie?
+    
     let titleForHeaderSection = ["Популярные фильмы", "Высокий рейтинг", "Скоро в прокате", "Смотрят сейчас", "TV шоу"]
+    
+    func numberOfRowsInSection() -> Int {
+        return 1
+    }
+    
+    func heightForRowAt() -> Float {
+       return 200
+    }
+    
+    func heightForHeaderInSection() -> Float {
+        return 40
+    }
+//
+//    func getData() {
+//
+//        APICaller.shared.getPopularMovies {[weak self] result in
+//            switch result {
+//            case .success(let data):
+//                self?.dataSourcePopular?.results = data
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+//    func mapCellData() {
+//        self.cellDataSource.value = self.dataSourcePopular?.results ?? []
+//    }
+    
     
     func getPopularMovie (cell: CollectionViewTableViewCell) {
         APICaller.shared.getPopularMovies { (result) in
@@ -71,7 +102,6 @@ class MainViewModel {
             switch results {
             case .success(let videoElement):
                 print(videoElement.id.videoId)
-                print("yes")
                 MovieDetailsViewControllers.getmodalll(string: videoElement.id.videoId)
             case .failure(let error):
                 print(error.localizedDescription)
