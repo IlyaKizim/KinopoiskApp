@@ -10,4 +10,5 @@ import Foundation
 class SearchViewModel {
     
     let array = ["Категории", "Популярные персоны", "Родились сегодня"]
+    let searchPlaceholder = "Фильмы, персоны, кинотеатры"
 }

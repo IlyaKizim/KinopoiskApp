@@ -16,7 +16,7 @@ class CollectionViewTableViewCell: UITableViewCell {
     weak var delegate: CollectionViewTableViewCellDelegate?
     private var titles: [Title] = [Title]()
     static let identifire = "CollectionViewTableViewCell"
-    let mainViewModel = MainViewModel()
+    private let mainViewModel = MainViewModel()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()

@@ -18,29 +18,36 @@ enum Section: Int {
 
 class MainViewController: UIViewController {
     
+    private lazy var headerView: HeaderUIView = {
+       let headerView = HeaderUIView()
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        return headerView
+    }()
+    
     private lazy var tableView: UITableView = {
-       let tableView = UITableView()
+        let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifire)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .black
-        let headerView = HeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         tableView.tableHeaderView = headerView
         return tableView
     }()
     
-   private let mainViewModel = MainViewModel()
+    private lazy var mainViewModel = MainViewModel()
+    private lazy var cellDataSource: [[Title]] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configurationNavBar ()
         setUpView()
+        bindindViewModel()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        mainViewModel.getData()
     }
     
     private func setUpView() {
@@ -59,6 +66,20 @@ class MainViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 450)
+        ])
+    }
+    
+    private func bindindViewModel() {
+        mainViewModel.cellDataSource.bind { [weak self] movies in
+            guard let self = self, let movies = movies else {return}
+            self.cellDataSource = movies
+            self.reloadData()
+        }
     }
     
     private func configurationNavBar () {
@@ -73,6 +94,13 @@ class MainViewController: UIViewController {
 // MARK: Extension for Delegate and DataSource.
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func reloadData() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         mainViewModel.titleForHeaderSection[section]
     }
@@ -92,15 +120,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        mainViewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        200.0
+        CGFloat(mainViewModel.heightForRowAt())
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        40
+        CGFloat(mainViewModel.heightForHeaderInSection())
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,27 +138,28 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.delegate = self
-        
-        switch indexPath.section {
-        case Section.PopularMovies.rawValue:
-            mainViewModel.getPopularMovie(cell: cell)
+        if cellDataSource.count > 0 {
+            switch indexPath.section {
             
-        case Section.TopRateMovie.rawValue:
-            mainViewModel.getTopRateMovie(cell: cell)
-            
-        case Section.UpComingMovies.rawValue:
-            mainViewModel.getUpcomingMovie(cell: cell)
-            
-        case Section.PlayingNowMoview.rawValue:
-            mainViewModel.getPlayingNowMoview(cell: cell)
-            
-        case Section.TVshow.rawValue:
-            mainViewModel.getTVshow(cell: cell)
-            
-        default:
-            return UITableViewCell()
+            case Section.PopularMovies.rawValue:
+                cell.configure(with: cellDataSource[0])
+                
+            case Section.TopRateMovie.rawValue:
+                cell.configure(with: cellDataSource[1])
+                
+            case Section.UpComingMovies.rawValue:
+                cell.configure(with: cellDataSource[2])
+                
+            case Section.PlayingNowMoview.rawValue:
+                cell.configure(with: cellDataSource[3])
+                
+            case Section.TVshow.rawValue:
+                cell.configure(with: cellDataSource[4])
+                
+            default:
+                return UITableViewCell()
+            }
         }
-        
         return cell
     }
     

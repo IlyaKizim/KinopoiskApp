@@ -8,7 +8,7 @@
 import Foundation
 
 struct TitleMovie: Decodable {
-    let results: [Title]
+    var results: [Title]
 }
 
 struct Title: Codable {
