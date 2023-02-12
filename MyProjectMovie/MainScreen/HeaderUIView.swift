@@ -20,11 +20,6 @@ class HeaderUIView: UIView {
         addSubview(headerView)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        headerView.frame = bounds
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

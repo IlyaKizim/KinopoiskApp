@@ -52,10 +52,10 @@ class SearchresultTableViewTableViewCell: UITableViewCell {
     }
     
     private func setupLabel() {
-        label.frame = CGRect(x: 70, y: 15, width: contentView.bounds.width - 10, height: 30)
+        label.frame = CGRect(x: 70, y: 15, width: contentView.bounds.width - 20, height: 30)
         label.backgroundColor = .black
         
-        labelRate.frame = CGRect(x: label.frame.origin.x + (contentView.bounds.width - 10) + 10, y: 15, width: 30, height: 30)
+        labelRate.frame = CGRect(x: label.frame.origin.x + (contentView.bounds.width - 20) + 10, y: 15, width: 40, height: 30)
         labelRate.backgroundColor = .black
     }
     

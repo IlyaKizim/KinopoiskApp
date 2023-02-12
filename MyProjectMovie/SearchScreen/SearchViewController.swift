@@ -30,7 +30,7 @@ class SearchViewController: UIViewController {
     
     private lazy var controller: UISearchController = {
        let controller = UISearchController(searchResultsController: SearchResultsControllerViewController())
-        controller.searchBar.placeholder = "Фильмы, персоны, кинотеатры"
+        controller.searchBar.placeholder = searcViewModel.searchPlaceholder
         controller.searchBar.searchTextField.backgroundColor = #colorLiteral(red: 0.1489986479, green: 0.1490316391, blue: 0.1489965916, alpha: 1)
         controller.searchBar.searchBarStyle = .minimal
         return controller
