@@ -44,6 +44,7 @@ class CategotyTableViewCell: UITableViewCell {
     private func addSubviews() {
         contentView.addSubview(collectionView)
     }
+    
 }
 
 extension CategotyTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {

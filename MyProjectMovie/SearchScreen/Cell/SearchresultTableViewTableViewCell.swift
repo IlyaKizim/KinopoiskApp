@@ -21,7 +21,6 @@ class SearchresultTableViewTableViewCell: UITableViewCell {
     private lazy var conteinerView: UIView = {
         let view = UIView()
         view.frame = CGRect(x: 10, y: 0, width: 50, height: 60)
-        view.backgroundColor = .green
         view.contentMode = .scaleAspectFill
         return view
     }()

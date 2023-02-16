@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol TableViewCellDelegate: AnyObject {
+    func tableViewCellDelegate(cell: SearchTableViewCell, viewModel: People)
+}
+
 class SearchTableViewCell: UITableViewCell {
     
+    weak var delegate: TableViewCellDelegate?
     static let identifire = "SearchTableViewCell"
-    
+    private var titles: [People] = [People]()
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 140, height: 200)
@@ -35,21 +40,42 @@ class SearchTableViewCell: UITableViewCell {
         super.layoutSubviews()
         collectionView.frame = contentView.bounds
     }
+    
+    public func configure(with titles: [People]) {
+        self.titles = titles
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+            
+        }
+    }
+    
 }
 
 extension SearchTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        titles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifire, for: indexPath) as? SearchCollectionViewCell else {
             return UICollectionViewCell()
         }
+        guard let model = titles[indexPath.row].profilePath else {return UICollectionViewCell()}
+        guard let title = titles[indexPath.row].name else {return UICollectionViewCell()}
+        guard let id = titles[indexPath.row].id else {return UICollectionViewCell()}
         
-        cell.backgroundColor = .green
+        cell.configure(with: model, id: id, title: title)
+       
+        
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+        
+        let viewModel = People(id: titles[indexPath.row].id, name: titles[indexPath.row].name, profilePath: titles[indexPath.row].profilePath)
+        delegate?.tableViewCellDelegate(cell: self, viewModel: viewModel)
     }
 }
 

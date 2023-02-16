@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "SearchCollectionViewCell"
-    
+    private var id: Int?
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -20,14 +21,14 @@ class SearchCollectionViewCell: UICollectionViewCell {
     private lazy var conteinerView: UIView = {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: 140, height: 170)
-        view.backgroundColor = .green
+    
         view.contentMode = .scaleAspectFill
         return view
     }()
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .red
+        label.backgroundColor = .black
         label.textColor = .white
         label.frame = CGRect(x: 0, y: 170, width: 140, height: 30)
         return label
@@ -50,5 +51,16 @@ class SearchCollectionViewCell: UICollectionViewCell {
     private func addSubviews() {
         contentView.addSubview(conteinerView)
         contentView.addSubview(label)
+        conteinerView.addSubview(posterImageView)
+    }
+    
+    public func configure(with model: String, id: Int, title: String) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else {
+            return
+        }
+        posterImageView.kf.setImage(with: url)
+        self.id = id
+        self.label.text = title
+        
     }
 }

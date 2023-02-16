@@ -79,7 +79,7 @@ class MovieDetailsViewControllers: UIViewController {
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
         vc.configure(with: MovieDetailsViewControllers.model)
-        print(MovieDetailsViewControllers.model)
+   
         present(vc, animated: true, completion: nil)
     }
     

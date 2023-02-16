@@ -11,7 +11,7 @@ class HeaderUIView: UIView {
     
     private lazy var headerView: UIView = { 
         let headerView = UIView()
-        headerView.backgroundColor = .black
+        headerView.backgroundColor = .red
         return headerView
     }()
     

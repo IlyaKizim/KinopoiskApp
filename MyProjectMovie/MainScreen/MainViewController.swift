@@ -18,14 +18,14 @@ enum Section: Int {
 
 class MainViewController: UIViewController {
     
-    private lazy var headerView: HeaderUIView = {
-       let headerView = HeaderUIView()
+    private lazy var headerView: UIView = {
+        var headerView = UIView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        var tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifire)
         tableView.delegate = self
@@ -43,6 +43,7 @@ class MainViewController: UIViewController {
         configurationNavBar ()
         setUpView()
         bindindViewModel()
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,9 +68,9 @@ class MainViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.topAnchor.constraint(equalTo: tableView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 450)
         ])
     }

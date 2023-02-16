@@ -143,6 +143,52 @@ class APICaller {
         }
         task.resume()
     }
-}
+    func getPopularPeople(completion: @escaping (Result<[People], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.basicURL)/3/person/popular?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
+            guard let data = data, error == nil else {
+                return
+            }
+            do {
+                let results = try JSONDecoder().decode(TitlePeople.self, from: data)
+                completion(.success(results.results))
+            }
+            catch {
+                completion(.failure(APIError.failedTogetData))
+            }
+        }
+        task.resume()
+    }
+    func getDetailActor(with query: String, completion: @escaping (Result<DetailActor, Error>) -> Void) {
+        let query = query 
+        guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)?api_key=\(Constants.APIKey)&language=en-US") else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) {(data, _, error) in
+            guard let data = data, error == nil else {return}
+                do {
+                    let results = try JSONDecoder().decode(DetailActor.self, from: data)
+                    completion(.success(results))
+                }
+                catch {
+                    completion(.failure(APIError.failedTogetData))
+                }
+            }
+            task.resume()
+    }
+    func getListMoviesForActors(with query: String, completion: @escaping (Result<[List], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)/movie_credits?api_key=\(Constants.APIKey)&language=en-US") else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in
+            guard let data = data, error == nil else {return}
+                do {
+//                    let results = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    let results = try JSONDecoder().decode(ListMovie.self, from: data)
+                    completion(.success(results.cast))
+                }
+                catch {
+                    completion(.failure(APIError.failedTogetData))
+                }
+            }
+            task.resume()
+    }
 
+}
 
