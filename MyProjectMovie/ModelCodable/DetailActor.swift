@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct DetailActor: Codable {
     var biography: String?
     var birthday: String?

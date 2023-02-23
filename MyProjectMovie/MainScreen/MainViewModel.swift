@@ -7,12 +7,10 @@
 
 import Foundation
 
-
 class MainViewModel {
     
     var cellDataSource: Observable<[[Title]]> = Observable(nil)
     var dataSourcePopular: [[Title]] = [[],[],[],[],[]]
- 
     let titleForHeaderSection = ["Популярные фильмы", "Высокий рейтинг", "Скоро в прокате", "Смотрят сейчас", "TV шоу"]
     
     func numberOfRowsInSection() -> Int {
@@ -28,7 +26,6 @@ class MainViewModel {
     }
 
     func getData() {
-        
         APICaller.shared.getPopularMovies {[weak self] result in
             switch result {
             case .success(let data):
@@ -84,7 +81,6 @@ class MainViewModel {
         self.cellDataSource.value = self.dataSourcePopular
     }
     
-
    func getMovies(indexPath: IndexPath, title: [Title]) {
         APICaller.shared.getMovie(with: title[indexPath.row].originalTitle ?? ""  + " trailer") { (results) in
             switch results {

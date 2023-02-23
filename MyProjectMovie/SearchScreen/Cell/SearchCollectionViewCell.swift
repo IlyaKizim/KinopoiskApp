@@ -6,22 +6,22 @@
 //
 
 import UIKit
-import Kingfisher
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "SearchCollectionViewCell"
     private var id: Int?
+    
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private lazy var conteinerView: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: 140, height: 170)
-    
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         return view
     }()
@@ -30,28 +30,49 @@ class SearchCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.backgroundColor = .black
         label.textColor = .white
-        label.frame = CGRect(x: 0, y: 170, width: 140, height: 30)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubviews()
+        setUp()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        posterImageView.frame = conteinerView.bounds
+
+    private func setUp() {
+        addSubviews()
+        setConstraints()
     }
     
     private func addSubviews() {
         contentView.addSubview(conteinerView)
         contentView.addSubview(label)
         conteinerView.addSubview(posterImageView)
+    }
+    
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            conteinerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            conteinerView.widthAnchor.constraint(equalToConstant: 140),
+            conteinerView.heightAnchor.constraint(equalToConstant: 170)
+        ])
+        NSLayoutConstraint.activate([
+            posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
+            posterImageView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
+            posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: conteinerView.bottomAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.widthAnchor.constraint(equalToConstant: 140),
+            label.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     public func configure(with model: String, id: Int, title: String) {
@@ -61,6 +82,5 @@ class SearchCollectionViewCell: UICollectionViewCell {
         posterImageView.kf.setImage(with: url)
         self.id = id
         self.label.text = title
-        
     }
 }

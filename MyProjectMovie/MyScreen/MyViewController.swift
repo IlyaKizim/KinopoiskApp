@@ -14,6 +14,7 @@ class MyViewController: UIViewController {
     var tableView = UITableView()
     var myModel = MyViewModel()
     let disposeBag = DisposeBag()
+    
     let viewForCell: UIView = {
         let viewForCell = UIView()
         viewForCell.frame = CGRect(x: 0, y: 0, width: 100, height: 100)

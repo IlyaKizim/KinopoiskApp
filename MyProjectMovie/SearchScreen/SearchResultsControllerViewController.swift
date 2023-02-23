@@ -12,30 +12,36 @@ class SearchResultsControllerViewController: UIViewController {
     public lazy var titles: [Title] = [Title]()
     
     public lazy var tableViewForSearch: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .black
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.register(SearchresultTableViewTableViewCell.self, forCellReuseIdentifier: SearchresultTableViewTableViewCell.identifire)
         return tableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUp ()
+    }
+
+    private func setUp () {
         addSubviews()
-        setupTableView()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableViewForSearch.frame = view.bounds
-    }
-    
-    private func setupTableView (){
-        tableViewForSearch.delegate = self
-        tableViewForSearch.dataSource = self
+        setConstraints()
     }
     
     private func addSubviews() {
         view.addSubview(tableViewForSearch)
+    }
+    
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            tableViewForSearch.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableViewForSearch.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableViewForSearch.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableViewForSearch.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
 }

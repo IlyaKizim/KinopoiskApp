@@ -21,34 +21,46 @@ class SearchTableViewCell: UITableViewCell {
         layout.itemSize = CGSize(width: 140, height: 200)
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifire)
         return collectionView
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier reuseIdentifiers: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
-        contentView.addSubview(collectionView)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        setUp()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        collectionView.frame = contentView.bounds
-    }
-    
     public func configure(with titles: [People]) {
         self.titles = titles
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
-            
         }
     }
     
+    private func setUp() {
+        addSubviews()
+        setConstraints()
+    }
+    
+    private func addSubviews() {
+        contentView.addSubview(collectionView)
+    }
+    
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
+    }
 }
 
 extension SearchTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -66,14 +78,9 @@ extension SearchTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
         guard let id = titles[indexPath.row].id else {return UICollectionViewCell()}
         
         cell.configure(with: model, id: id, title: title)
-       
-        
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        
-        
         let viewModel = People(id: titles[indexPath.row].id, name: titles[indexPath.row].name, profilePath: titles[indexPath.row].profilePath)
         delegate?.tableViewCellDelegate(cell: self, viewModel: viewModel)
     }

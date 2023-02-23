@@ -15,6 +15,24 @@ class SearchViewModel {
     var cellDataSource: Observable<[People]> = Observable(nil)
     var dataSourcePopular: [People] = []
     
+    func heightForRowAt(indexPath: IndexPath) -> Int {
+        switch indexPath.section {
+        case 0: return 220
+        case 1: return 200
+        case 2: return 200
+        default:
+            return 100
+        }
+    }
+    
+    func numberOfRowsInSection() -> Int {
+        return 1
+    }
+    
+    func heightForHeaderInSection() -> Int {
+        return 40
+    }
+    
     func getData() {
         APICaller.shared.getPopularPeople { result in
             switch result {

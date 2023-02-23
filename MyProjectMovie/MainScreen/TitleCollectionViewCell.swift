@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
-
 
 class TitleCollectionViewCell: UICollectionViewCell {
     
@@ -15,14 +13,14 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
     private lazy var conteinerView: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: 140, height: 170)
-//        view.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         return view
     }()
@@ -31,7 +29,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.backgroundColor = .black
         label.textColor = .white
-        label.frame = CGRect(x: 0, y: 170, width: 140, height: 30)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -39,23 +37,22 @@ class TitleCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.backgroundColor = .green
         label.tintColor = .black
-        label.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        setConstraints()
-        addSubviews()
+        setUp()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        posterImageView.frame = conteinerView.bounds
+    private func setUp() {
+        addSubviews()
+        setConstraints()
     }
     
     private func addSubviews() {
@@ -64,23 +61,34 @@ class TitleCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(labelForRate)
         conteinerView.addSubview(posterImageView)
     }
-//    private func setConstraints() {
-//        NSLayoutConstraint.activate([
-//            conteinerView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-//            conteinerView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-//            conteinerView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-//            conteinerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-//            label.topAnchor.constraint(equalTo: conteinerView.bottomAnchor),
-//            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            label.widthAnchor.constraint(equalToConstant: 140),
-//            label.heightAnchor.constraint(equalToConstant: 30),
-//            labelForRate.topAnchor.constraint(equalTo: conteinerView.topAnchor),
-//            labelForRate.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
-//            labelForRate.widthAnchor.constraint(equalToConstant: 25),
-//            labelForRate.heightAnchor.constraint(equalToConstant: 25)
-//        ])
-//    }
-    
+
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            conteinerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            conteinerView.widthAnchor.constraint(equalToConstant: 140),
+            conteinerView.heightAnchor.constraint(equalToConstant: 170)
+        ])
+        NSLayoutConstraint.activate([
+            posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
+            posterImageView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
+            posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: conteinerView.bottomAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            label.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        NSLayoutConstraint.activate([
+            labelForRate.topAnchor.constraint(equalTo: contentView.topAnchor),
+            labelForRate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            labelForRate.widthAnchor.constraint(equalToConstant: 25),
+            labelForRate.heightAnchor.constraint(equalToConstant: 25)
+        ])
+    }
+
     public func configures(with oneModel: String, with twoModel: Double, with threeModel: String) {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(oneModel)") else {
             return

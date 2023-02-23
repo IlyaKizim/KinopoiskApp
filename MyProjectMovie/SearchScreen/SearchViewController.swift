@@ -9,13 +9,18 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    
     private lazy var searhcViewModel = SearchViewModel()
     private lazy var cellDataSource: [People] = []
+    
+    private lazy var bgColorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+    
     private lazy var tableView: UITableView = {
-        
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        //        tableView.translatesAutoresizingMaskIntoConstraints = false
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .black
@@ -34,52 +39,50 @@ class SearchViewController: UIViewController {
         controller.searchBar.placeholder = searhcViewModel.searchPlaceholder
         controller.searchBar.searchTextField.backgroundColor = #colorLiteral(red: 0.1489986479, green: 0.1490316391, blue: 0.1489965916, alpha: 1)
         controller.searchBar.searchBarStyle = .minimal
+        controller.searchResultsUpdater = self
         return controller
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        setConstraint()
-        addSubviews ()
+        setUp()
         bindindViewModel()
-       
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         searhcViewModel.getData()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+    private func setUp() {
+        addSubviews ()
+        setConstraint()
     }
     
     private func addSubviews () {
         let header = HeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1))
-        controller.searchResultsUpdater = self
-        view.backgroundColor = .black
         view.addSubview(header)
         view.addSubview(tableView)
     }
     
-    //    private func setConstraint() {
-    //        NSLayoutConstraint.activate([
-    //            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-    //            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-    //            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    //            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-    //        ])
-    //    }
+    private func setConstraint() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
     
     private func bindindViewModel() {
         searhcViewModel.cellDataSource.bind { [weak self] movies in
             guard let self = self, let movies = movies else {return}
             self.cellDataSource = movies
             self.reloadData()
-            
         }
     }
 }
+
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func reloadData() {
@@ -89,7 +92,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        searhcViewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -101,11 +104,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         header.textLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
         header.textLabel?.textColor = .white
+        header.backgroundView = bgColorView
         header.textLabel?.text = header.textLabel?.text?.capitilizeFirstLetter()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    
         switch indexPath.section {
         case 1: guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifire, for: indexPath) as? SearchTableViewCell else {
             return  UITableViewCell()
@@ -117,12 +121,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             return  UITableViewCell()
         }
         cell.configure(with: cellDataSource)
+        cell.delegate = self
         return cell
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CategotyTableViewCell.identifire, for: indexPath) as? CategotyTableViewCell else {
                 return  UITableViewCell()
             }
-            
             return cell
         default:
             return UITableViewCell()
@@ -134,17 +138,11 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0: return 220
-        case 1: return 200
-        case 2: return 200
-        default:
-            return 100
-        }
+        CGFloat(searhcViewModel.heightForRowAt(indexPath: indexPath))
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        40
+        CGFloat(searhcViewModel.heightForHeaderInSection())
     }
     
 }
@@ -175,7 +173,7 @@ extension SearchViewController: TableViewCellDelegate {
         let vc = DetailActorsViewController()
         vc.setUps(with: viewModel)
         guard let id = viewModel.id else {return}
-       
+        
         APICaller.shared.getDetailActor(with: String(id)) { (result) in
             DispatchQueue.main.async {
                 switch result {

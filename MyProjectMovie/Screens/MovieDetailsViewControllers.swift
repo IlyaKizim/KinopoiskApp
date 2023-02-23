@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class MovieDetailsViewControllers: UIViewController {
     
@@ -35,6 +34,7 @@ class MovieDetailsViewControllers: UIViewController {
     
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -49,17 +49,17 @@ class MovieDetailsViewControllers: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        assSubviews()
-        setConstraint()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        posterImageView.frame = conteinerView.bounds
-    }
-    
-    private func assSubviews() {
         view.backgroundColor = .black
+        setUp()
+    }
+
+    private func setUp() {
+        addSubviews()
+        setConstraint()
         setNavBar()
+    }
+    
+    private func addSubviews() {
         view.addSubview(titlelabel)
         view.addSubview(buttonPlay)
         view.addSubview(conteinerView)
@@ -70,7 +70,6 @@ class MovieDetailsViewControllers: UIViewController {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(set.posterPath ?? "")") else {
             return
         }
-        
         posterImageView.kf.setImage(with: url)
         conteinerView.addSubview(posterImageView)
     }
@@ -79,7 +78,6 @@ class MovieDetailsViewControllers: UIViewController {
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
         vc.configure(with: MovieDetailsViewControllers.model)
-   
         present(vc, animated: true, completion: nil)
     }
     
@@ -107,10 +105,20 @@ class MovieDetailsViewControllers: UIViewController {
             conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             conteinerView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+        ])
+        NSLayoutConstraint.activate([
+            posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
+            posterImageView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
+            posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
+        ])
+        NSLayoutConstraint.activate([
             titlelabel.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 100),
             titlelabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             titlelabel.widthAnchor.constraint(equalToConstant: view.bounds.width),
             titlelabel.heightAnchor.constraint(equalToConstant: 100),
+        ])
+        NSLayoutConstraint.activate([
             buttonPlay.topAnchor.constraint(equalTo: titlelabel.bottomAnchor, constant: 0),
             buttonPlay.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             buttonPlay.widthAnchor.constraint(equalToConstant: 150),

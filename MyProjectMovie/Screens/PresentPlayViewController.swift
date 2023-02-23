@@ -8,13 +8,11 @@
 import UIKit
 import WebKit
 
-
 class PresentPlayViewController: UIViewController {
-    
-    
+
     private lazy var buttonBack: UIButton = {
         let buttonBack = UIButton()
-        buttonBack.frame = CGRect(x: 170, y: 500, width: 100, height: 50)
+        buttonBack.translatesAutoresizingMaskIntoConstraints = false
         buttonBack.backgroundColor = .white
         buttonBack.setTitle("Back", for: .normal)
         buttonBack.setTitleColor(.black, for: .normal)
@@ -31,8 +29,12 @@ class PresentPlayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUp()
+    }
+    
+    private func setUp() {
         addSubviews()
-        configureConstraint()
+        setConstraints()
     }
     
     @objc func dismissed () {
@@ -45,20 +47,28 @@ class PresentPlayViewController: UIViewController {
         webView.load(URLRequest(url: url))
     }
     
-    func configureConstraint() {
+    private func addSubviews() {
+        view.addSubview(buttonBack)
+        view.backgroundColor = .black
+        view.addSubview(webView)
+    }
+    
+    func setConstraints() {
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             webView.heightAnchor.constraint(equalToConstant: 250)
         ])
+        NSLayoutConstraint.activate([
+            buttonBack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonBack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            buttonBack.widthAnchor.constraint(equalToConstant: 100),
+            buttonBack.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
-    private func addSubviews() {
-        view.addSubview(buttonBack)
-        view.backgroundColor = .black
-        view.addSubview(webView)
-    }
+   
 }
 
 

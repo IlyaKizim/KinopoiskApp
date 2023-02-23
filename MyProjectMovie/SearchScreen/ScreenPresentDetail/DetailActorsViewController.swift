@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class DetailActorsViewController: UIViewController {
     
@@ -16,46 +15,55 @@ class DetailActorsViewController: UIViewController {
     
     private lazy var headerView: UIView = {
         let headreView = UIView()
-        headreView.frame.size = CGSize(width: view.bounds.width, height: 200)
         headreView.backgroundColor = .black
-//        headreView.translatesAutoresizingMaskIntoConstraints = false
+        headreView.translatesAutoresizingMaskIntoConstraints = false
         return headreView
+    }()
+    
+    private lazy var bgColorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
     }()
     
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private lazy var conteinerView: UIView = {
-        let view = UIView(frame: CGRect(x: 10, y: 10, width: 140, height: 170))
+        let view = UIView()
         view.backgroundColor = .red
-//        view.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         return view
     }()
     
     private lazy var label: UILabel =  {
-        let label = UILabel(frame: CGRect(x: 160, y: 10, width: view.bounds.width - 170, height: 50))
+        let label = UILabel()
         label.backgroundColor = .black
         label.font = UIFont(name: "Helvetica Neue", size: 25)
         label.numberOfLines = 2
         label.textColor = .white
-//        label.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var button: UIButton = {
-       let button = UIButton(frame: CGRect(x: 160, y: 160, width: 100, height: 30))
+       let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .black
         button.setTitle("Подробнее", for: .normal)
         button.setTitleColor(.orange, for: .normal)
+        button.addTarget(self, action: #selector(detail), for: .touchUpInside)
         return button
     }()
     
     private lazy var textField: UITextView = {
-        let textField = UITextView(frame: CGRect(x: 160, y: 70, width: 200, height: 80))
+        let textField = UITextView()
+        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = .black
         textField.textColor = .gray
         textField.font = UIFont(name: "Helvetica Neue", size: 14)
@@ -75,51 +83,67 @@ class DetailActorsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpView()
+        setUp()
     }
-    override func viewDidLayoutSubviews() {
-        posterImageView.frame = conteinerView.bounds
-    }
-    
-    private func setUpView() {
+
+    private func setUp() {
         addSubviews()
         setConstraints()
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-//            headerView.topAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.topAnchor),
-//            headerView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-//            headerView.widthAnchor.constraint(equalToConstant: view.bounds.width),
-//            headerView.heightAnchor.constraint(equalToConstant: 300)
-        ])
-        NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-//        NSLayoutConstraint.activate([
-//            conteinerView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
-//            conteinerView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
-//            conteinerView.widthAnchor.constraint(equalToConstant: 140),
-//            conteinerView.heightAnchor.constraint(equalToConstant: 170)
-//        ])
-//        NSLayoutConstraint.activate([
-//            label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
-//            label.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 20),
-//            label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -10),
-//            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor,constant: -10)
-//        ])
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: tableView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 300)
+        ])
+        NSLayoutConstraint.activate([
+            conteinerView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
+            conteinerView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
+            conteinerView.widthAnchor.constraint(equalToConstant: 140),
+            conteinerView.heightAnchor.constraint(equalToConstant: 170)
+        ])
+        NSLayoutConstraint.activate([
+            posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
+            posterImageView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
+            posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
+            ])
+        
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
+            label.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 20),
+            label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -10),
+            label.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
+            button.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 20),
+            button.widthAnchor.constraint(equalToConstant: 100),
+            button.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 15),
+            textField.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 20),
+            textField.widthAnchor.constraint(equalToConstant: 200),
+            textField.heightAnchor.constraint(equalToConstant: 80)
+        ])
     }
     
     private func addSubviews() {
         view.addSubview(tableView)
         headerView.addSubview(conteinerView)
         headerView.addSubview(button)
-        
-        
+        headerView.addSubview(textField)
+        headerView.addSubview(label)
+        conteinerView.addSubview(posterImageView)
     }
     
     func setUps(with set: People) {
@@ -127,28 +151,51 @@ class DetailActorsViewController: UIViewController {
             return
         }
         posterImageView.kf.setImage(with: url)
-        conteinerView.addSubview(posterImageView)
+        reloadData()
     }
     
     func configureLabel(with set: DetailActor) {
         self.label.text = set.name
         self.textField.text = "\(set.birthday ?? "")\n\(set.placeOfBirth ?? "")"
-        headerView.addSubview(textField)
-        headerView.addSubview(label)
+        reloadData()
     }
     
     func configureTableView(with model: [List]){
         self.listMovieActors = model
+        reloadData()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
+        if scrollView.contentOffset.y >= view.safeAreaInsets.top + 40 {
             
+            guard let text = label.text else {return}
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "\(text)", style: .done, target: self, action: #selector(back))
+            navigationItem.leftBarButtonItem?.tintColor = .white
+        } else if scrollView.contentOffset.y == view.safeAreaInsets.top {
+            self.navigationItem.leftBarButtonItem = nil
         }
     }
-  
+    
+    @objc private func back() {
+        tableView.scrollToTop()
+    }
+    
+    @objc private func detail() {
+        let vc = DetailActorViewController()
+        guard let detail =  DetailActorsViewController.detail else {return}
+        vc.configure(with: detail)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    private func reloadData() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return detailViewModel.header
@@ -162,6 +209,7 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailTableViewCell.identifire, for: indexPath) as?  DetailTableViewCell else {return UITableViewCell()}
         cell.backgroundColor = .black
+        cell.selectedBackgroundView = bgColorView
 
         guard let model = listMovieActors[indexPath.row].posterPath else {return UITableViewCell()}
         guard let twoModel = listMovieActors[indexPath.row].originalTitle else {return UITableViewCell()}

@@ -13,9 +13,9 @@ protocol CollectionViewTableViewCellDelegate: AnyObject {
 
 class CollectionViewTableViewCell: UITableViewCell {
     
+    static let identifire = "CollectionViewTableViewCell"
     weak var delegate: CollectionViewTableViewCellDelegate?
     private var titles: [Title] = [Title]()
-    static let identifire = "CollectionViewTableViewCell"
     private let mainViewModel = MainViewModel()
     
     private lazy var collectionView: UICollectionView = {
@@ -23,27 +23,41 @@ class CollectionViewTableViewCell: UITableViewCell {
         layout.itemSize = CGSize(width: 140, height: 200)
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.collectionViewLayout = layout
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifire)
+        collectionView.delegate = self
+        collectionView.dataSource = self
         return collectionView
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier reuseIdentifiers: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
-        contentView.backgroundColor = .purple
-        contentView.addSubview(collectionView)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        setUp()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        collectionView.frame = contentView.bounds
-        
+    private func setUp() {
+        addSubviews()
+        setConstraints()
     }
+    
+    private func addSubviews() {
+        contentView.addSubview(collectionView)
+    }
+    
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
+    }
+    
     public func configure(with titles: [Title]) {
         self.titles = titles
         DispatchQueue.main.async { [weak self] in
@@ -78,7 +92,7 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         mainViewModel.getMovies(indexPath: indexPath, title: titles)
-        
+
         let viewModel = Title(id: titles[indexPath.row].id, originalLanguage: titles[indexPath.row].originalLanguage , originalTitle: titles[indexPath.row].originalTitle, posterPath: titles[indexPath.row].posterPath, overview: titles[indexPath.row].overview, voteCount: titles[indexPath.row].voteCount, releaseDate: titles[indexPath.row].releaseDate, voteAverage: titles[indexPath.row].voteAverage)
         delegate?.collectionViewTableViewCellDelegate(cell: self, viewModel: viewModel)
         print(titles[indexPath.row].id)

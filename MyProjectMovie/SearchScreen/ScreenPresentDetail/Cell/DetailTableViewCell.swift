@@ -6,17 +6,15 @@
 //
 
 import UIKit
-import Kingfisher
-
 
 class DetailTableViewCell: UITableViewCell {
 
-    
     static let identifire = "DetailTableViewCell"
     
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -36,22 +34,16 @@ class DetailTableViewCell: UITableViewCell {
         return label
     }()
 
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier reuseIdentifiers: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
-        setUpView()
+        setUp()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        posterImageView.frame = conteinerView.bounds
-    }
-
-    private func setUpView() {
+    private func setUp() {
         addSubviews()
         setConstraints()
     }
@@ -60,9 +52,8 @@ class DetailTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         conteinerView.addSubview(posterImageView)
         contentView.addSubview(conteinerView)
-        
-        
     }
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
@@ -76,13 +67,19 @@ class DetailTableViewCell: UITableViewCell {
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
+        NSLayoutConstraint.activate([
+            posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
+            posterImageView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
+            posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
+        ])
     }
+    
     func configuration(with model: String, twoModel: String) {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else {
             return
         }
         posterImageView.kf.setImage(with: url)
         self.label.text = twoModel
-        
     }
 }

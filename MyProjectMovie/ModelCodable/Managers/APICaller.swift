@@ -11,9 +11,12 @@ struct Constants {
     
     static let APIKey = "1d80d5a6ac5851a945e7c8f5add7fca2"
     static let basicURL = "https://api.themoviedb.org"
-    static let YouTubeAPI_Key = "AIzaSyATGoM430Um-jlu2Rj9MQbmc6N6msJJh5c"
+    static let YouTubeAPI_Key = "AIzaSyD1p-dh3OFO92Y05thKIQ1Htm1uNXmHO74"
     static let YouTubeBaseUrl = "https://youtube.googleapis.com/youtube/v3/search?"
+    static let BasicURLForNews = "https://newsapi.org/v2/everything?"
+    static let APIKeyForNews = "687de243432b4efdb9bbb77a82085f4b"
 }
+
 enum APIError: Error {
     
     case failedTogetData
@@ -120,7 +123,6 @@ class APICaller {
             }
             catch {
                 completion(.failure(error))
-                print(error.localizedDescription)
             }
         }
         task.resume()
@@ -164,31 +166,43 @@ class APICaller {
         guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)?api_key=\(Constants.APIKey)&language=en-US") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) {(data, _, error) in
             guard let data = data, error == nil else {return}
-                do {
-                    let results = try JSONDecoder().decode(DetailActor.self, from: data)
-                    completion(.success(results))
-                }
-                catch {
-                    completion(.failure(APIError.failedTogetData))
-                }
+            do {
+                let results = try JSONDecoder().decode(DetailActor.self, from: data)
+                completion(.success(results))
             }
-            task.resume()
+            catch {
+                completion(.failure(APIError.failedTogetData))
+            }
+        }
+        task.resume()
     }
     func getListMoviesForActors(with query: String, completion: @escaping (Result<[List], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)/movie_credits?api_key=\(Constants.APIKey)&language=en-US") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in
             guard let data = data, error == nil else {return}
-                do {
-//                    let results = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                    let results = try JSONDecoder().decode(ListMovie.self, from: data)
-                    completion(.success(results.cast))
-                }
-                catch {
-                    completion(.failure(APIError.failedTogetData))
-                }
+            do {
+                let results = try JSONDecoder().decode(ListMovie.self, from: data)
+                completion(.success(results.cast))
             }
-            task.resume()
+            catch {
+                completion(.failure(APIError.failedTogetData))
+            }
+        }
+        task.resume()
     }
-
+    func getNews(completion: @escaping (Result<[News], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.BasicURLForNews)q=movies&apiKey=\(Constants.APIKeyForNews)") else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in
+            guard let data = data, error == nil else {return}
+            do {
+                let results = try JSONDecoder().decode(TitleNews.self, from: data)
+                completion(.success(results.articles))
+            } catch  {
+                completion(.failure(APIError.failedTogetData))
+            }
+        }
+        task.resume()
+    }
+    
 }
 
