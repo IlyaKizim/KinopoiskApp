@@ -22,7 +22,7 @@ class MediaViewController: UIViewController {
        let label = UILabel()
         label.text = mediaViewModal.titleForHeaderSection
         label.textColor = .white
-        label.font = UIFont(name: "Helvetica Neue", size: 20)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         label.backgroundColor = .black
         return label
     }()

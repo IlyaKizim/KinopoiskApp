@@ -14,7 +14,8 @@ class MediaTableViewCell: UITableViewCell {
     
     private lazy var posterImageView: UIImageView = {
        let image = UIImageView()
-//        image.contentMode = .scaleAspectFill
+        image.backgroundColor = .gray
+        image.contentMode = .scaleAspectFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -29,9 +30,9 @@ class MediaTableViewCell: UITableViewCell {
     private lazy var titleLabel: UITextView = {
        let label = UITextView()
         label.isScrollEnabled = false
-        label.font = UIFont(name: "Helvetica Neue", size: 20)
+        label.font = UIFont(name: "Helvetica Neue", size: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .black
+        label.backgroundColor = .gray
         label.textColor = .white
         return label
     }()
@@ -39,7 +40,7 @@ class MediaTableViewCell: UITableViewCell {
     private lazy var labelData: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .black
+        label.backgroundColor = .gray
         label.textColor = .gray
         return label
     }()
@@ -70,7 +71,7 @@ class MediaTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             conteinerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            conteinerView.widthAnchor.constraint(equalToConstant: 80),
+            conteinerView.widthAnchor.constraint(equalToConstant: 100),
             conteinerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
         NSLayoutConstraint.activate([
@@ -81,13 +82,13 @@ class MediaTableViewCell: UITableViewCell {
         ])
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
-            titleLabel.heightAnchor.constraint(equalToConstant: 70)
+            titleLabel.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            titleLabel.heightAnchor.constraint(equalToConstant: 45)
         ])
         NSLayoutConstraint.activate([
             labelData.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            labelData.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 10),
+            labelData.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 25),
             labelData.widthAnchor.constraint(equalToConstant: 110),
             labelData.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
@@ -98,7 +99,17 @@ class MediaTableViewCell: UITableViewCell {
             return
         }
         self.posterImageView.kf.setImage(with: url)
-        self.labelData.text = labelData
+        
         self.titleLabel.text = titleLabel
+        self.titleLabel.backgroundColor = .black
+        self.labelData.backgroundColor = .black
+        
+        let array = Array(labelData)
+        var newArray:[Character] = [Character]()
+        for i in 0...9 {
+            newArray.append(array[i])
+        }
+        let label = String(newArray)
+        self.labelData.text = label
     }
 }

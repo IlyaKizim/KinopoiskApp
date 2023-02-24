@@ -69,7 +69,7 @@ class MainViewController: UIViewController {
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = .black
-        label.font = UIFont(name: "Helvetica Neue", size: 20)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         return label
     }()
     
@@ -204,7 +204,7 @@ class MainViewController: UIViewController {
     }
     
     private func configureHeaderView(with model: [[Title]]) {
-        if model.count == 5 {
+        if model[0].count > 1 {
             let text = model[0]
             self.headerLabel.text = text[randomInt].originalTitle
             guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(text[randomInt].posterPath ?? "")") else {
@@ -256,7 +256,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
-        header.textLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
+        header.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
         header.textLabel?.textColor = .white
         header.contentView.backgroundColor = .black

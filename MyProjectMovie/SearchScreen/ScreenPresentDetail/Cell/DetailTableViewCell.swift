@@ -20,7 +20,7 @@ class DetailTableViewCell: UITableViewCell {
     
     private lazy var conteinerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
+        view.backgroundColor = .gray
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         return view

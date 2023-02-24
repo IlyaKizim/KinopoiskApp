@@ -16,7 +16,7 @@ class MediaViewModal {
     let label = "Медиа"
     
     func heightForRowAt() -> Int {
-        120
+        80
     }
     
     func getData() {

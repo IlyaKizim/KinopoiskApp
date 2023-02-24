@@ -6,20 +6,31 @@
 //
 
 import Foundation
-import RxCocoa
-import RxSwift
 
 class MyViewModel {
     
-    var array = BehaviorRelay<[String]>(value: [])
+    let array = ["Буду смотреть", "Загрузки", "Покупки", "Папки"]
+    let title = "МОЁ"
+    let imageArray = ["star.circle", "heart.circle", "hand.thumbsup.fill", "folder.fill", "person.circle"]
+    let labelArray = ["Оценки и просмотры", "Любимые фильмы", "Рекомендуемые фильмы", "Примечания", "Персоны"]
+    let text = "Загружайте фильмы и сериалы, чтобы смотреть их без интернета"
     
-    func setUp() {
-        let values = [
-            "Буду смотреть",
-            "Загрузки",
-            "Покупки",
-            "Папки"
-        ]
-        array.accept(values)
+    func numberOfRowsInSection () -> Int {
+        1
+    }
+    
+    func heightForRow (indexPath: IndexPath) -> Int {
+        switch indexPath.section {
+        case 0: return 0
+        case 1: return 220
+        case 2: return 0
+        case 3: return 200
+        default:
+            return 10
+        }
+    }
+    
+    func heightForHeaderInSection() -> Int {
+        50
     }
 }
