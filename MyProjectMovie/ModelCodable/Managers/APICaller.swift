@@ -204,5 +204,38 @@ class APICaller {
         task.resume()
     }
     
+    func getActorsWhoPlayingInMovie(with query: String, completion: @escaping (Result<[ActrosWhoPlaying], Error>) -> Void) {
+        let query = query
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(query)/credits?api_key=\(Constants.APIKey)&language=en-US") else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data,_,error) in
+            guard let data = data, error == nil else {return}
+            do {
+                let results = try JSONDecoder().decode(TitleActrosWhoPlaying.self, from: data)
+                completion(.success(results.cast))
+            } catch  {
+                completion(.failure(APIError.failedTogetData))
+            }
+        }
+        task.resume()
+    }
 }
-
+    
+//    func getActorBirthday(completion: @escaping (Result<String, Error>) -> Void) {
+//        let today = Date()
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd"
+//        let todayString = formatter.string(from: today)
+//        guard let url = URL(string: "https://api.themoviedb.org/3/discover/person?api_key=1d80d5a6ac5851a945e7c8f5add7fca2&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=\(todayString)&primary_release_date.lte=\(todayString)") else {return}
+//        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in
+//            guard let data = data, error == nil else {return}
+//            do {
+//                let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+////                let results = try JSONDecoder().decode(TitleNews.self, from: data)
+//                print(todayString)
+//               print(result)
+//            } catch  {
+//                print(error.localizedDescription)
+//            }
+//        }
+//        task.resume()
+//    }

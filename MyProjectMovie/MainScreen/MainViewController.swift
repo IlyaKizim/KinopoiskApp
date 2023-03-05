@@ -107,6 +107,12 @@ class MainViewController: UIViewController {
     private lazy var cellDataSource: [[Title]] = []
     private lazy var integer = 0
     private lazy var randomInt = Int.random(in: 0..<integer)
+    private lazy var isActivateAdd = false
+    private lazy var isActivateDel = false
+    private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
+    private lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
+    private lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
+    private lazy var constraintButtonAddWidth: NSLayoutConstraint = NSLayoutConstraint()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,6 +143,10 @@ class MainViewController: UIViewController {
     }
     
     private func configureConstrains() {
+        constraintButtonDeleteWidth = buttonDeleteFromInteresting.widthAnchor.constraint(equalToConstant: 40)
+        constraintButtonPlayHeight = buttonPlay.heightAnchor.constraint(equalToConstant: 40)
+        constraintButtonAddHeight = buttonAddToInteresting.heightAnchor.constraint(equalToConstant: 40)
+        constraintButtonAddWidth = buttonAddToInteresting.widthAnchor.constraint(equalToConstant: 40)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -177,19 +187,19 @@ class MainViewController: UIViewController {
             buttonPlay.topAnchor.constraint(equalTo: headerOverView.bottomAnchor, constant: 10),
             buttonPlay.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 50),
             buttonPlay.trailingAnchor.constraint(equalTo: buttonAddToInteresting.leadingAnchor, constant: -10),
-            buttonPlay.heightAnchor.constraint(equalToConstant: 40)
+            constraintButtonPlayHeight
         ])
         NSLayoutConstraint.activate([
             buttonDeleteFromInteresting.topAnchor.constraint(equalTo: headerOverView.bottomAnchor, constant: 10),
             buttonDeleteFromInteresting.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -50),
-            buttonDeleteFromInteresting.widthAnchor.constraint(equalToConstant: 40),
+            constraintButtonDeleteWidth,
             buttonDeleteFromInteresting.heightAnchor.constraint(equalToConstant: 40)
         ])
         NSLayoutConstraint.activate([
             buttonAddToInteresting.topAnchor.constraint(equalTo: headerOverView.bottomAnchor, constant: 10),
             buttonAddToInteresting.trailingAnchor.constraint(equalTo: buttonDeleteFromInteresting.leadingAnchor, constant: -10),
-            buttonAddToInteresting.widthAnchor.constraint(equalToConstant: 40),
-            buttonAddToInteresting.heightAnchor.constraint(equalToConstant: 40)
+            constraintButtonAddWidth,
+            constraintButtonAddHeight
         ])
     }
     
@@ -232,11 +242,68 @@ class MainViewController: UIViewController {
     }
     
     @objc private func addToInteresting() {
-        print("add")
+        if !isActivateDel {
+            UIView.animate(withDuration: 0.3) {
+                self.constraintButtonAddWidth.constant = 200
+                self.constraintButtonPlayHeight.constant = 0
+                self.constraintButtonDeleteWidth.constant = 0
+                self.buttonAddToInteresting.setTitle(" Добавлено", for: .normal)
+                self.buttonAddToInteresting.tintColor = .orange
+                self.buttonAddToInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
+                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
+                    self.buttonAddToInteresting.setTitleColor(.orange, for: .normal)
+                    self.constraintButtonAddWidth.constant = 40
+                    self.constraintButtonDeleteWidth.constant = 40
+                    self.constraintButtonPlayHeight.constant = 40
+                    self.buttonPlay.setTitle("", for: .normal)
+                    self.view.layoutIfNeeded()
+                }, completion: {_ in
+                    self.buttonPlay.setTitle("  Смотреть", for: .normal)
+                    self.buttonAddToInteresting.setTitle("", for: .normal)
+                    self.view.layoutIfNeeded()
+                })
+            }
+            self.isActivateDel = true
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.buttonAddToInteresting.tintColor = .white
+            }
+            self.isActivateDel = false
+        }
     }
     
     @objc private func deleteFromInteresting() {
-        print("delete")
+        if !isActivateAdd {
+            UIView.animate(withDuration: 0.3) {
+                self.constraintButtonDeleteWidth.constant = 200
+                self.constraintButtonPlayHeight.constant = 0
+                self.constraintButtonAddHeight.constant = 0
+                self.buttonDeleteFromInteresting.setTitle(" Неинтересно", for: .normal)
+                self.buttonDeleteFromInteresting.tintColor = .orange
+                self.buttonDeleteFromInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
+                self.view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
+                    self.buttonDeleteFromInteresting.setTitleColor(.orange, for: .normal)
+                    self.constraintButtonDeleteWidth.constant = 40
+                    self.constraintButtonPlayHeight.constant = 40
+                    self.constraintButtonAddHeight.constant = 40
+                    self.buttonPlay.setTitle("", for: .normal)
+                    self.view.layoutIfNeeded()
+                }, completion: {_ in
+                    self.buttonPlay.setTitle("  Смотреть", for: .normal)
+                    self.buttonDeleteFromInteresting.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+                    self.buttonDeleteFromInteresting.setTitle("", for: .normal)
+                    self.view.layoutIfNeeded()
+                    self.isActivateAdd = true
+                })
+            }
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.buttonDeleteFromInteresting.tintColor = .white
+            }
+            self.isActivateAdd = false
+        }
     }
 }
 

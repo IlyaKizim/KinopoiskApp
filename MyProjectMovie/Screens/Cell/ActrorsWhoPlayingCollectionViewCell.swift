@@ -1,15 +1,15 @@
 //
-//  TitleCollectionViewCell.swift
+//  ActrorsWhoPlayingCollectionViewCell.swift
 //  MyProjectMovie
 //
-//  Created by Яна Угай on 12.01.2023.
+//  Created by Яна Угай on 03.03.2023.
 //
 
 import UIKit
 
-class TitleCollectionViewCell: UICollectionViewCell {
+class ActrorsWhoPlayingCollectionViewCell: UICollectionViewCell {
     
-    static let identifire = "TitleCollectionViewCell"
+    static let identifire = "ActrorsWhoPlayingCollectionViewCell"
     
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
@@ -33,14 +33,6 @@ class TitleCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var labelForRate: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .green
-        label.tintColor = .black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
@@ -57,17 +49,16 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     private func addSubviews() {
         contentView.addSubview(conteinerView)
-        contentView.addSubview(label)
-        contentView.addSubview(labelForRate)
         conteinerView.addSubview(posterImageView)
+        contentView.addSubview(label)
     }
 
     private func setConstraints() {
         NSLayoutConstraint.activate([
             conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             conteinerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            conteinerView.widthAnchor.constraint(equalToConstant: 140),
-            conteinerView.heightAnchor.constraint(equalToConstant: 170)
+            conteinerView.widthAnchor.constraint(equalToConstant: 60),
+            conteinerView.heightAnchor.constraint(equalToConstant: 80)
         ])
         NSLayoutConstraint.activate([
             posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
@@ -76,27 +67,18 @@ class TitleCollectionViewCell: UICollectionViewCell {
             posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: conteinerView.bottomAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            label.leadingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: 10),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             label.heightAnchor.constraint(equalToConstant: 30)
         ])
-        NSLayoutConstraint.activate([
-            labelForRate.topAnchor.constraint(equalTo: contentView.topAnchor),
-            labelForRate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            labelForRate.widthAnchor.constraint(equalToConstant: 25),
-            labelForRate.heightAnchor.constraint(equalToConstant: 25)
-        ])
     }
-
-    public func configures(with oneModel: String, with twoModel: Double, with threeModel: String) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(oneModel)") else {
+    
+    func configure(with poster: String, label: String) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else {
             return
         }
         posterImageView.kf.setImage(with: url)
-        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: twoModel)
-        labelForRate.text = String(twoModel)
-        
-        label.text = threeModel
+        self.label.text = label
     }
-} 
+}

@@ -52,7 +52,7 @@ class DetailActorsViewController: UIViewController {
     }()
     
     private lazy var button: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .black
         button.setTitle("Подробнее", for: .normal)
@@ -69,7 +69,7 @@ class DetailActorsViewController: UIViewController {
         textField.font = UIFont(name: "Helvetica Neue", size: 14)
         return textField
     }()
-
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +85,7 @@ class DetailActorsViewController: UIViewController {
         super.viewDidLoad()
         setUp()
     }
-
+    
     private func setUp() {
         addSubviews()
         setConstraints()
@@ -115,7 +115,7 @@ class DetailActorsViewController: UIViewController {
             posterImageView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
             posterImageView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
             posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
-            ])
+        ])
         
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
@@ -165,6 +165,14 @@ class DetailActorsViewController: UIViewController {
         reloadData()
     }
     
+    func setUpForAnotherWay(with set: ActrosWhoPlaying) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(set.profilePath ?? "")") else {
+            return
+        }
+        posterImageView.kf.setImage(with: url)
+        reloadData()
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if scrollView.contentOffset.y >= view.safeAreaInsets.top + 40 {
@@ -210,9 +218,9 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailTableViewCell.identifire, for: indexPath) as?  DetailTableViewCell else {return UITableViewCell()}
         cell.backgroundColor = .black
         cell.selectedBackgroundView = bgColorView
-
-        guard let model = listMovieActors[indexPath.row].posterPath else {return UITableViewCell()}
-        guard let twoModel = listMovieActors[indexPath.row].originalTitle else {return UITableViewCell()}
+        
+        let model = listMovieActors[indexPath.row].posterPath ?? ""
+        let twoModel = listMovieActors[indexPath.row].originalTitle ?? ""
         cell.configuration(with: model, twoModel: twoModel)
         return cell
     }

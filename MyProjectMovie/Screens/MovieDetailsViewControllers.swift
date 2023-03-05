@@ -9,15 +9,76 @@ import UIKit
 
 class MovieDetailsViewControllers: UIViewController {
     
-    static var model = ""
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(MovieDetailsTableViewCell.self, forCellReuseIdentifier: MovieDetailsTableViewCell.identifire)
+        tableView.register(MovieDetailsActorsCellTableView.self, forCellReuseIdentifier: MovieDetailsActorsCellTableView.identifire)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableHeaderView = headerview
+        tableView.backgroundColor = .clear
+        return tableView
+    }()
+    
+    private lazy var headerview: UIView = {
+        let headerView = UIView()
+        //        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.frame.size = CGSize(width: view.bounds.width, height: view.bounds.height)
+        headerView.backgroundColor = .clear
+        return headerView
+    }()
     
     private lazy var titlelabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .black
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .white
         return label
+    }()
+    
+    private lazy var overView: UITextView = {
+        let text = UITextView()
+        text.translatesAutoresizingMaskIntoConstraints = false
+        text.font = UIFont(name: "Helvetica Neue", size: 14)
+        text.backgroundColor = .clear
+        text.textAlignment = .center
+        text.isScrollEnabled = false
+        text.textColor = .gray
+        return text
+    }()
+    
+    private lazy var releaseDate: UITextView = {
+        let text = UITextView()
+        text.translatesAutoresizingMaskIntoConstraints = false
+        text.font = UIFont(name: "Helvetica Neue", size: 14)
+        text.backgroundColor = .clear
+        text.textAlignment = .center
+        text.isScrollEnabled = false
+        text.textColor = .gray
+        return text
+    }()
+    
+    private lazy var vouteAverage: UITextView = {
+        let text = UITextView()
+        text.translatesAutoresizingMaskIntoConstraints = false
+        text.font = UIFont(name: "Helvetica Neue", size: 14)
+        text.backgroundColor = .clear
+        text.textAlignment = .center
+        text.isScrollEnabled = false
+        return text
+    }()
+    
+    private lazy var originalLanguageLabel: UITextView = {
+        let text = UITextView()
+        text.translatesAutoresizingMaskIntoConstraints = false
+        text.font = UIFont(name: "Helvetica Neue", size: 14)
+        text.backgroundColor = .clear
+        text.textAlignment = .center
+        text.textColor = .gray
+        text.isScrollEnabled = false
+        return text
     }()
     
     private lazy var buttonPlay: UIButton = {
@@ -35,24 +96,30 @@ class MovieDetailsViewControllers: UIViewController {
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private lazy var conteinerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFill
         view.backgroundColor = .black
         return view
     }()
+    
+    private lazy var label = 0.0
+    static var model = ""
+    private lazy var movieDetailViewModel = MovieDetailViewModel()
+    private var titles: Title?
+    private lazy var cellDataSource: [ActrosWhoPlaying] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         setUp()
     }
-
+    
     private func setUp() {
         addSubviews()
         setConstraint()
@@ -60,17 +127,34 @@ class MovieDetailsViewControllers: UIViewController {
     }
     
     private func addSubviews() {
-        view.addSubview(titlelabel)
-        view.addSubview(buttonPlay)
         view.addSubview(conteinerView)
+        view.addSubview(tableView)
+        headerview.addSubview(titlelabel)
+        headerview.addSubview(buttonPlay)
+        headerview.addSubview(overView)
+        headerview.addSubview(releaseDate)
+        headerview.addSubview(vouteAverage)
+        headerview.addSubview(originalLanguageLabel)
     }
     
     func setUp(with set: Title) {
+        movieDetailViewModel.getData(query: String(set.id))
+        bindindViewModel()
+        self.titles = set
         titlelabel.text = set.originalTitle
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(set.posterPath ?? "")") else {
             return
         }
+        overView.text = set.overview
+        guard let releaseDate = set.releaseDate else {return}
+        self.releaseDate.text = "Дата выхода: \(releaseDate)"
         posterImageView.kf.setImage(with: url)
+        guard let voute = set.voteAverage else {return}
+        vouteAverage.textColor = vouteAverage.textColor?.changeRateColor(with: voute)
+        vouteAverage.text = String(voute)
+        self.label = voute
+        guard let language = set.originalLanguage else {return}
+        originalLanguageLabel.text = "\u{1F50A} \(language)"
         conteinerView.addSubview(posterImageView)
     }
     
@@ -83,6 +167,14 @@ class MovieDetailsViewControllers: UIViewController {
     
     static func getmodalll(string: String) {
         MovieDetailsViewControllers.model = string
+    }
+    
+    private func bindindViewModel() {
+        movieDetailViewModel.cellDataSource.bind { [weak self] actors in
+            guard let self = self, let actors = actors else {return}
+            self.cellDataSource = actors
+            self.reloadData()
+        }
     }
     
     private func setNavBar() {
@@ -100,11 +192,12 @@ class MovieDetailsViewControllers: UIViewController {
     }
     
     private func setConstraint() {
+        
         NSLayoutConstraint.activate([
-            conteinerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            conteinerView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+            conteinerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            conteinerView.heightAnchor.constraint(equalToConstant: view.bounds.height / 3)
         ])
         NSLayoutConstraint.activate([
             posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
@@ -113,17 +206,130 @@ class MovieDetailsViewControllers: UIViewController {
             posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-            titlelabel.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 100),
-            titlelabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            titlelabel.widthAnchor.constraint(equalToConstant: view.bounds.width),
-            titlelabel.heightAnchor.constraint(equalToConstant: 100),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-            buttonPlay.topAnchor.constraint(equalTo: titlelabel.bottomAnchor, constant: 0),
-            buttonPlay.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
+            //            headerview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            //            headerview.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            //            headerview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            //            headerview.heightAnchor.constraint(equalToConstant: 400)
+        ])
+        NSLayoutConstraint.activate([
+            titlelabel.topAnchor.constraint(equalTo: headerview.centerYAnchor),
+            titlelabel.centerXAnchor.constraint(equalTo: headerview.centerXAnchor),
+            titlelabel.widthAnchor.constraint(equalToConstant: view.bounds.width),
+            titlelabel.heightAnchor.constraint(equalToConstant: 50),
+        ])
+        NSLayoutConstraint.activate([
+            vouteAverage.topAnchor.constraint(equalTo: titlelabel.bottomAnchor),
+            vouteAverage.centerXAnchor.constraint(equalTo: headerview.centerXAnchor),
+            vouteAverage.widthAnchor.constraint(equalToConstant: 300),
+            vouteAverage.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        NSLayoutConstraint.activate([
+            overView.topAnchor.constraint(equalTo: vouteAverage.bottomAnchor),
+            overView.centerXAnchor.constraint(equalTo: headerview.centerXAnchor),
+            overView.widthAnchor.constraint(equalToConstant: 300),
+            overView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        NSLayoutConstraint.activate([
+            releaseDate.topAnchor.constraint(equalTo: overView.bottomAnchor),
+            releaseDate.centerXAnchor.constraint(equalTo: headerview.centerXAnchor),
+            releaseDate.widthAnchor.constraint(equalToConstant: 300),
+            releaseDate.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        NSLayoutConstraint.activate([
+            originalLanguageLabel.topAnchor.constraint(equalTo: releaseDate.bottomAnchor),
+            originalLanguageLabel.centerXAnchor.constraint(equalTo: headerview.centerXAnchor),
+            originalLanguageLabel.widthAnchor.constraint(equalToConstant: 300),
+            originalLanguageLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        NSLayoutConstraint.activate([
+            buttonPlay.topAnchor.constraint(equalTo: originalLanguageLabel.bottomAnchor, constant: 10),
+            buttonPlay.centerXAnchor.constraint(equalTo: headerview.centerXAnchor, constant: 0),
             buttonPlay.widthAnchor.constraint(equalToConstant: 150),
             buttonPlay.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }
 
+extension MovieDetailsViewControllers: UITableViewDelegate, UITableViewDataSource {
+    
+    func reloadData() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if (scrollView.contentOffset.y >= 0 && scrollView.contentOffset.y < (scrollView.contentSize.height - scrollView.frame.size.height)){
+            let percentage: CGFloat = (scrollView.contentOffset.y) / 300
+            posterImageView.alpha = (1 - percentage)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        movieDetailViewModel.numberOfRowsInSection()
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        movieDetailViewModel.arrayTitle[section]
+    }
+    
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        movieDetailViewModel.arrayTitle.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        CGFloat(movieDetailViewModel.heightForRow(indexPath: indexPath))
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        switch indexPath.section {
+        case 0:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetailsTableViewCell.identifire, for: indexPath) as? MovieDetailsTableViewCell else {return UITableViewCell()}
+            guard let title = titles else {return UITableViewCell()}
+            cell.delegate = self
+            cell.configure(with: label, model: title)
+            return cell
+        case 1:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetailsActorsCellTableView.identifire, for: indexPath) as? MovieDetailsActorsCellTableView else {return UITableViewCell()}
+            cell.configure(with: cellDataSource)
+            cell.delegate = self
+            return cell
+        default:
+            return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else {return}
+        header.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        header.textLabel?.textColor = .white
+        header.textLabel?.adjustsFontSizeToFitWidth = true
+        header.contentView.backgroundColor = .black
+    }
+}
+extension MovieDetailsViewControllers: MovieDetailsDelegate {
+    func presentRate(viewModel: Title) {
+        let vc = PresentRateViewController()
+        guard let title = titles else {return}
+        vc.setUps(with: title)
+        present(vc, animated: true, completion: nil)
+    }
+}
+
+extension MovieDetailsViewControllers: CollectionViewCellDelegate {
+    func CollectionViewCellDelegate(viewModel: ActrosWhoPlaying) {
+        navigationController?.navigationBar.tintColor = .white
+        let vc = DetailActorsViewController()
+        movieDetailViewModel.getDataForDetail(with: vc, viewModel: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}

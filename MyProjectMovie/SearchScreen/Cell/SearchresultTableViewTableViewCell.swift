@@ -92,19 +92,10 @@ class SearchresultTableViewTableViewCell: UITableViewCell {
             return
         }
         posterImageView.kf.setImage(with: url)
-        
         label.textColor = .white
         self.label.text = twoModel
-        
         labelRate.textColor = .white
-        switch threeModel {
-        case 0...6: labelRate.textColor = #colorLiteral(red: 0.9706248641, green: 0.3683738112, blue: 0.04389315099, alpha: 1)
-        case 6.1...7.5: labelRate.textColor = #colorLiteral(red: 0.8082595468, green: 0.9330917001, blue: 0.1435986459, alpha: 1)
-        case 7.6...10: labelRate.textColor = #colorLiteral(red: 0.13839674, green: 0.9814166427, blue: 0.03376254439, alpha: 1)
-        default:
-            break
-        }
-        
+        labelRate.textColor = label.textColor.changeRateColor(with: threeModel)
         let array = Array(String(threeModel))
         var newArray: [Character] = [Character]()
         for i in 0...2 {
