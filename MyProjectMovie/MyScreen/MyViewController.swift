@@ -13,11 +13,11 @@ class MyViewController: UIViewController {
     private lazy var myViewModel = MyViewModel()
     
     private lazy var headerView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-        
+    
     private lazy var label: UILabel = {
         let label = UILabel()
         label.backgroundColor = .black
@@ -40,9 +40,6 @@ class MyViewController: UIViewController {
         tableView.tableHeaderView = headerView
         return tableView
     }()
-    
-    static var model: [Title] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,11 +86,6 @@ class MyViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
     }
-    
-//    static func set(with model: Title) {
-//        self.model.append(model)
-//    }
-    
 }
 
 extension MyViewController: UITableViewDelegate, UITableViewDataSource {
@@ -118,9 +110,9 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if MyTableViewCellWillShow.dict.count == 0 {
-        return CGFloat(myViewModel.heightForRow(indexPath: indexPath))
+            return CGFloat(myViewModel.heightForRow(indexPath: indexPath))
         } else {
-        return CGFloat(myViewModel.heightForRowWithCount(indexPath: indexPath))
+            return CGFloat(myViewModel.heightForRowWithCount(indexPath: indexPath))
         }
     }
     
@@ -142,7 +134,8 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellWillShow.identifire, for: indexPath) as? MyTableViewCellWillShow else {return UITableViewCell()}
             cell.backgroundColor = .green
             if MyTableViewCellWillShow.dict.keys.count > 0 {
-            cell.configure(with: MyViewController.model)
+                cell.configure()
+                cell.delegate = self
             }
             return cell
         case 1:
@@ -155,6 +148,13 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             return UITableViewCell()
         }
-        
+    }
+}
+
+extension MyViewController: MyTableViewCellWillShowDelegate {
+    func myTableViewCellWillShowDelegate(cell: MyTableViewCellWillShow, viewModel: Title) {
+        let vc = MovieDetailsViewControllers()
+        vc.setUp(with: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

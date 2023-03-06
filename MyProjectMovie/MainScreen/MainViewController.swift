@@ -9,7 +9,6 @@ import UIKit
 import Kingfisher
 
 enum Section: Int {
-    
     case PopularMovies = 0
     case TopRateMovie
     case UpComingMovies
@@ -95,6 +94,7 @@ class MainViewController: UIViewController {
         tableView.tableHeaderView = headerView
         return tableView
     }()
+    
     private lazy var radius: CGFloat = 20
     private lazy var mainViewModel = MainViewModel()
     private lazy var cellDataSource: [[Title]] = []
@@ -204,7 +204,6 @@ class MainViewController: UIViewController {
         if model[0].count > 1 {
             let text = model[0]
             self.headerLabel.text = text[randomInt].originalTitle
-           
             guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(text[randomInt].posterPath ?? "")") else {
                 return
             }
@@ -313,8 +312,6 @@ class MainViewController: UIViewController {
     }
 }
 
-// MARK: Extension for Delegate and DataSource.
-
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func reloadData() {
@@ -382,8 +379,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-    
-    //MARK: ScrollView BarButtonItem and BackToTopView
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         

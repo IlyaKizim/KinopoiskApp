@@ -82,7 +82,6 @@ extension MovieDetailsActorsCellTableView: UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("yes")
         let viewModel = ActrosWhoPlaying(originalName: cast[indexPath.row].originalName, profilePath: cast[indexPath.row].profilePath, id: cast[indexPath.row].id)
         delegate?.CollectionViewCellDelegate(viewModel: viewModel)
     }

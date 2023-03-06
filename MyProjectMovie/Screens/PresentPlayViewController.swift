@@ -67,8 +67,6 @@ class PresentPlayViewController: UIViewController {
             buttonBack.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
-   
 }
 
 

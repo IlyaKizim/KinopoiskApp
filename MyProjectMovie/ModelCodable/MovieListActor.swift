@@ -17,8 +17,10 @@ struct List: Codable {
     var overView: String?
     var posterPath: String?
     var releaseDate: String?
-//    var voteAverage: String?
+    var voteAverage: Double?
     var voteCount: Int?
+    var id: Int?
+    var originalLanguage: String?
     
     enum CodingKeys: String, CodingKey {
         case backDropPath = "backdrop_path"
@@ -26,8 +28,10 @@ struct List: Codable {
         case overView = "overview"
         case posterPath = "poster_path"
         case releaseDate = "release_date"
-//        case voteAverage = "vote_average"
+        case voteAverage = "vote_average"
         case voteCount = "vote_count"
+        case id = "id"
+        case originalLanguage = "original_language"
     }
 }
 

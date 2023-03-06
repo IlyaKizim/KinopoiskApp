@@ -67,8 +67,6 @@ class CollectionViewTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: Extension for CollectionView Delegate and DataSource
-
 extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -95,7 +93,7 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
 
         let viewModel = Title(id: titles[indexPath.row].id, originalLanguage: titles[indexPath.row].originalLanguage , originalTitle: titles[indexPath.row].originalTitle, posterPath: titles[indexPath.row].posterPath, overview: titles[indexPath.row].overview, voteCount: titles[indexPath.row].voteCount, releaseDate: titles[indexPath.row].releaseDate, voteAverage: titles[indexPath.row].voteAverage)
         delegate?.collectionViewTableViewCellDelegate(cell: self, viewModel: viewModel)
-        print(titles[indexPath.row].id)
+//        print(titles[indexPath.row].id)
     }
 }
 

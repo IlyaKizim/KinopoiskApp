@@ -220,14 +220,14 @@ class MovieDetailsViewControllers: UIViewController {
             return
         }
         overView.text = set.overview
-        guard let releaseDate = set.releaseDate else {return}
+        let releaseDate = set.releaseDate ?? ""
         self.releaseDate.text = "Дата выхода: \(releaseDate)"
         posterImageView.kf.setImage(with: url)
-        guard let voute = set.voteAverage else {return}
+        let voute = set.voteAverage ?? 0.0
         vouteAverage.textColor = vouteAverage.textColor?.changeRateColor(with: voute)
         vouteAverage.text = String(voute)
         self.label = voute
-        guard let language = set.originalLanguage else {return}
+        let language = set.originalLanguage ?? ""
         originalLanguageLabel.text = "\u{1F50A} \(language)"
         conteinerView.addSubview(posterImageView)
     }
@@ -301,11 +301,15 @@ class MovieDetailsViewControllers: UIViewController {
     }
     
     @objc private func share() {
-        
+        let vc = PresentShareViewController()
+        vc.modalPresentationStyle = .custom
+        present(vc, animated: true, completion: nil)
     }
     
     @objc private func more() {
-        
+        let vc = PresentMoreViewController()
+        vc.modalPresentationStyle = .custom
+        present(vc, animated: true, completion: nil)
     }
     
     private func setConstraint() {
@@ -474,5 +478,4 @@ extension MovieDetailsViewControllers: CollectionViewCellDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
-
 

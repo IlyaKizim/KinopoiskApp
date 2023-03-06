@@ -85,7 +85,7 @@ class MainViewModel {
         APICaller.shared.getMovie(with: title[indexPath.row].originalTitle ?? ""  + " trailer") { (results) in
             switch results {
             case .success(let videoElement):
-                print(videoElement.id.videoId)
+//                print(videoElement.id.videoId)
                 MovieDetailsViewControllers.getmodalll(string: videoElement.id.videoId)
             case .failure(let error):
                 print(error.localizedDescription)

@@ -28,6 +28,8 @@
 		313A7BAD297C3435003ACAD1 /* PresentYoutubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BAC297C3435003ACAD1 /* PresentYoutubeModel.swift */; };
 		3140017C29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017B29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift */; };
 		3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */; };
+		3140018029B5FCB800C5B6A0 /* PresentShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */; };
+		3140018329B6031400C5B6A0 /* PresentMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */; };
 		316972C2298D2B9D003B7270 /* SearchResultsControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */; };
 		316972C4298D3623003B7270 /* SearchresultTableViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */; };
 		316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972D0299119A0003B7270 /* SearchViewModel.swift */; };
@@ -98,6 +100,8 @@
 		313A7BAC297C3435003ACAD1 /* PresentYoutubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentYoutubeModel.swift; sourceTree = "<group>"; };
 		3140017B29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCellWillShow.swift; sourceTree = "<group>"; };
 		3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionViewCellWillShow.swift; sourceTree = "<group>"; };
+		3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentShareViewController.swift; sourceTree = "<group>"; };
+		3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentMoreViewController.swift; sourceTree = "<group>"; };
 		316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsControllerViewController.swift; sourceTree = "<group>"; };
 		316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchresultTableViewTableViewCell.swift; sourceTree = "<group>"; };
 		316972D0299119A0003B7270 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -163,6 +167,15 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		3140018129B602E000C5B6A0 /* PresentsViewForButton */ = {
+			isa = PBXGroup;
+			children = (
+				3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */,
+				3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */,
+			);
+			path = PresentsViewForButton;
+			sourceTree = "<group>";
+		};
 		316972C6298F0D15003B7270 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +204,7 @@
 				31756A10299E78E20005E6DE /* DetailActorViewController.swift */,
 				313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */,
 				3130F94F29AD003C001364CC /* PresentRateViewController.swift */,
+				3140018129B602E000C5B6A0 /* PresentsViewForButton */,
 				3130F94A29ACBA5B001364CC /* Cell */,
 			);
 			path = Screens;
@@ -440,6 +454,7 @@
 			files = (
 				31EEDBDD29A4EEF600235B48 /* MediaTableViewCell.swift in Sources */,
 				313A7BA7297B029C003ACAD1 /* PresentPlayViewController.swift in Sources */,
+				3140018029B5FCB800C5B6A0 /* PresentShareViewController.swift in Sources */,
 				312CE9D6297ECFCD0086390A /* CategotyTableViewCell.swift in Sources */,
 				3195D6F2296D72FB00FA9F6C /* ViewController.swift in Sources */,
 				3195D70C296D736D00FA9F6C /* SearchViewController.swift in Sources */,
@@ -450,6 +465,7 @@
 				3195D721296D9F7600FA9F6C /* Title.swift in Sources */,
 				3130F95229AD131A001364CC /* PresentRateCollectionViewCell.swift in Sources */,
 				3195D6EE296D72FB00FA9F6C /* AppDelegate.swift in Sources */,
+				3140018329B6031400C5B6A0 /* PresentMoreViewController.swift in Sources */,
 				31EEDBE329A8D50300235B48 /* MyCollectionViewCell.swift in Sources */,
 				31A5ED88299D30D5004FE23A /* DetailTableViewCell.swift in Sources */,
 				31EEDBD829A4ECF700235B48 /* News.swift in Sources */,

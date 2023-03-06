@@ -7,12 +7,16 @@
 
 import UIKit
 
-class MyTableViewCellWillShow: UITableViewCell {
+protocol MyTableViewCellWillShowDelegate: AnyObject {
+    func myTableViewCellWillShowDelegate(cell: MyTableViewCellWillShow, viewModel: Title)
+}
 
+class MyTableViewCellWillShow: UITableViewCell {
+    
     static let identifire = "MyTableViewCellWillShow"
-    private lazy var myViewModel = MyViewModel()
-    private var titles: [Title] = [Title]()
     static var dict: [String: [Title]] = [:]
+    private lazy var myViewModel = MyViewModel()
+    weak var delegate: MyTableViewCellWillShowDelegate?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -31,7 +35,7 @@ class MyTableViewCellWillShow: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
         setUp()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -53,8 +57,7 @@ class MyTableViewCellWillShow: UITableViewCell {
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
-    public func configure(with titles: [Title]) {
-        self.titles = titles
+    public func configure() {
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
         }
@@ -69,13 +72,20 @@ extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCellWillShow.identifire, for: indexPath) as? MyCollectionViewCellWillShow else {return UICollectionViewCell()}
         cell.backgroundColor = .red
-        
         let keys = Array(MyTableViewCellWillShow.dict.keys)
         let currentKey = keys[indexPath.row]
         let currentValue = MyTableViewCellWillShow.dict[currentKey]
         let result = currentValue?[0]
-        
         cell.configures(with: result?.posterPath ?? "", with: result?.voteAverage ?? 0.0, with: result?.originalTitle ?? "")
         return cell
-        }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let keys = Array(MyTableViewCellWillShow.dict.keys)
+        let currentKey = keys[indexPath.row]
+        let currentValue = MyTableViewCellWillShow.dict[currentKey]
+        let result = currentValue?[0]
+        guard let results = result else {return}
+        delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: results)
+    }
+}

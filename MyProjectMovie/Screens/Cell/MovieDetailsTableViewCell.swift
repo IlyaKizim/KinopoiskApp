@@ -73,7 +73,7 @@ class MovieDetailsTableViewCell: UITableViewCell {
     
     func configure(with label: Double, model: Title){
         self.titles = model
-        print(model.id)
+//        print(model.id)
         self.labelRate.textColor = textLabel?.textColor.changeRateColor(with: label)
         self.labelRate.text = String(label)
         self.textVote.text = "\(count) оценок"

@@ -9,9 +9,9 @@ import UIKit
 
 class DetailActorsViewController: UIViewController {
     
-    private let detailViewModel = DetailViewModel()
+    private lazy var detailViewModel = DetailViewModel()
     static var detail: DetailActor?
-    var listMovieActors: [List] = []
+    private lazy var listMovieActors: [List] = []
     
     private lazy var headerView: UIView = {
         let headreView = UIView()
@@ -218,7 +218,6 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailTableViewCell.identifire, for: indexPath) as?  DetailTableViewCell else {return UITableViewCell()}
         cell.backgroundColor = .black
         cell.selectedBackgroundView = bgColorView
-        
         let model = listMovieActors[indexPath.row].posterPath ?? ""
         let twoModel = listMovieActors[indexPath.row].originalTitle ?? ""
         cell.configuration(with: model, twoModel: twoModel)
@@ -228,6 +227,7 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         CGFloat(detailViewModel.heightForRowAt())
     }
+    
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
@@ -235,5 +235,14 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
         header.textLabel?.textColor = .white
         header.tintColor = .black
         header.textLabel?.text = header.textLabel?.text?.capitilizeFirstLetter()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let modal = listMovieActors[indexPath.row]
+        let model = Title(id: modal.id ?? 0, originalLanguage: modal.originalLanguage, originalTitle: modal.originalTitle, posterPath: modal.posterPath, overview: modal.overView, voteCount: modal.voteCount ?? 0, releaseDate: modal.releaseDate, voteAverage: modal.voteAverage)
+       
+        let vc = MovieDetailsViewControllers()
+        vc.setUp(with: model)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
