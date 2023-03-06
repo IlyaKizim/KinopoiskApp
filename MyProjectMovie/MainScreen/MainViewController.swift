@@ -25,26 +25,19 @@ class MainViewController: UIViewController {
         return headerView
     }()
     
-    private lazy var headView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .green
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private lazy var headerImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFit
-        image.backgroundColor = .black
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         return image
     }()
     
-    private var buttonPlay: UIButton = {
+    private lazy var buttonPlay: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = #colorLiteral(red: 0.9986565709, green: 0.3295648098, blue: 0.00157311745, alpha: 1)
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = radius
         button.setImage(UIImage(systemName: "play.fill"), for: .normal)
         button.tintColor = .white
         button.setTitle("  Смотреть", for: .normal)
@@ -58,7 +51,7 @@ class MainViewController: UIViewController {
         button.backgroundColor = .gray
         button.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
         button.addTarget(self, action: #selector(addToInteresting), for: .touchUpInside)
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = radius
         button.tintColor = .white
         return button
     }()
@@ -86,7 +79,7 @@ class MainViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .gray
         button.setImage(UIImage(systemName: "minus.circle"), for: .normal)
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = radius
         button.addTarget(self, action: #selector(deleteFromInteresting), for: .touchUpInside)
         button.tintColor = .white
         return button
@@ -102,13 +95,13 @@ class MainViewController: UIViewController {
         tableView.tableHeaderView = headerView
         return tableView
     }()
-    
+    private lazy var radius: CGFloat = 20
     private lazy var mainViewModel = MainViewModel()
     private lazy var cellDataSource: [[Title]] = []
     private lazy var integer = 0
     private lazy var randomInt = Int.random(in: 0..<integer)
     private lazy var isActivateAdd = false
-    private lazy var isActivateDel = false
+    private lazy var isActivateDel = false   
     private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
@@ -133,8 +126,7 @@ class MainViewController: UIViewController {
     
     private func addSubView() {
         view.addSubview(tableView)
-        headerView.addSubview(headView)
-        headView.addSubview(headerImageView)
+        headerView.addSubview(headerImageView)
         headerView.addSubview(headerLabel)
         headerView.addSubview(headerOverView)
         headerView.addSubview(buttonPlay)
@@ -147,6 +139,7 @@ class MainViewController: UIViewController {
         constraintButtonPlayHeight = buttonPlay.heightAnchor.constraint(equalToConstant: 40)
         constraintButtonAddHeight = buttonAddToInteresting.heightAnchor.constraint(equalToConstant: 40)
         constraintButtonAddWidth = buttonAddToInteresting.widthAnchor.constraint(equalToConstant: 40)
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -160,19 +153,13 @@ class MainViewController: UIViewController {
             headerView.heightAnchor.constraint(equalToConstant: 550)
         ])
         NSLayoutConstraint.activate([
-            headView.topAnchor.constraint(equalTo: headerView.topAnchor),
-            headView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            headView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            headView.heightAnchor.constraint(equalToConstant: 300)
+            headerImageView.topAnchor.constraint(equalTo: headerView.topAnchor),
+            headerImageView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            headerImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            headerImageView.heightAnchor.constraint(equalToConstant: 300)
         ])
         NSLayoutConstraint.activate([
-            headerImageView.topAnchor.constraint(equalTo: headView.topAnchor),
-            headerImageView.leadingAnchor.constraint(equalTo: headView.leadingAnchor),
-            headerImageView.trailingAnchor.constraint(equalTo: headView.trailingAnchor),
-            headerImageView.bottomAnchor.constraint(equalTo: headView.bottomAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: headView.bottomAnchor, constant: 10),
+            headerLabel.topAnchor.constraint(equalTo: headerImageView.bottomAnchor, constant: 10),
             headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
             headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
             headerLabel.heightAnchor.constraint(equalToConstant: 50)
@@ -217,13 +204,24 @@ class MainViewController: UIViewController {
         if model[0].count > 1 {
             let text = model[0]
             self.headerLabel.text = text[randomInt].originalTitle
+           
             guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(text[randomInt].posterPath ?? "")") else {
                 return
             }
             headerImageView.kf.setImage(with: url)
             headerOverView.text = text[randomInt].overview
             mainViewModel.getMovies(indexPath: [0, randomInt], title: text)
+            gradientForHeaderImage()
         }
+    }
+    
+    private func gradientForHeaderImage() {
+        let imageHeight = headerImageView.image?.size.height ?? 300
+        let gradient = CAGradientLayer()
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
+        gradient.locations = [0, 1]
+        gradient.frame = CGRect(x: 0, y: imageHeight * 0.8, width: headerImageView.bounds.width, height: imageHeight * 0.2)
+        headerImageView.layer.addSublayer(gradient)
     }
     
     private func configurationNavBar () {
@@ -264,12 +262,20 @@ class MainViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 })
             }
+            let title = cellDataSource[0]
+            let model = title[randomInt]
+            MyTableViewCellWillShow.dict[model.originalTitle ?? "No"] = [model]
             self.isActivateDel = true
+            
         } else {
             UIView.animate(withDuration: 0.3) {
                 self.buttonAddToInteresting.tintColor = .white
             }
+            let title = cellDataSource[0]
+            let model = title[randomInt]
+            MyTableViewCellWillShow.dict.removeValue(forKey: model.originalTitle ?? "No")
             self.isActivateDel = false
+           
         }
     }
     

@@ -259,16 +259,17 @@ extension PresentRateViewController: UICollectionViewDelegate, UICollectionViewD
         targetContentOffset.pointee = scrollView.contentOffset
         let factor: CGFloat = 0.5
         let indexPath = IndexPath(row: Int((scrollView.contentOffset.x/100 + factor)), section: 0)
+        if indexPath.row < 11 {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-
+        }
         switch indexPath.row {
         case 0: self.buttomBack.backgroundColor = .gray
             self.buttomBack.setTitle("Не оценивать", for: .normal)
             self.flag = true
-        case 6: self.buttomBack.backgroundColor = .gray
+        case 5, 6: self.buttomBack.backgroundColor = .gray
             self.buttomBack.setTitle("Оценить", for: .normal)
             self.flag = false
-        case 1...5: self.buttomBack.backgroundColor = .red
+        case 1...4: self.buttomBack.backgroundColor = .red
             self.buttomBack.setTitle("Оценить", for: .normal)
             self.flag = false
         case 7...10: self.buttomBack.backgroundColor = .green

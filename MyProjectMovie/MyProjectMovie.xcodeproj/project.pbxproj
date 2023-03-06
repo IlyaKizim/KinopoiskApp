@@ -26,6 +26,8 @@
 		313A7BA7297B029C003ACAD1 /* PresentPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */; };
 		313A7BA9297C0C6D003ACAD1 /* YouTubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BA8297C0C6D003ACAD1 /* YouTubeModel.swift */; };
 		313A7BAD297C3435003ACAD1 /* PresentYoutubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BAC297C3435003ACAD1 /* PresentYoutubeModel.swift */; };
+		3140017C29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017B29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift */; };
+		3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */; };
 		316972C2298D2B9D003B7270 /* SearchResultsControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */; };
 		316972C4298D3623003B7270 /* SearchresultTableViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */; };
 		316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972D0299119A0003B7270 /* SearchViewModel.swift */; };
@@ -94,6 +96,8 @@
 		313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentPlayViewController.swift; sourceTree = "<group>"; };
 		313A7BA8297C0C6D003ACAD1 /* YouTubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeModel.swift; sourceTree = "<group>"; };
 		313A7BAC297C3435003ACAD1 /* PresentYoutubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentYoutubeModel.swift; sourceTree = "<group>"; };
+		3140017B29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCellWillShow.swift; sourceTree = "<group>"; };
+		3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionViewCellWillShow.swift; sourceTree = "<group>"; };
 		316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsControllerViewController.swift; sourceTree = "<group>"; };
 		316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchresultTableViewTableViewCell.swift; sourceTree = "<group>"; };
 		316972D0299119A0003B7270 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -247,6 +251,8 @@
 		316972CF299117AF003B7270 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				3140017B29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift */,
+				3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */,
 				3109B5DF2975895E0032EE5A /* MyTableViewCell.swift */,
 				31EEDBE029A8D3AB00235B48 /* MyTableViewCellTwo.swift */,
 				31EEDBE229A8D50300235B48 /* MyCollectionViewCell.swift */,
@@ -480,6 +486,8 @@
 				313A7BA9297C0C6D003ACAD1 /* YouTubeModel.swift in Sources */,
 				31A5ED8A299D4D4A004FE23A /* DetailViewModel.swift in Sources */,
 				3109B5B929756FB70032EE5A /* MainViewModel.swift in Sources */,
+				3140017C29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift in Sources */,
+				3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

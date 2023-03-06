@@ -29,6 +29,16 @@ class MyViewModel {
             return 10
         }
     }
+    func heightForRowWithCount (indexPath: IndexPath) -> Int {
+        switch indexPath.section {
+        case 0: return 200
+        case 1: return 220
+        case 2: return 0
+        case 3: return 200
+        default:
+            return 10
+        }
+    }
     
     func heightForHeaderInSection() -> Int {
         50

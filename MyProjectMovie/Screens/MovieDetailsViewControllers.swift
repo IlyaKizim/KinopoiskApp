@@ -9,6 +9,13 @@ import UIKit
 
 class MovieDetailsViewControllers: UIViewController {
     
+    private lazy var headerview: UIView = {
+        let headerView = UIView()
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.backgroundColor = .clear
+        return headerView
+    }()
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(MovieDetailsTableViewCell.self, forCellReuseIdentifier: MovieDetailsTableViewCell.identifire)
@@ -19,14 +26,6 @@ class MovieDetailsViewControllers: UIViewController {
         tableView.tableHeaderView = headerview
         tableView.backgroundColor = .clear
         return tableView
-    }()
-    
-    private lazy var headerview: UIView = {
-        let headerView = UIView()
-        //        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.frame.size = CGSize(width: view.bounds.width, height: view.bounds.height)
-        headerView.backgroundColor = .clear
-        return headerView
     }()
     
     private lazy var titlelabel: UILabel = {
@@ -97,7 +96,7 @@ class MovieDetailsViewControllers: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -108,11 +107,81 @@ class MovieDetailsViewControllers: UIViewController {
         return view
     }()
     
+    private lazy var buttonDoRate: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Оценить", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.textAlignment = .center
+        button.titleEdgeInsets = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 15)
+        button.imageView?.contentMode = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 0)
+        button.tintColor = .gray
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.addTarget(self, action: #selector(rate), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var buttonWillShow: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Буду смотреть", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.textAlignment = .center
+        button.titleEdgeInsets = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 15)
+        button.imageView?.contentMode = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 0)
+        button.tintColor = .gray
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.addTarget(self, action: #selector(addWillSee), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var buttonShare: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Поделиться", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.setImage(UIImage(systemName: "arrowshape.turn.up.right.fill"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.textAlignment = .center
+        button.titleEdgeInsets = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 15)
+        button.imageView?.contentMode = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 0)
+        button.tintColor = .gray
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.addTarget(self, action: #selector(share), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var buttonMore: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Ещё", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.titleEdgeInsets = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 15)
+        button.imageView?.contentMode = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 25, right: 0)
+        button.tintColor = .gray
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.addTarget(self, action: #selector(more), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var label = 0.0
     static var model = ""
     private lazy var movieDetailViewModel = MovieDetailViewModel()
-    private var titles: Title?
+    private var titles: [Title] = []
     private lazy var cellDataSource: [ActrosWhoPlaying] = []
+    private lazy var flagRate = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +193,7 @@ class MovieDetailsViewControllers: UIViewController {
         addSubviews()
         setConstraint()
         setNavBar()
+        saveUsers()
     }
     
     private func addSubviews() {
@@ -135,12 +205,16 @@ class MovieDetailsViewControllers: UIViewController {
         headerview.addSubview(releaseDate)
         headerview.addSubview(vouteAverage)
         headerview.addSubview(originalLanguageLabel)
+        headerview.addSubview(buttonDoRate)
+        headerview.addSubview(buttonWillShow)
+        headerview.addSubview(buttonShare)
+        headerview.addSubview(buttonMore)
     }
     
     func setUp(with set: Title) {
         movieDetailViewModel.getData(query: String(set.id))
         bindindViewModel()
-        self.titles = set
+        self.titles.append(set)
         titlelabel.text = set.originalTitle
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(set.posterPath ?? "")") else {
             return
@@ -176,6 +250,15 @@ class MovieDetailsViewControllers: UIViewController {
             self.reloadData()
         }
     }
+    private func saveUsers() {
+        let defaults = UserDefaults.standard
+        if let colorData = defaults.object(forKey: "buttonColor") as? Data {
+            if let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) {
+                buttonWillShow.tintColor = color
+            }
+        }
+    }
+    
     
     private func setNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(back))
@@ -185,10 +268,44 @@ class MovieDetailsViewControllers: UIViewController {
         navigationController?.navigationBar.isTranslucent = true
     }
     
-    @objc func back() {
+    @objc private func back() {
         navigationController?.popToRootViewController(animated: true)
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         navigationController?.navigationBar.isTranslucent = false
+    }
+    
+    @objc private func rate() {
+        let vc = PresentRateViewController()
+        present(vc, animated: true, completion: nil)
+        
+        vc.setUps(with: titles[0])
+    }
+    
+    @objc private func addWillSee() {
+        if !flagRate {
+            MyTableViewCellWillShow.dict[titles[0].originalTitle ?? ""] = [titles[0]]
+            buttonWillShow.tintColor = .orange
+            flagRate = true
+        } else {
+            buttonWillShow.tintColor = .gray
+            MyTableViewCellWillShow.dict.removeValue(forKey: titles[0].originalTitle ?? "")
+            flagRate = false
+        }
+        let defaults = UserDefaults.standard
+        do {
+            let colorData = try NSKeyedArchiver.archivedData(withRootObject: buttonWillShow.tintColor as Any, requiringSecureCoding: false)
+            defaults.set(colorData, forKey: "buttonColor")
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    @objc private func share() {
+        
+    }
+    
+    @objc private func more() {
+        
     }
     
     private func setConstraint() {
@@ -197,7 +314,7 @@ class MovieDetailsViewControllers: UIViewController {
             conteinerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            conteinerView.heightAnchor.constraint(equalToConstant: view.bounds.height / 3)
+            conteinerView.heightAnchor.constraint(equalToConstant: 300)
         ])
         NSLayoutConstraint.activate([
             posterImageView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
@@ -212,13 +329,13 @@ class MovieDetailsViewControllers: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-            //            headerview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            //            headerview.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            //            headerview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            //            headerview.heightAnchor.constraint(equalToConstant: 400)
+            headerview.topAnchor.constraint(equalTo: tableView.topAnchor),
+            headerview.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor),
+            headerview.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor),
+            headerview.heightAnchor.constraint(equalToConstant: 700)
         ])
         NSLayoutConstraint.activate([
-            titlelabel.topAnchor.constraint(equalTo: headerview.centerYAnchor),
+            titlelabel.topAnchor.constraint(equalTo: headerview.topAnchor, constant: 320),
             titlelabel.centerXAnchor.constraint(equalTo: headerview.centerXAnchor),
             titlelabel.widthAnchor.constraint(equalToConstant: view.bounds.width),
             titlelabel.heightAnchor.constraint(equalToConstant: 50),
@@ -252,6 +369,30 @@ class MovieDetailsViewControllers: UIViewController {
             buttonPlay.centerXAnchor.constraint(equalTo: headerview.centerXAnchor, constant: 0),
             buttonPlay.widthAnchor.constraint(equalToConstant: 150),
             buttonPlay.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            buttonDoRate.topAnchor.constraint(equalTo: buttonPlay.bottomAnchor, constant: 10),
+            buttonDoRate.leadingAnchor.constraint(equalTo: headerview.leadingAnchor, constant: 40),
+            buttonDoRate.widthAnchor.constraint(equalToConstant: 80),
+            buttonDoRate.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            buttonWillShow.topAnchor.constraint(equalTo: buttonPlay.bottomAnchor, constant: 10),
+            buttonWillShow.leadingAnchor.constraint(equalTo: buttonDoRate.trailingAnchor, constant: 10),
+            buttonWillShow.widthAnchor.constraint(equalToConstant: 80),
+            buttonWillShow.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            buttonShare.topAnchor.constraint(equalTo: buttonPlay.bottomAnchor, constant: 10),
+            buttonShare.leadingAnchor.constraint(equalTo: buttonWillShow.trailingAnchor, constant: 10),
+            buttonShare.widthAnchor.constraint(equalToConstant: 80),
+            buttonShare.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            buttonMore.topAnchor.constraint(equalTo: buttonPlay.bottomAnchor, constant: 10),
+            buttonMore.leadingAnchor.constraint(equalTo: buttonShare.trailingAnchor, constant: 10),
+            buttonMore.widthAnchor.constraint(equalToConstant: 80),
+            buttonMore.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }
@@ -294,9 +435,9 @@ extension MovieDetailsViewControllers: UITableViewDelegate, UITableViewDataSourc
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetailsTableViewCell.identifire, for: indexPath) as? MovieDetailsTableViewCell else {return UITableViewCell()}
-            guard let title = titles else {return UITableViewCell()}
+            
             cell.delegate = self
-            cell.configure(with: label, model: title)
+            cell.configure(with: label, model: titles[0])
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetailsActorsCellTableView.identifire, for: indexPath) as? MovieDetailsActorsCellTableView else {return UITableViewCell()}
@@ -319,8 +460,8 @@ extension MovieDetailsViewControllers: UITableViewDelegate, UITableViewDataSourc
 extension MovieDetailsViewControllers: MovieDetailsDelegate {
     func presentRate(viewModel: Title) {
         let vc = PresentRateViewController()
-        guard let title = titles else {return}
-        vc.setUps(with: title)
+        
+        vc.setUps(with: titles[0])
         present(vc, animated: true, completion: nil)
     }
 }
@@ -333,3 +474,5 @@ extension MovieDetailsViewControllers: CollectionViewCellDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
+
+

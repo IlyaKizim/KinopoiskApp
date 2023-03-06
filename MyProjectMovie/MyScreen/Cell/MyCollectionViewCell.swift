@@ -23,7 +23,6 @@ class MyCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.08233881742, green: 0.08236103505, blue: 0.08233740181, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFill
         return view
     }()
     

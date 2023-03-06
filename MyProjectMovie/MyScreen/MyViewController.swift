@@ -17,7 +17,7 @@ class MyViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+        
     private lazy var label: UILabel = {
         let label = UILabel()
         label.backgroundColor = .black
@@ -32,6 +32,7 @@ class MyViewController: UIViewController {
         let tableView = UITableView()
         tableView.register(MyTableViewCell.self, forCellReuseIdentifier: MyTableViewCell.identifire)
         tableView.register(MyTableViewCellTwo.self, forCellReuseIdentifier: MyTableViewCellTwo.identifire)
+        tableView.register(MyTableViewCellWillShow.self, forCellReuseIdentifier: MyTableViewCellWillShow.identifire)
         tableView.backgroundColor = .black
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -40,9 +41,16 @@ class MyViewController: UIViewController {
         return tableView
     }()
     
+    static var model: [Title] = []
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp() 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        reloadData()
     }
     
     private func setUp() {
@@ -53,7 +61,6 @@ class MyViewController: UIViewController {
     
     private func addSubViews() {
         view.addSubview(tableView)
-        reloadData()
         headerView.addSubview(label)
     }
     
@@ -83,6 +90,10 @@ class MyViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
     }
     
+//    static func set(with model: Title) {
+//        self.model.append(model)
+//    }
+    
 }
 
 extension MyViewController: UITableViewDelegate, UITableViewDataSource {
@@ -106,7 +117,11 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat(myViewModel.heightForRow(indexPath: indexPath))
+        if MyTableViewCellWillShow.dict.count == 0 {
+        return CGFloat(myViewModel.heightForRow(indexPath: indexPath))
+        } else {
+        return CGFloat(myViewModel.heightForRowWithCount(indexPath: indexPath))
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -123,6 +138,13 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
+        case 0:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellWillShow.identifire, for: indexPath) as? MyTableViewCellWillShow else {return UITableViewCell()}
+            cell.backgroundColor = .green
+            if MyTableViewCellWillShow.dict.keys.count > 0 {
+            cell.configure(with: MyViewController.model)
+            }
+            return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCell.identifire, for: indexPath) as? MyTableViewCell else {return UITableViewCell()}
             cell.backgroundColor = .black

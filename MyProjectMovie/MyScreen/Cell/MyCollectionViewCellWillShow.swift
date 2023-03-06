@@ -1,15 +1,15 @@
 //
-//  TitleCollectionViewCell.swift
+//  MyCollectionViewCellWillShow.swift
 //  MyProjectMovie
 //
-//  Created by Яна Угай on 12.01.2023.
+//  Created by Яна Угай on 05.03.2023.
 //
 
 import UIKit
 
-class TitleCollectionViewCell: UICollectionViewCell {
+class MyCollectionViewCellWillShow: UICollectionViewCell {
     
-    static let identifire = "TitleCollectionViewCell"
+    static let identifire = "MyCollectionViewCellWillShow"
     
     private lazy var posterImageView: UIImageView = {
         let imageView = UIImageView()
@@ -88,7 +88,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    public func configures(with oneModel: String, with twoModel: Double, with threeModel: String) {
+     func configures(with oneModel: String, with twoModel: Double, with threeModel: String) {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(oneModel)") else {
             return
         }
@@ -97,4 +97,4 @@ class TitleCollectionViewCell: UICollectionViewCell {
         labelForRate.text = String(twoModel)
         label.text = threeModel
     }
-} 
+}
