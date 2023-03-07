@@ -45,15 +45,6 @@ class PresentRateCollectionViewCell: UICollectionViewCell {
             conteinerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             conteinerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
-        NSLayoutConstraint.activate([
-           
-        ])
-        NSLayoutConstraint.activate([
-          
-        ])
-        NSLayoutConstraint.activate([
-          
-        ])
     }
     
     func configure(with string: String) {

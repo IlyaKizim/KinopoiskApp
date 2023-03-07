@@ -73,12 +73,11 @@ class ActrorsWhoPlayingCollectionViewCell: UICollectionViewCell {
             label.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-    
-    func configure(with poster: String, label: String) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else {
+    func configuration(with model: ActrosWhoPlaying) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.profilePath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)
-        self.label.text = label
+        self.label.text = model.originalName ?? ""
     }
 }

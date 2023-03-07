@@ -13,9 +13,10 @@ protocol TableViewCellDelegate: AnyObject {
 
 class SearchTableViewCell: UITableViewCell {
     
-    weak var delegate: TableViewCellDelegate?
     static let identifire = "SearchTableViewCell"
+    weak var delegate: TableViewCellDelegate?
     private var titles: [People] = [People]()
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 140, height: 200)
@@ -73,11 +74,8 @@ extension SearchTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifire, for: indexPath) as? SearchCollectionViewCell else {
             return UICollectionViewCell()
         }
-        guard let model = titles[indexPath.row].profilePath else {return UICollectionViewCell()}
-        guard let title = titles[indexPath.row].name else {return UICollectionViewCell()}
-        guard let id = titles[indexPath.row].id else {return UICollectionViewCell()}
-        
-        cell.configure(with: model, id: id, title: title)
+        let model = titles[indexPath.row]
+        cell.configuration(with: model)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

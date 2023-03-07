@@ -10,7 +10,7 @@ import UIKit
 final class PresentRateViewController: UIViewController {
     
     private lazy var conteinerView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = .black
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -74,7 +74,7 @@ final class PresentRateViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
         layout.scrollDirection = .horizontal
-       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -90,7 +90,8 @@ final class PresentRateViewController: UIViewController {
         view.alpha = 0.3
         return view
     }()
-    private lazy var array = ["-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    
+    private lazy var presentRateViewModel = PresentRateViewModel()
     private lazy var flag = true
     var centerIndexPath: IndexPath?
     
@@ -201,13 +202,13 @@ final class PresentRateViewController: UIViewController {
     
     @objc private func back () {
         if flag == true {
-        dismiss(animated: true, completion: nil)
-    } else {
-        print("оценить")
+            dismiss(animated: true, completion: nil)
+        } else {
+            print("оценить")
+        }
     }
-    }
+    
     @objc private func close () {
-        
         dismiss(animated: true, completion: nil)
     }
 }
@@ -219,25 +220,24 @@ extension PresentRateViewController: UICollectionViewDelegate, UICollectionViewD
             self.collectionView.reloadData()
         }
     }
- 
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        11
+        presentRateViewModel.numberOfItemsInSection()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PresentRateCollectionViewCell.identifire, for: indexPath) as? PresentRateCollectionViewCell else {return UICollectionViewCell()}
-        let text = array[indexPath.row]
+        let text = presentRateViewModel.array[indexPath.row]
         cell.configure(with: text)
-        
-               if indexPath == centerIndexPath {
-                cell.configureColor(with: self.buttomBack.backgroundColor ?? .white)
-                reloadData()
-               } else {
-                cell.configureColor(with: .white)
-                reloadData()
-               }
-               
-    return cell
+        // это для того, чтобы менялся цвет цифрт при выборе рейтинга
+        if indexPath == centerIndexPath {
+            cell.configureColor(with: self.buttomBack.backgroundColor ?? .white)
+            reloadData()
+        } else {
+            cell.configureColor(with: .white)
+            reloadData()
+        }
+        return cell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -248,19 +248,19 @@ extension PresentRateViewController: UICollectionViewDelegate, UICollectionViewD
             collectionView.reloadData()
         }
     }
-
-  
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let center = view.bounds.width / 2
         return UIEdgeInsets(top: 0, left: center - 50, bottom: 0, right: center - 50)
-       }
-    
+    }
+    // это чтобы при скролле останавливалось на каждой цифре и не прокручивалось дальше
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         targetContentOffset.pointee = scrollView.contentOffset
         let factor: CGFloat = 0.5
         let indexPath = IndexPath(row: Int((scrollView.contentOffset.x/100 + factor)), section: 0)
         if indexPath.row < 11 {
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
         switch indexPath.row {
         case 0: self.buttomBack.backgroundColor = .gray

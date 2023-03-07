@@ -23,6 +23,7 @@
 		3130F94E29ACFD8A001364CC /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3130F94D29ACFD8A001364CC /* MovieDetailViewModel.swift */; };
 		3130F95029AD003C001364CC /* PresentRateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3130F94F29AD003C001364CC /* PresentRateViewController.swift */; };
 		3130F95229AD131A001364CC /* PresentRateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3130F95129AD131A001364CC /* PresentRateCollectionViewCell.swift */; };
+		313839E929B75B4500104A68 /* PresentRateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313839E829B75B4500104A68 /* PresentRateViewModel.swift */; };
 		313A7BA7297B029C003ACAD1 /* PresentPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */; };
 		313A7BA9297C0C6D003ACAD1 /* YouTubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BA8297C0C6D003ACAD1 /* YouTubeModel.swift */; };
 		313A7BAD297C3435003ACAD1 /* PresentYoutubeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313A7BAC297C3435003ACAD1 /* PresentYoutubeModel.swift */; };
@@ -95,6 +96,7 @@
 		3130F94D29ACFD8A001364CC /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 		3130F94F29AD003C001364CC /* PresentRateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentRateViewController.swift; sourceTree = "<group>"; };
 		3130F95129AD131A001364CC /* PresentRateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentRateCollectionViewCell.swift; sourceTree = "<group>"; };
+		313839E829B75B4500104A68 /* PresentRateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentRateViewModel.swift; sourceTree = "<group>"; };
 		313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentPlayViewController.swift; sourceTree = "<group>"; };
 		313A7BA8297C0C6D003ACAD1 /* YouTubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeModel.swift; sourceTree = "<group>"; };
 		313A7BAC297C3435003ACAD1 /* PresentYoutubeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentYoutubeModel.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				31756A10299E78E20005E6DE /* DetailActorViewController.swift */,
 				313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */,
 				3130F94F29AD003C001364CC /* PresentRateViewController.swift */,
+				313839E829B75B4500104A68 /* PresentRateViewModel.swift */,
 				3140018129B602E000C5B6A0 /* PresentsViewForButton */,
 				3130F94A29ACBA5B001364CC /* Cell */,
 			);
@@ -469,6 +472,7 @@
 				31EEDBE329A8D50300235B48 /* MyCollectionViewCell.swift in Sources */,
 				31A5ED88299D30D5004FE23A /* DetailTableViewCell.swift in Sources */,
 				31EEDBD829A4ECF700235B48 /* News.swift in Sources */,
+				313839E929B75B4500104A68 /* PresentRateViewModel.swift in Sources */,
 				3109B5B1297331BB0032EE5A /* Bindable.swift in Sources */,
 				3195D6F0296D72FB00FA9F6C /* SceneDelegate.swift in Sources */,
 				31756A11299E78E20005E6DE /* DetailActorViewController.swift in Sources */,

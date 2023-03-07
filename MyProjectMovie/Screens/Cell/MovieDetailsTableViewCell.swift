@@ -12,9 +12,8 @@ protocol MovieDetailsDelegate {
 }
 
 class MovieDetailsTableViewCell: UITableViewCell {
-
-    static let identifire = "MovieDetailsTableViewCell"
     
+    static let identifire = "MovieDetailsTableViewCell"
     var delegate: MovieDetailsDelegate?
     
     private lazy var labelRate: UILabel = {
@@ -73,7 +72,6 @@ class MovieDetailsTableViewCell: UITableViewCell {
     
     func configure(with label: Double, model: Title){
         self.titles = model
-//        print(model.id)
         self.labelRate.textColor = textLabel?.textColor.changeRateColor(with: label)
         self.labelRate.text = String(label)
         self.textVote.text = "\(count) оценок"
@@ -105,7 +103,7 @@ class MovieDetailsTableViewCell: UITableViewCell {
         delegate?.presentRate(viewModel: title)
     }
 }
-
+// сделал расширение, чтобы не повторять код для смены цвета в зависимости от VoteAverage
 extension UIColor {
     func changeRateColor(with model: Double) -> UIColor {
         switch model {

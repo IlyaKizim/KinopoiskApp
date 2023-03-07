@@ -89,7 +89,7 @@ class ProfileViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     private lazy var isAnimated = false
     private lazy var constraintButtonCenterXAnchor: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonLeading: NSLayoutConstraint = NSLayoutConstraint()
@@ -180,6 +180,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func setForAnimate() {
+        //MARK: не знаю правильно сделал или нет, все написано то что сам придумал
         self.constraintButtonCenterXAnchor.constant = 290
         self.constraintButtonLeading.constant = 120
         self.constraintButtonTrailing.constant = -120

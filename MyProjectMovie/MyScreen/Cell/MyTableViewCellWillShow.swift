@@ -14,7 +14,7 @@ protocol MyTableViewCellWillShowDelegate: AnyObject {
 class MyTableViewCellWillShow: UITableViewCell {
     
     static let identifire = "MyTableViewCellWillShow"
-    static var dict: [String: [Title]] = [:]
+    static var dict: [String: [Title]] = [:] //сделал статик, чтобы можно было его вызывать везде
     private lazy var myViewModel = MyViewModel()
     weak var delegate: MyTableViewCellWillShowDelegate?
     
@@ -75,8 +75,10 @@ extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDat
         let keys = Array(MyTableViewCellWillShow.dict.keys)
         let currentKey = keys[indexPath.row]
         let currentValue = MyTableViewCellWillShow.dict[currentKey]
-        let result = currentValue?[0]
-        cell.configures(with: result?.posterPath ?? "", with: result?.voteAverage ?? 0.0, with: result?.originalTitle ?? "")
+        let model = currentValue?[0]
+        // получаю все value через ключи  и передаю данные
+        guard let models = model else {return UICollectionViewCell()}
+        cell.configuration(with: models)
         return cell
     }
     
@@ -84,8 +86,9 @@ extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDat
         let keys = Array(MyTableViewCellWillShow.dict.keys)
         let currentKey = keys[indexPath.row]
         let currentValue = MyTableViewCellWillShow.dict[currentKey]
-        let result = currentValue?[0]
-        guard let results = result else {return}
-        delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: results)
+        let model = currentValue?[0]
+        guard let models = model else {return}
+        delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: models)
+        //делегат для перехода DetailActorsViewController
     }
 }

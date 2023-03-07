@@ -86,17 +86,17 @@ class SearchresultTableViewTableViewCell: UITableViewCell {
             labelRate.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-
-    func configures(with oneModel: String, with twoModel: String, with threeModel: Double) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(oneModel)") else {
+    
+    func configuration(with model: Title) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterPath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)
         label.textColor = .white
-        self.label.text = twoModel
+        self.label.text = model.originalTitle ?? ""
         labelRate.textColor = .white
-        labelRate.textColor = label.textColor.changeRateColor(with: threeModel)
-        let array = Array(String(threeModel))
+        labelRate.textColor = label.textColor.changeRateColor(with: model.voteAverage ?? 0.0)
+        let array = Array(String(model.voteAverage ?? 0.0)) // у меня приходит voteAverage с 4-5 цифрами после точки, поэтому пришлось через цикл делать чтобы только 2 числа было. Можно было конечно череp .map ну может позже вернусь сделаю
         var newArray: [Character] = [Character]()
         for i in 0...2 {
             newArray.append(array[i])

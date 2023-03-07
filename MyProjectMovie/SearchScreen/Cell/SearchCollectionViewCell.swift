@@ -74,13 +74,12 @@ class SearchCollectionViewCell: UICollectionViewCell {
             label.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-    
-    public func configure(with model: String, id: Int, title: String) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else {
+    func configuration(with model: People) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.profilePath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)
-        self.id = id
-        self.label.text = title
+        self.id = model.id
+        self.label.text = model.name ?? ""
     }
 }

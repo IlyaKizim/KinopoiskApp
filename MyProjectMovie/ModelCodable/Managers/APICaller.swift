@@ -220,6 +220,7 @@ class APICaller {
     }
 }
     
+//MARK: Тут я пытался получить данные для списка актеров кто родился сегодня но ссылка на сервер уже или не работает или ее убрали поэтому грустно:/
 //    func getActorBirthday(completion: @escaping (Result<String, Error>) -> Void) {
 //        let today = Date()
 //        let formatter = DateFormatter()

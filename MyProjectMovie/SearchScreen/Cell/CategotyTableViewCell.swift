@@ -10,7 +10,7 @@ import UIKit
 class CategotyTableViewCell: UITableViewCell {
     
     static let identifire = "CategotyTableViewCell"
-    
+    // знаю что нельзя вот так делать, но из-за одной строчки создавать viewModel не стал
     private lazy var arrayCategory = ["Фильмы", "Онлайн-кинотеатр", "Жанры", "Страны", "Годы", "Критика", "Сериалы", "Сборы", "Премии", "Направления"]
     
     private lazy var collectionView: UICollectionView = {

@@ -57,10 +57,9 @@ extension SearchResultsControllerViewController: UITableViewDelegate, UITableVie
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchresultTableViewTableViewCell.identifire, for: indexPath) as? SearchresultTableViewTableViewCell else {
             return UITableViewCell()
         }
-        
         let title = titles[indexPath.row]
         cell.backgroundColor = .black
-        cell.configures(with: title.posterPath ?? "", with: title.originalTitle ?? "", with: title.voteAverage ?? 0)
+        cell.configuration(with: title)
         return cell
     }
     

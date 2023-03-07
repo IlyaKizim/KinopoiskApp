@@ -74,12 +74,11 @@ class DetailTableViewCell: UITableViewCell {
             posterImageView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
         ])
     }
-    
-    func configuration(with model: String, twoModel: String) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model)") else {
+    func configure(with model: List) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterPath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)
-        self.label.text = twoModel
+        self.label.text = model.originalTitle ?? ""
     }
 }

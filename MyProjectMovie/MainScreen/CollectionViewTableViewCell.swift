@@ -62,7 +62,6 @@ class CollectionViewTableViewCell: UITableViewCell {
         self.titles = titles
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
-            
         }
     }
 }
@@ -77,23 +76,18 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifire, for: indexPath) as? TitleCollectionViewCell else {return UICollectionViewCell()}
         
-        guard let model = titles[indexPath.row].posterPath else {return UICollectionViewCell()}
-        guard let voteAverage = titles[indexPath.row].voteAverage else {return UICollectionViewCell()}
-        var label = titles[indexPath.row].originalTitle
-        if label == nil {
-            label = ""
-        }
-        cell.configures(with: model, with: voteAverage, with: label!)
+        let model = titles[indexPath.row]
+        cell.configuration(with: model)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        mainViewModel.getMovies(indexPath: indexPath, title: titles)
+        mainViewModel.getMovies(indexPath: indexPath, title: titles) // вызов запроса для получения видеоданных
 
         let viewModel = Title(id: titles[indexPath.row].id, originalLanguage: titles[indexPath.row].originalLanguage , originalTitle: titles[indexPath.row].originalTitle, posterPath: titles[indexPath.row].posterPath, overview: titles[indexPath.row].overview, voteCount: titles[indexPath.row].voteCount, releaseDate: titles[indexPath.row].releaseDate, voteAverage: titles[indexPath.row].voteAverage)
         delegate?.collectionViewTableViewCellDelegate(cell: self, viewModel: viewModel)
-//        print(titles[indexPath.row].id)
+        // переход в MovieDetailsViewControllers для детализации
     }
 }
 

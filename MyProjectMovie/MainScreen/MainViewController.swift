@@ -4,17 +4,10 @@
 //
 //  Created by Яна Угай on 10.01.2023.
 //
+//MARK: Влад, Прости за говнокод!!! Уверен, что у тебя будет так много вопрос и так мало ответов) Удачи!)
 
 import UIKit
 import Kingfisher
-
-enum Section: Int {
-    case PopularMovies = 0
-    case TopRateMovie
-    case UpComingMovies
-    case PlayingNowMoview
-    case TVshow
-}
 
 class MainViewController: UIViewController {
     
@@ -99,9 +92,10 @@ class MainViewController: UIViewController {
     private lazy var mainViewModel = MainViewModel()
     private lazy var cellDataSource: [[Title]] = []
     private lazy var integer = 0
-    private lazy var randomInt = Int.random(in: 0..<integer)
+    private lazy var randomInt = Int.random(in: 0..<integer)//это число для того, чтобы брать данные из модели и вставлять в header tableView, чтобы были разные.
     private lazy var isActivateAdd = false
-    private lazy var isActivateDel = false   
+    private lazy var isActivateDel = false
+    // это для анимации, при нажатии на кнопки, чтобы менялись констрейны.
     private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
@@ -116,7 +110,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        mainViewModel.getData()
+        mainViewModel.getData()//делаю запрос на сервер для получения данных в коллекцию
     }
     
     private func setUpView() {
@@ -173,7 +167,7 @@ class MainViewController: UIViewController {
         NSLayoutConstraint.activate([
             buttonPlay.topAnchor.constraint(equalTo: headerOverView.bottomAnchor, constant: 10),
             buttonPlay.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 50),
-            buttonPlay.trailingAnchor.constraint(equalTo: buttonAddToInteresting.leadingAnchor, constant: -10),
+            buttonPlay.widthAnchor.constraint(equalToConstant: view.bounds.width / 2.5),
             constraintButtonPlayHeight
         ])
         NSLayoutConstraint.activate([
@@ -190,7 +184,7 @@ class MainViewController: UIViewController {
         ])
     }
     
-    private func bindindViewModel() {
+    private func bindindViewModel() { //это я забиндил данные, которые получил из запроса и сохраняю их тут
         mainViewModel.cellDataSource.bind { [weak self] movies in
             guard let self = self, let movies = movies else {return}
             self.cellDataSource = movies
@@ -201,7 +195,7 @@ class MainViewController: UIViewController {
     }
     
     private func configureHeaderView(with model: [[Title]]) {
-        if model[0].count > 1 {
+        if model[0].count > 1 { // > 1 потому что если массив будет пустой то из-за рандомного числа будет error ну и эти данные вставляю в header tableView
             let text = model[0]
             self.headerLabel.text = text[randomInt].originalTitle
             guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(text[randomInt].posterPath ?? "")") else {
@@ -214,7 +208,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    private func gradientForHeaderImage() {
+    private func gradientForHeaderImage() { // это затемнение снизу на постере в header
         let imageHeight = headerImageView.image?.size.height ?? 300
         let gradient = CAGradientLayer()
         gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
@@ -223,7 +217,7 @@ class MainViewController: UIViewController {
         headerImageView.layer.addSublayer(gradient)
     }
     
-    private func configurationNavBar () {
+    private func configurationNavBar () { //картинка кинопоиска в navigationController
         var image = UIImage(named: "logo")
         image = image?.withRenderingMode(.alwaysOriginal)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
@@ -231,17 +225,18 @@ class MainViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
     }
     
-    @objc private func pushToPresents() {
+    @objc private func pushToPresents() { //открытие экрана кноки "смотреть"
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
         vc.configure(with: MovieDetailsViewControllers.model)
         present(vc, animated: true, completion: nil)
     }
     
-    @objc private func addToInteresting() {
+    @objc private func addToInteresting() {//этот ужас для анимации при нажатии.
+        //MARK: но я сколько не ебался, так и не понял как сделать, чтобы текст на кнопки был четким, а не как зрение -8
         if !isActivateDel {
             UIView.animate(withDuration: 0.3) {
-                self.constraintButtonAddWidth.constant = 200
+                self.constraintButtonAddWidth.constant = self.view.bounds.width / 1.5
                 self.constraintButtonPlayHeight.constant = 0
                 self.constraintButtonDeleteWidth.constant = 0
                 self.buttonAddToInteresting.setTitle(" Добавлено", for: .normal)
@@ -261,6 +256,7 @@ class MainViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 })
             }
+            // здесь я сохраняю данные в дикшинари. Это для добавления фильмов в myController, а дикшинари, для того, чтобы можно было удалить по ключу фильмы, которые добавил в закладки
             let title = cellDataSource[0]
             let model = title[randomInt]
             MyTableViewCellWillShow.dict[model.originalTitle ?? "No"] = [model]
@@ -270,6 +266,7 @@ class MainViewController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.buttonAddToInteresting.tintColor = .white
             }
+            //здесь удаляю из дикшинари и из закладок.
             let title = cellDataSource[0]
             let model = title[randomInt]
             MyTableViewCellWillShow.dict.removeValue(forKey: model.originalTitle ?? "No")
@@ -278,10 +275,10 @@ class MainViewController: UIViewController {
         }
     }
     
-    @objc private func deleteFromInteresting() {
+    @objc private func deleteFromInteresting() {//анимация для второй кнопки "неинтересно"
         if !isActivateAdd {
             UIView.animate(withDuration: 0.3) {
-                self.constraintButtonDeleteWidth.constant = 200
+                self.constraintButtonDeleteWidth.constant = (self.view.bounds.width / 1.5) + 40
                 self.constraintButtonPlayHeight.constant = 0
                 self.constraintButtonAddHeight.constant = 0
                 self.buttonDeleteFromInteresting.setTitle(" Неинтересно", for: .normal)
@@ -325,6 +322,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        //Это шрифт, текст итд для заголовков в табилце
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
@@ -355,22 +353,22 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.delegate = self
-        if cellDataSource.count > 0 {
+        if cellDataSource.count > 0 { //>0 потому, если будет пустой массив - error, Ну и соответственно этот ужас с индексами и массивами, чтобы можно было до каждого запроса, полученного из сервера, достучаться.
             switch indexPath.section {
             
-            case Section.PopularMovies.rawValue:
+            case MainViewModel.Section.PopularMovies.rawValue:
                 cell.configure(with: cellDataSource[0])
                 
-            case Section.TopRateMovie.rawValue:
+            case MainViewModel.Section.TopRateMovie.rawValue:
                 cell.configure(with: cellDataSource[1])
                 
-            case Section.UpComingMovies.rawValue:
+            case MainViewModel.Section.UpComingMovies.rawValue:
                 cell.configure(with: cellDataSource[2])
                 
-            case Section.PlayingNowMoview.rawValue:
+            case MainViewModel.Section.PlayingNowMoview.rawValue:
                 cell.configure(with: cellDataSource[3])
                 
-            case Section.TVshow.rawValue:
+            case MainViewModel.Section.TVshow.rawValue:
                 cell.configure(with: cellDataSource[4])
                 
             default:
@@ -381,7 +379,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+        // при скролле вниз появляется заголовок, а если обратно вренуть, то обратно логотип
         if scrollView.contentOffset.y >= view.safeAreaInsets.top + 40 {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: nil, style: .done, target: self, action: nil)
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Главная", style: .done, target: self, action: #selector(back))
@@ -407,10 +405,10 @@ extension UIScrollView {
 }
 
 extension MainViewController: CollectionViewTableViewCellDelegate {
-    
+    // делегат для пуша
     func collectionViewTableViewCellDelegate(cell: CollectionViewTableViewCell, viewModel: Title) {
         let vc = MovieDetailsViewControllers()
-        vc.setUp(with: viewModel)
+        vc.setUps(with: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

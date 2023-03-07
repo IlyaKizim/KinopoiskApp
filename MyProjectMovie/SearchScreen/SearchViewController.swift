@@ -60,6 +60,7 @@ class SearchViewController: UIViewController {
     }
     
     private func addSubviews () {
+        //MARK: без добавления вот этой хуйни(HeaderUIView) у меня не отображается searchcontroller(placeholder куда вводить поиск фильмов)
         let header = HeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1))
         view.addSubview(header)
         view.addSubview(tableView)
@@ -117,6 +118,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: cellDataSource)
         cell.delegate = self
         return cell
+        //MARK: сделал две одинаковые ячейки потому, что не нашел API где есть список актеров кто родился в выбранный день
         case 2: guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifire, for: indexPath) as? SearchTableViewCell else {
             return  UITableViewCell()
         }
@@ -148,23 +150,14 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension SearchViewController: UISearchResultsUpdating {
+    //MARK: здесь я тоже не знаю как правильно сделать как правильно вызывать функцию для получения данных, весь заранее не получится получить, потому что запрос в зависимости от запроса делается, поэтому сделал вот так
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         guard let query = searchBar.text,
               !query.trimmingCharacters(in: .whitespaces).isEmpty,
               query.trimmingCharacters(in: .whitespaces).count >= 3,
               let resultController = searchController.searchResultsController as? SearchResultsControllerViewController else { return }
-        APICaller.shared.search(with: query) { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let titles):
-                    resultController.titles = titles
-                    resultController.tableViewForSearch.reloadData()
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
+        searhcViewModel.getSearch(with: query, resultController: resultController)
     }
 }
 
@@ -173,28 +166,7 @@ extension SearchViewController: TableViewCellDelegate {
         let vc = DetailActorsViewController()
         vc.setUps(with: viewModel)
         guard let id = viewModel.id else {return}
-        
-        APICaller.shared.getDetailActor(with: String(id)) { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let titles):
-                    DetailActorsViewController.detail = titles
-                    vc.configureLabel(with: titles)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
-        APICaller.shared.getListMoviesForActors(with: String(id)) { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let result):
-                    vc.configureTableView(with: result)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
+        searhcViewModel.getDetailAndMovieActors(with: String(id), vc: vc)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -39,14 +39,14 @@ class MediaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindindViewModel()
+        bindindViewModel()//сохранение данных с через bindable
         setUp()
         configurationNavBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        mediaViewModal.getData()
+        mediaViewModal.getData() // вызов запросов на сервер для получения данных
     }
     
     private func setUp() {
@@ -76,9 +76,7 @@ class MediaViewController: UIViewController {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         if scrollView.contentOffset.y >= view.safeAreaInsets.top + 20 {
-            
             let text = mediaViewModal.label
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "\(text)", style: .done, target: self, action: #selector(back))
             navigationItem.leftBarButtonItem?.tintColor = .white
@@ -119,10 +117,7 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectedBackgroundView = bgColorView
         cell.backgroundColor = .black
         let model = cellDataSource[indexPath.row]
-        let labelData = model.publishedAt ?? ""
-        let titleLabel = model.title ?? ""
-        let posterImageView = model.urlToImage ?? ""
-        cell.configure(with: labelData, titleLabel: titleLabel, posterImageView: posterImageView)
+        cell.configuration(with: model)
         return cell
     }
     
@@ -138,5 +133,6 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let url = URL(string: cellDataSource[indexPath.row].url ?? "")  else {return}
         UIApplication.shared.open(url)
+        //не нашел данных связанных с новостями, поэтому просто сделал открытие браузера
     }
 }

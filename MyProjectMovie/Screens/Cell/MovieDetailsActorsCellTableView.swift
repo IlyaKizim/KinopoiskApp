@@ -62,7 +62,6 @@ class MovieDetailsActorsCellTableView: UITableViewCell {
         self.cast = cast
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
-            
         }
     }
 }
@@ -75,9 +74,7 @@ extension MovieDetailsActorsCellTableView: UICollectionViewDelegate, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ActrorsWhoPlayingCollectionViewCell.identifire, for: indexPath) as? ActrorsWhoPlayingCollectionViewCell else {return UICollectionViewCell()}
         let model = cast[indexPath.row]
-        let poster = model.profilePath ?? ""
-        let label = model.originalName ?? ""
-        cell.configure(with: poster, label: label)
+        cell.configuration(with: model)
         return cell
     }
     
@@ -85,6 +82,4 @@ extension MovieDetailsActorsCellTableView: UICollectionViewDelegate, UICollectio
         let viewModel = ActrosWhoPlaying(originalName: cast[indexPath.row].originalName, profilePath: cast[indexPath.row].profilePath, id: cast[indexPath.row].id)
         delegate?.CollectionViewCellDelegate(viewModel: viewModel)
     }
-    
-    
 }

@@ -8,11 +8,11 @@
 import Foundation
 
 class MovieDetailViewModel {
+    
     let arrayTitle = ["Рейтинг Кинопоиска", "Актеры"]
     var cellDataSource: Observable<[ActrosWhoPlaying]> = Observable(nil)
     var dataSourceActors: [ActrosWhoPlaying] = []
     
-
     func heightForRow (indexPath: IndexPath) -> Int {
         switch indexPath.section {
         case 0: return 200
@@ -51,7 +51,7 @@ class MovieDetailViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let titles):
-                    DetailActorsViewController.detail = titles
+                    vc.detail = titles
                     vc.configureLabel(with: titles)
                 case .failure(let error):
                     print(error.localizedDescription)

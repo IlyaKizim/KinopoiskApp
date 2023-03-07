@@ -10,7 +10,7 @@ import UIKit
 class DetailActorsViewController: UIViewController {
     
     private lazy var detailViewModel = DetailViewModel()
-    static var detail: DetailActor?
+    var detail: DetailActor?
     private lazy var listMovieActors: [List] = []
     
     private lazy var headerView: UIView = {
@@ -57,7 +57,7 @@ class DetailActorsViewController: UIViewController {
         button.backgroundColor = .black
         button.setTitle("Подробнее", for: .normal)
         button.setTitleColor(.orange, for: .normal)
-        button.addTarget(self, action: #selector(detail), for: .touchUpInside)
+        button.addTarget(self, action: #selector(details), for: .touchUpInside)
         return button
     }()
     
@@ -189,10 +189,10 @@ class DetailActorsViewController: UIViewController {
         tableView.scrollToTop()
     }
     
-    @objc private func detail() {
+    @objc private func details() {
         let vc = DetailActorViewController()
-        guard let detail =  DetailActorsViewController.detail else {return}
-        vc.configure(with: detail)
+        guard let details =  detail else {return}
+        vc.configure(with: details)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -218,9 +218,8 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailTableViewCell.identifire, for: indexPath) as?  DetailTableViewCell else {return UITableViewCell()}
         cell.backgroundColor = .black
         cell.selectedBackgroundView = bgColorView
-        let model = listMovieActors[indexPath.row].posterPath ?? ""
-        let twoModel = listMovieActors[indexPath.row].originalTitle ?? ""
-        cell.configuration(with: model, twoModel: twoModel)
+        let model = listMovieActors[indexPath.row]
+        cell.configure(with: model)
         return cell
     }
     
@@ -242,7 +241,7 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
         let model = Title(id: modal.id ?? 0, originalLanguage: modal.originalLanguage, originalTitle: modal.originalTitle, posterPath: modal.posterPath, overview: modal.overView, voteCount: modal.voteCount ?? 0, releaseDate: modal.releaseDate, voteAverage: modal.voteAverage)
        
         let vc = MovieDetailsViewControllers()
-        vc.setUp(with: model)
+        vc.setUps(with: model)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

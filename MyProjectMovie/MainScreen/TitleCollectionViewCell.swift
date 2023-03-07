@@ -60,7 +60,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(labelForRate)
         conteinerView.addSubview(posterImageView)
     }
-
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             conteinerView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -87,14 +87,13 @@ class TitleCollectionViewCell: UICollectionViewCell {
             labelForRate.heightAnchor.constraint(equalToConstant: 25)
         ])
     }
-
-    public func configures(with oneModel: String, with twoModel: Double, with threeModel: String) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(oneModel)") else {
+    func configuration(with model: Title) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterPath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)
-        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: twoModel)
-        labelForRate.text = String(twoModel)
-        label.text = threeModel
+        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: model.voteAverage ?? 0.0) // меняю цвет рейтинга в зависимости от данных
+        labelForRate.text = String(model.voteAverage ?? 0.0)
+        label.text = model.originalTitle ?? ""
     }
-} 
+}

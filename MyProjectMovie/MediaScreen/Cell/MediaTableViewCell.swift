@@ -93,18 +93,16 @@ class MediaTableViewCell: UITableViewCell {
             labelData.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
         ])
     }
-    
-    func configure(with labelData: String, titleLabel: String, posterImageView: String) {
-        guard let url = URL(string: posterImageView) else {
+    func configuration(with model: News) {
+        guard let url = URL(string: model.urlToImage ?? "") else {
             return
         }
         self.posterImageView.kf.setImage(with: url)
-        
-        self.titleLabel.text = titleLabel
+        self.titleLabel.text = model.title ?? ""
         self.titleLabel.backgroundColor = .black
         self.labelData.backgroundColor = .black
         
-        let array = Array(labelData)
+        let array = Array(model.publishedAt ?? "")
         var newArray:[Character] = [Character]()
         for i in 0...9 {
             newArray.append(array[i])

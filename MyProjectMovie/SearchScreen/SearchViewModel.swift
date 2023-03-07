@@ -48,4 +48,42 @@ class SearchViewModel {
     func mapCellData() {
         self.cellDataSource.value = self.dataSourcePopular
     }
+    
+    func getDetailAndMovieActors(with string: String, vc: DetailActorsViewController) {
+        APICaller.shared.getDetailActor(with: string) { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let titles):
+                    vc.detail = titles
+                    vc.configureLabel(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        APICaller.shared.getListMoviesForActors(with: string) { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let result):
+                    vc.configureTableView(with: result)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func getSearch(with query: String, resultController: SearchResultsControllerViewController) {
+        APICaller.shared.search(with: query ) { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let titles):
+                    resultController.titles = titles
+                    resultController.tableViewForSearch.reloadData()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
 }
