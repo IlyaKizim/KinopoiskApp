@@ -5,12 +5,17 @@ KinopoisApp written in Swift 5.3 using the TMDb API.
 if you are from Russia, use VPN service to get Json information from TMDb API
 
 ## Frameworks and technologies:
-- MVVM architecture
+
+- Swift
 - UIKit
 - CoreData
+- MVVM
+- Networking
 
 ## Demo
-https://user-images.githubusercontent.com/122359658/226303069-3a0319ed-f53e-4190-96ab-471182bb3a16.mov
+| List of films | Movie details |
+| --- | --- |
+| ![1](https://user-images.githubusercontent.com/122359658/226303069-3a0319ed-f53e-4190-96ab-471182bb3a16.gif)|
 
 https://user-images.githubusercontent.com/122359658/226303367-bb64edf4-5e1b-44a3-9a43-647c46e46369.mov
 
