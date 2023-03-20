@@ -13,9 +13,7 @@ if you are from Russia, use VPN service to get Json information from TMDb API
 - Networking
 
 ## Demo
-| ![1](https://user-images.githubusercontent.com/122359658/226303069-3a0319ed-f53e-4190-96ab-471182bb3a16.mov)|
-
-| ![2](https://user-images.githubusercontent.com/122359658/226303367-bb64edf4-5e1b-44a3-9a43-647c46e46369.mov) |
+| ![1](https://user-images.githubusercontent.com/122359658/226303069-3a0319ed-f53e-4190-96ab-471182bb3a16.mov)| ![2](https://user-images.githubusercontent.com/122359658/226303367-bb64edf4-5e1b-44a3-9a43-647c46e46369.mov) |
 
 https://user-images.githubusercontent.com/122359658/226303489-7e7dec38-d3c2-4c8f-9f7d-f6e476dfc347.mov
 
