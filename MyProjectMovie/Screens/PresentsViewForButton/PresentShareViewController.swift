@@ -4,7 +4,7 @@
 //
 //  Created by Яна Угай on 06.03.2023.
 //
-//MARK: эти 2 контроллера PresentShareViewController и PresentMoreViewController я еще не доделал, но суть в том, чтобы они открывались наполовину экрана при нажатии на кнопках в детализации по фильмам "Оценить" "Добавить в закладки" "Поделиться" и "ЕЩЕ"
+
 import UIKit
 
 class PresentShareViewController: UIViewController {

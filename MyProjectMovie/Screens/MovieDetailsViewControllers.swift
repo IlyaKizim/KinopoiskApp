@@ -3,7 +3,7 @@
 //  MyProjectMovie
 //
 //  Created by Яна Угай on 18.01.2023.
-//
+
 
 import UIKit
 
@@ -194,7 +194,7 @@ class MovieDetailsViewControllers: UIViewController {
         addSubviews()
         setConstraint()
         setNavBar()
-        saveUsers()
+//        saveUsers()
     }
     
     private func addSubviews() {
@@ -241,14 +241,14 @@ class MovieDetailsViewControllers: UIViewController {
         }
     }
     
-    private func saveUsers() {
-        let defaults = UserDefaults.standard
-        if let colorData = defaults.object(forKey: "buttonColor") as? Data {
-            if let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) {
-                buttonWillShow.tintColor = color
-            }
-        }
-    }
+//    private func saveUsers() {
+//        let defaults = UserDefaults.standard
+//        if let colorData = defaults.object(forKey: "buttonColor") as? Data {
+//            if let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) {
+//                buttonWillShow.tintColor = color
+//            }
+//        }
+//    }
     
     private func setNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(back))
@@ -380,13 +380,13 @@ class MovieDetailsViewControllers: UIViewController {
             MyTableViewCellWillShow.dict.removeValue(forKey: titles[0].originalTitle ?? "")
             flagRate = false
         }
-        let defaults = UserDefaults.standard
-        do {
-            let colorData = try NSKeyedArchiver.archivedData(withRootObject: buttonWillShow.tintColor as Any, requiringSecureCoding: false)
-            defaults.set(colorData, forKey: "buttonColor")
-        } catch {
-            print("Error: \(error.localizedDescription)")
-        }
+//        let defaults = UserDefaults.standard
+//        do {
+//            let colorData = try NSKeyedArchiver.archivedData(withRootObject: buttonWillShow.tintColor as Any, requiringSecureCoding: false)
+//            defaults.set(colorData, forKey: "buttonColor")
+//        } catch {
+//            print("Error: \(error.localizedDescription)")
+//        }
     }
     
     @objc private func share() {

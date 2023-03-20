@@ -39,14 +39,14 @@ class MediaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindindViewModel()//сохранение данных с через bindable
+        bindindViewModel()
         setUp()
         configurationNavBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        mediaViewModal.getData() // вызов запросов на сервер для получения данных
+        mediaViewModal.getData()
     }
     
     private func setUp() {
@@ -133,6 +133,5 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let url = URL(string: cellDataSource[indexPath.row].url ?? "")  else {return}
         UIApplication.shared.open(url)
-        //не нашел данных связанных с новостями, поэтому просто сделал открытие браузера
     }
 }

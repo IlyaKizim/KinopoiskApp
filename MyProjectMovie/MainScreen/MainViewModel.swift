@@ -18,7 +18,7 @@ class MainViewModel {
     }
     
     var cellDataSource: Observable<[[Title]]> = Observable(nil)
-    var dataSourcePopular: [[Title]] = [[],[],[],[],[]] //я честно по другому не придумал как мне разделить данные, полученные из сервера, поэтому вот такой ужас пришел в голову
+    var dataSourcePopular: [[Title]] = [[],[],[],[],[]]
     let titleForHeaderSection = ["Популярные фильмы", "Высокий рейтинг", "Скоро в прокате", "Смотрят сейчас", "TV шоу"]
     
     func numberOfRowsInSection() -> Int {
@@ -33,7 +33,7 @@ class MainViewModel {
         return 40
     }
 
-    func getData() { // все запросы
+    func getData() {
         APICaller.shared.getPopularMovies {[weak self] result in
             switch result {
             case .success(let data):
@@ -88,7 +88,6 @@ class MainViewModel {
     func mapCellData() {
         self.cellDataSource.value = self.dataSourcePopular
     }
-    // это запрос на получение данные от ютуба для просмотра видео, вместо id использовал поиск по названию + трейлер
    func getMovies(indexPath: IndexPath, title: [Title]) {
         APICaller.shared.getMovie(with: title[indexPath.row].originalTitle ?? ""  + " trailer") { (results) in
             switch results {

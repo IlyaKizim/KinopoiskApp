@@ -109,7 +109,6 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // если нету в добавленных в интересно, то возвращаю высоту 0 для первой секции в таблице
         if MyTableViewCellWillShow.dict.count == 0 {
             return CGFloat(myViewModel.heightForRow(indexPath: indexPath))
         } else {
@@ -130,7 +129,6 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //MARK: я не знаю правильно сделал или нет, но для каждой ячейки я создавал новый вьюКонтроллер
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellWillShow.identifire, for: indexPath) as? MyTableViewCellWillShow else {return UITableViewCell()}

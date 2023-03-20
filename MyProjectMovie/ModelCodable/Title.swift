@@ -20,7 +20,7 @@ struct Title: Codable {
     let voteCount: Int
     let releaseDate: String?
     let voteAverage: Double?
-    
+
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case originalLanguage = "original_language"

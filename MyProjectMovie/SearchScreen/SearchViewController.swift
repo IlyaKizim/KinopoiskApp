@@ -60,7 +60,6 @@ class SearchViewController: UIViewController {
     }
     
     private func addSubviews () {
-        //MARK: без добавления вот этой хуйни(HeaderUIView) у меня не отображается searchcontroller(placeholder куда вводить поиск фильмов)
         let header = HeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1))
         view.addSubview(header)
         view.addSubview(tableView)
@@ -118,7 +117,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: cellDataSource)
         cell.delegate = self
         return cell
-        //MARK: сделал две одинаковые ячейки потому, что не нашел API где есть список актеров кто родился в выбранный день
         case 2: guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifire, for: indexPath) as? SearchTableViewCell else {
             return  UITableViewCell()
         }
@@ -150,13 +148,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension SearchViewController: UISearchResultsUpdating {
-    //MARK: здесь я тоже не знаю как правильно сделать как правильно вызывать функцию для получения данных, весь заранее не получится получить, потому что запрос в зависимости от запроса делается, поэтому сделал вот так
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         guard let query = searchBar.text,
               !query.trimmingCharacters(in: .whitespaces).isEmpty,
               query.trimmingCharacters(in: .whitespaces).count >= 3,
               let resultController = searchController.searchResultsController as? SearchResultsControllerViewController else { return }
+        resultController.delegate = self
         searhcViewModel.getSearch(with: query, resultController: resultController)
     }
 }
@@ -167,6 +165,14 @@ extension SearchViewController: TableViewCellDelegate {
         vc.setUps(with: viewModel)
         guard let id = viewModel.id else {return}
         searhcViewModel.getDetailAndMovieActors(with: String(id), vc: vc)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension SearchViewController: SearchResultsControllerViewControllerDelegate {
+    func searchResultsControllerViewControllerDelegate(model: Title) {
+        let vc = MovieDetailsViewControllers()
+        vc.setUps(with: model)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

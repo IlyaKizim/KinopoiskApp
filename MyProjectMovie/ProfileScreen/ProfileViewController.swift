@@ -180,7 +180,6 @@ class ProfileViewController: UIViewController {
     }
     
     private func setForAnimate() {
-        //MARK: не знаю правильно сделал или нет, все написано то что сам придумал
         self.constraintButtonCenterXAnchor.constant = 290
         self.constraintButtonLeading.constant = 120
         self.constraintButtonTrailing.constant = -120

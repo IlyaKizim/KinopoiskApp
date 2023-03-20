@@ -229,7 +229,6 @@ extension PresentRateViewController: UICollectionViewDelegate, UICollectionViewD
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PresentRateCollectionViewCell.identifire, for: indexPath) as? PresentRateCollectionViewCell else {return UICollectionViewCell()}
         let text = presentRateViewModel.array[indexPath.row]
         cell.configure(with: text)
-        // это для того, чтобы менялся цвет цифрт при выборе рейтинга
         if indexPath == centerIndexPath {
             cell.configureColor(with: self.buttomBack.backgroundColor ?? .white)
             reloadData()
@@ -254,7 +253,6 @@ extension PresentRateViewController: UICollectionViewDelegate, UICollectionViewD
         let center = view.bounds.width / 2
         return UIEdgeInsets(top: 0, left: center - 50, bottom: 0, right: center - 50)
     }
-    // это чтобы при скролле останавливалось на каждой цифре и не прокручивалось дальше
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         targetContentOffset.pointee = scrollView.contentOffset
         let factor: CGFloat = 0.5

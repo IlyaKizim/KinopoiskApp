@@ -14,7 +14,7 @@ protocol MyTableViewCellWillShowDelegate: AnyObject {
 class MyTableViewCellWillShow: UITableViewCell {
     
     static let identifire = "MyTableViewCellWillShow"
-    static var dict: [String: [Title]] = [:] //сделал статик, чтобы можно было его вызывать везде
+    static var dict: [String: [Title]] = [:]
     private lazy var myViewModel = MyViewModel()
     weak var delegate: MyTableViewCellWillShowDelegate?
     
@@ -76,7 +76,6 @@ extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDat
         let currentKey = keys[indexPath.row]
         let currentValue = MyTableViewCellWillShow.dict[currentKey]
         let model = currentValue?[0]
-        // получаю все value через ключи  и передаю данные
         guard let models = model else {return UICollectionViewCell()}
         cell.configuration(with: models)
         return cell
@@ -89,6 +88,5 @@ extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDat
         let model = currentValue?[0]
         guard let models = model else {return}
         delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: models)
-        //делегат для перехода DetailActorsViewController
     }
 }

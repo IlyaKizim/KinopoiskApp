@@ -3,13 +3,23 @@
 //  MyProjectMovie
 //
 //  Created by Яна Угай on 03.02.2023.
-//
+
 
 import UIKit
+
+protocol SearchResultsControllerViewControllerDelegate {
+    func searchResultsControllerViewControllerDelegate (model: Title)
+}
 
 class SearchResultsControllerViewController: UIViewController {
     
     public lazy var titles: [Title] = [Title]()
+    var delegate: SearchResultsControllerViewControllerDelegate?
+    private lazy var bgColorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
     
     public lazy var tableViewForSearch: UITableView = {
         let tableView = UITableView()
@@ -59,6 +69,7 @@ extension SearchResultsControllerViewController: UITableViewDelegate, UITableVie
         }
         let title = titles[indexPath.row]
         cell.backgroundColor = .black
+        cell.selectedBackgroundView = bgColorView
         cell.configuration(with: title)
         return cell
     }
@@ -66,4 +77,9 @@ extension SearchResultsControllerViewController: UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         70
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let title = titles[indexPath.row]
+        delegate?.searchResultsControllerViewControllerDelegate(model: title)
+    }
 }
+

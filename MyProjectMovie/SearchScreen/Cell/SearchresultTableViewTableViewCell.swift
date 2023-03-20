@@ -96,7 +96,7 @@ class SearchresultTableViewTableViewCell: UITableViewCell {
         self.label.text = model.originalTitle ?? ""
         labelRate.textColor = .white
         labelRate.textColor = label.textColor.changeRateColor(with: model.voteAverage ?? 0.0)
-        let array = Array(String(model.voteAverage ?? 0.0)) // у меня приходит voteAverage с 4-5 цифрами после точки, поэтому пришлось через цикл делать чтобы только 2 числа было. Можно было конечно череp .map ну может позже вернусь сделаю
+        let array = Array(String(model.voteAverage ?? 0.0)) 
         var newArray: [Character] = [Character]()
         for i in 0...2 {
             newArray.append(array[i])
@@ -105,3 +105,4 @@ class SearchresultTableViewTableViewCell: UITableViewCell {
         self.labelRate.text = String(rate)
     }
 }
+

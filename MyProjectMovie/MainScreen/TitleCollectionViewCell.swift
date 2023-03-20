@@ -92,7 +92,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
             return
         }
         posterImageView.kf.setImage(with: url)
-        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: model.voteAverage ?? 0.0) // меняю цвет рейтинга в зависимости от данных
+        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: model.voteAverage ?? 0.0)
         labelForRate.text = String(model.voteAverage ?? 0.0)
         label.text = model.originalTitle ?? ""
     }

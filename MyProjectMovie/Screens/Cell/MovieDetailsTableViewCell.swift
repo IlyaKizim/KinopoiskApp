@@ -103,7 +103,7 @@ class MovieDetailsTableViewCell: UITableViewCell {
         delegate?.presentRate(viewModel: title)
     }
 }
-// сделал расширение, чтобы не повторять код для смены цвета в зависимости от VoteAverage
+
 extension UIColor {
     func changeRateColor(with model: Double) -> UIColor {
         switch model {
