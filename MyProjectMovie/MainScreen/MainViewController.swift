@@ -399,7 +399,6 @@ extension UIScrollView {
 }
 
 extension MainViewController: CollectionViewTableViewCellDelegate {
-    // делегат для пуша
     func collectionViewTableViewCellDelegate(cell: CollectionViewTableViewCell, viewModel: Title) {
         let vc = MovieDetailsViewControllers()
         vc.setUps(with: viewModel)
