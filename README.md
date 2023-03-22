@@ -1,4 +1,4 @@
-## KinopoisApp
+## KinopoiskApp
 KinopoisApp written in Swift 5.3 using the TMDb API.
 
 ## Setup
