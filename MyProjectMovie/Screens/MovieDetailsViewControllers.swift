@@ -182,7 +182,7 @@ class MovieDetailsViewControllers: UIViewController {
     private lazy var titles: [Title] = []
     private lazy var cellDataSource: [ActrosWhoPlaying] = []
     private lazy var flagRate = false
-    
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
