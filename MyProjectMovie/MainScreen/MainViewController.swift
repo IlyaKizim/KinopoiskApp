@@ -101,14 +101,10 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainViewModel.getData()
         configurationNavBar ()
         setUpView()
         bindindViewModel()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        mainViewModel.getData()
     }
     
     private func setUpView() {
