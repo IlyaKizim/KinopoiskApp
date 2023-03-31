@@ -42,6 +42,7 @@ class APICaller {
         task.resume()
     }
     
+    
     func getTopRateMovie(completion: @escaping (Result<[Title], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.basicURL)/3/movie/top_rated?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
@@ -74,6 +75,7 @@ class APICaller {
             }
         }
         task.resume()
+      
     }
     
     func getPlayingNowMoview (completion: @escaping (Result<[Title], Error>) -> Void) {
@@ -91,6 +93,7 @@ class APICaller {
             }
         }
         task.resume()
+      
     }
     
     func getTVshow (completion: @escaping (Result<[Title], Error>) -> Void) {

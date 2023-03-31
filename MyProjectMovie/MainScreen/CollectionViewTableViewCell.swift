@@ -35,7 +35,7 @@ class CollectionViewTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
         setUp()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -90,4 +90,5 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         delegate?.collectionViewTableViewCellDelegate(cell: self, viewModel: viewModel)
     }
 }
+
 

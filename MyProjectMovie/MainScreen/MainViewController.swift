@@ -178,7 +178,7 @@ class MainViewController: UIViewController {
         ])
     }
     
-    private func bindindViewModel() { //это я забиндил данные, которые получил из запроса и сохраняю их тут
+    private func bindindViewModel() {
         mainViewModel.cellDataSource.bind { [weak self] movies in
             guard let self = self, let movies = movies else {return}
             self.cellDataSource = movies

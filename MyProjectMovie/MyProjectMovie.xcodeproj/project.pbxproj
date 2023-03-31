@@ -31,7 +31,7 @@
 		3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */; };
 		3140018029B5FCB800C5B6A0 /* PresentShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */; };
 		3140018329B6031400C5B6A0 /* PresentMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */; };
-		315D560029D57E3D0079BCAB /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 315D55FE29D57E3D0079BCAB /* DataModel.xcdatamodeld */; };
+		314CE1E729D7139F00231A6C /* MyProjectMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 314CE1E529D7139F00231A6C /* MyProjectMovie.xcdatamodeld */; };
 		316972C2298D2B9D003B7270 /* SearchResultsControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */; };
 		316972C4298D3623003B7270 /* SearchresultTableViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */; };
 		316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972D0299119A0003B7270 /* SearchViewModel.swift */; };
@@ -105,7 +105,7 @@
 		3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionViewCellWillShow.swift; sourceTree = "<group>"; };
 		3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentShareViewController.swift; sourceTree = "<group>"; };
 		3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentMoreViewController.swift; sourceTree = "<group>"; };
-		315D55FF29D57E3D0079BCAB /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		314CE1E629D7139F00231A6C /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsControllerViewController.swift; sourceTree = "<group>"; };
 		316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchresultTableViewTableViewCell.swift; sourceTree = "<group>"; };
 		316972D0299119A0003B7270 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -307,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				3195D6ED296D72FB00FA9F6C /* AppDelegate.swift */,
+				314CE1E529D7139F00231A6C /* MyProjectMovie.xcdatamodeld */,
 				3195D6EF296D72FB00FA9F6C /* SceneDelegate.swift */,
 				3195D6F1296D72FB00FA9F6C /* ViewController.swift */,
 				3195D6F3296D72FB00FA9F6C /* Main.storyboard */,
@@ -321,7 +322,6 @@
 			isa = PBXGroup;
 			children = (
 				3195D71A296D936D00FA9F6C /* APICaller.swift */,
-				315D55FE29D57E3D0079BCAB /* DataModel.xcdatamodeld */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -460,6 +460,7 @@
 			files = (
 				31EEDBDD29A4EEF600235B48 /* MediaTableViewCell.swift in Sources */,
 				313A7BA7297B029C003ACAD1 /* PresentPlayViewController.swift in Sources */,
+				314CE1E729D7139F00231A6C /* MyProjectMovie.xcdatamodeld in Sources */,
 				3140018029B5FCB800C5B6A0 /* PresentShareViewController.swift in Sources */,
 				312CE9D6297ECFCD0086390A /* CategotyTableViewCell.swift in Sources */,
 				3195D6F2296D72FB00FA9F6C /* ViewController.swift in Sources */,
@@ -509,7 +510,6 @@
 				313A7BA9297C0C6D003ACAD1 /* YouTubeModel.swift in Sources */,
 				31A5ED8A299D4D4A004FE23A /* DetailViewModel.swift in Sources */,
 				3109B5B929756FB70032EE5A /* MainViewModel.swift in Sources */,
-				315D560029D57E3D0079BCAB /* DataModel.xcdatamodeld in Sources */,
 				3140017C29B4C16200C5B6A0 /* MyTableViewCellWillShow.swift in Sources */,
 				3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */,
 			);
@@ -755,13 +755,13 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		315D55FE29D57E3D0079BCAB /* DataModel.xcdatamodeld */ = {
+		314CE1E529D7139F00231A6C /* MyProjectMovie.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				315D55FF29D57E3D0079BCAB /* DataModel.xcdatamodel */,
+				314CE1E629D7139F00231A6C /* CoreData.xcdatamodel */,
 			);
-			currentVersion = 315D55FF29D57E3D0079BCAB /* DataModel.xcdatamodel */;
-			path = DataModel.xcdatamodeld;
+			currentVersion = 314CE1E629D7139F00231A6C /* CoreData.xcdatamodel */;
+			path = MyProjectMovie.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

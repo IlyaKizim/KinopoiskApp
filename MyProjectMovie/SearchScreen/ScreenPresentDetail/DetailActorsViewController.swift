@@ -239,8 +239,8 @@ extension DetailActorsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let modal = listMovieActors[indexPath.row]
         let model =  Title(id: modal.id ?? 0, originalLanguage: modal.originalLanguage, originalTitle: modal.originalTitle, posterPath: modal.posterPath, overview: modal.overView, voteCount: modal.voteCount ?? 0, releaseDate: modal.releaseDate, voteAverage: modal.voteAverage)
-                   
-       
+        
+        
         let vc = MovieDetailsViewControllers()
         vc.setUps(with: model)
         navigationController?.pushViewController(vc, animated: true)

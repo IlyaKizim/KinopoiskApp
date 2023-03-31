@@ -6,6 +6,7 @@
 
 
 import UIKit
+import CoreData
 
 class MovieDetailsViewControllers: UIViewController {
     
@@ -182,7 +183,20 @@ class MovieDetailsViewControllers: UIViewController {
     private lazy var titles: [Title] = []
     private lazy var cellDataSource: [ActrosWhoPlaying] = []
     private lazy var flagRate = false
+    private lazy var willSee: [WillSee] = []
    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<WillSee> = WillSee.fetchRequest()
+        
+        do {
+            willSee = try context.fetch(fetchRequest)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -240,6 +254,8 @@ class MovieDetailsViewControllers: UIViewController {
             self.reloadData()
         }
     }
+    
+    
     
 //    private func saveUsers() {
 //        let defaults = UserDefaults.standard
@@ -346,6 +362,25 @@ class MovieDetailsViewControllers: UIViewController {
         ])
     }
     
+    private func saveWillSee(with title: Title) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        guard let entity = NSEntityDescription.entity(forEntityName: "WillSee", in: context) else {return}
+        
+        let taskObject = WillSee(entity: entity, insertInto: context)
+        taskObject.id = Int32(title.id)
+        taskObject.originalTitle = title.originalTitle
+        taskObject.posterPath = title.posterPath
+        
+        do {
+            try context.save()
+            willSee.append(taskObject)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
     static func getmodalll(string: String) {
         MovieDetailsViewControllers.model = string
     }
@@ -375,6 +410,7 @@ class MovieDetailsViewControllers: UIViewController {
             MyTableViewCellWillShow.dict[titles[0].originalTitle ?? ""] = [titles[0]]
             buttonWillShow.tintColor = .orange
             flagRate = true
+            saveWillSee(with: titles[0])
         } else {
             buttonWillShow.tintColor = .gray
             MyTableViewCellWillShow.dict.removeValue(forKey: titles[0].originalTitle ?? "")
@@ -400,7 +436,6 @@ class MovieDetailsViewControllers: UIViewController {
         vc.modalPresentationStyle = .custom
         present(vc, animated: true, completion: nil)
     }
-    
 }
 
 extension MovieDetailsViewControllers: UITableViewDelegate, UITableViewDataSource {
