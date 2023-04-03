@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 final class PresentRateViewController: UIViewController {
     
@@ -94,6 +95,9 @@ final class PresentRateViewController: UIViewController {
     private lazy var presentRateViewModel = PresentRateViewModel()
     private lazy var flag = true
     var centerIndexPath: IndexPath?
+    private var titles: Title?
+    private var rate: Int?
+    private lazy var coreDataManager = CoreDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,6 +191,7 @@ final class PresentRateViewController: UIViewController {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(string)") else {
             return
         }
+        self.titles = set
         posterImageView.kf.setImage(with: url)
         guard let nameText = set.originalTitle else {return}
         guard let textYear = set.releaseDate else {return}
@@ -204,7 +209,9 @@ final class PresentRateViewController: UIViewController {
         if flag == true {
             dismiss(animated: true, completion: nil)
         } else {
-            print("оценить")
+            if let title = titles {
+            coreDataManager.saveTask(with: title, rate: rate ?? 0)
+            }
         }
     }
     
@@ -264,15 +271,19 @@ extension PresentRateViewController: UICollectionViewDelegate, UICollectionViewD
         case 0: self.buttomBack.backgroundColor = .gray
             self.buttomBack.setTitle("Не оценивать", for: .normal)
             self.flag = true
+            self.rate = indexPath.row
         case 5, 6: self.buttomBack.backgroundColor = .gray
             self.buttomBack.setTitle("Оценить", for: .normal)
             self.flag = false
+            self.rate = indexPath.row
         case 1...4: self.buttomBack.backgroundColor = .red
             self.buttomBack.setTitle("Оценить", for: .normal)
             self.flag = false
+            self.rate = indexPath.row
         case 7...10: self.buttomBack.backgroundColor = .green
             self.buttomBack.setTitle("Оценить", for: .normal)
             self.flag = false
+            self.rate = indexPath.row
         default:
             break
         }

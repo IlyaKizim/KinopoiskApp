@@ -87,13 +87,13 @@ class MyCollectionViewCellWillShow: UICollectionViewCell {
             labelForRate.heightAnchor.constraint(equalToConstant: 25)
         ])
     }
-    func configuration(with model: Title) {
+    func configuration(with model: WillSee) {
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterPath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)
-        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: model.voteAverage ?? 0.0)
-        labelForRate.text = String(model.voteAverage ?? 0.0)
+        labelForRate.backgroundColor = label.backgroundColor?.changeRateColor(with: model.voteAverage )
+        labelForRate.text = String(model.voteAverage )
         label.text = model.originalTitle ?? ""
     }
 }

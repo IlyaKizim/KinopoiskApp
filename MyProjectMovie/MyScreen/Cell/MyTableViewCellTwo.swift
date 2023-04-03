@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol  myTableViewCellTwoDelegate {
+    func myTableViewCellTwoDelegates()
+}
+
 class MyTableViewCellTwo: UITableViewCell {
     
     static let identifire = "MyTableViewCellTwo"
     private lazy var myViewModel = MyViewModel()
+    var delegate: myTableViewCellTwoDelegate?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -65,5 +70,16 @@ extension MyTableViewCellTwo: UICollectionViewDelegate, UICollectionViewDataSour
         let image = myViewModel.imageArray[indexPath.row]
         cell.configure(with: label, image: image)
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0: delegate?.myTableViewCellTwoDelegates()
+        case 1: print(indexPath.row)
+        case 2: print(indexPath.row)
+        case 3: print(indexPath.row)
+        case 4: print(indexPath.row)
+        default:
+            break
+        }
     }
 }

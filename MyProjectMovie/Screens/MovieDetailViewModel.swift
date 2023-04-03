@@ -13,6 +13,9 @@ class MovieDetailViewModel {
     var cellDataSource: Observable<[ActrosWhoPlaying]> = Observable(nil)
     var dataSourceActors: [ActrosWhoPlaying] = []
     
+    var coreDataManagerTwo = CoreDataManagerTwo()
+    weak var delegate: ViewModelDelegate?
+    
     func heightForRow (indexPath: IndexPath) -> Int {
         switch indexPath.section {
         case 0: return 200
@@ -68,5 +71,13 @@ class MovieDetailViewModel {
                 }
             }
         }
+    }
+    
+    func saveCoreData(with title: Title) {
+        coreDataManagerTwo.saveTask(with: title)
+    }
+    
+    func deleateCoreData(with: Title) {
+        coreDataManagerTwo.deleteData(title: with)
     }
 }

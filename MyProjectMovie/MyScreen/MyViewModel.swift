@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol ViewModelDelegate: AnyObject {
+    func didUpdateData()
+}
+
 class MyViewModel {
     
     let array = ["Буду смотреть", "Загрузки", "Покупки", "Папки"]
@@ -15,6 +19,10 @@ class MyViewModel {
     let labelArray = ["Оценки и просмотры", "Любимые фильмы", "Рекомендуемые фильмы", "Примечания", "Персоны"]
     let text = "Загружайте фильмы и сериалы, чтобы смотреть их без интернета"
     
+    var coreDataManager = CoreDataManager()
+    var rateMovies: [RateMovie] = []
+    weak var delegate: ViewModelDelegate?
+    var coreDataManagerTwo = CoreDataManagerTwo()
     func numberOfRowsInSection () -> Int {
         1
     }
@@ -42,5 +50,25 @@ class MyViewModel {
     
     func heightForHeaderInSection() -> Int {
         50
+    }
+    
+    func updateData() {
+        coreDataManager.updateData()
+        rateMovies = MyViewControllerTablePackeges.tasks
+        delegate?.didUpdateData()
+        }
+    
+    func deleateData (indexPath: IndexPath){
+        coreDataManager.deleteData(indexPath: indexPath)
+        delegate?.didUpdateData()
+    }
+    
+    func heightForRowAt() -> Int {
+        140
+    }
+    
+    func updateCoreData() {
+        coreDataManagerTwo.updateData()
+        delegate?.didUpdateData()
     }
 }

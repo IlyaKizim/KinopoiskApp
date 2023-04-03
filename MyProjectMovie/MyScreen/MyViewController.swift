@@ -6,9 +6,9 @@
 //
 
 import UIKit
+import CoreData
 
-
-class MyViewController: UIViewController {
+class MyViewController: UIViewController, ViewModelDelegate {
     
     private lazy var myViewModel = MyViewModel()
     
@@ -43,11 +43,13 @@ class MyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp() 
+        setUp()
+        myViewModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        reloadData()
+        super.viewWillAppear(animated)
+        myViewModel.updateCoreData()  
     }
     
     private func setUp() {
@@ -90,6 +92,10 @@ class MyViewController: UIViewController {
 
 extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func didUpdateData() {
+        tableView.reloadData()
+    }
+    
     func reloadData() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -109,7 +115,7 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if MyTableViewCellWillShow.dict.count == 0 {
+        if MyTableViewCellWillShow.willSee.count == 0 {
             return CGFloat(myViewModel.heightForRow(indexPath: indexPath))
         } else {
             return CGFloat(myViewModel.heightForRowWithCount(indexPath: indexPath))
@@ -133,8 +139,8 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellWillShow.identifire, for: indexPath) as? MyTableViewCellWillShow else {return UITableViewCell()}
             
-            if MyTableViewCellWillShow.dict.keys.count > 0 {
-                cell.configure()
+          if MyTableViewCellWillShow.willSee.count > 0 {
+                            cell.configure()
                 cell.delegate = self
             }
             return cell
@@ -144,6 +150,7 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellTwo.identifire, for: indexPath) as? MyTableViewCellTwo else {return UITableViewCell()}
+            cell.delegate = self
             return cell
         default:
             return UITableViewCell()
@@ -155,6 +162,13 @@ extension MyViewController: MyTableViewCellWillShowDelegate {
     func myTableViewCellWillShowDelegate(cell: MyTableViewCellWillShow, viewModel: Title) {
         let vc = MovieDetailsViewControllers()
         vc.setUps(with: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension MyViewController: myTableViewCellTwoDelegate {
+    func myTableViewCellTwoDelegates() {
+        let vc = MyViewControllerTablePackeges()
         navigationController?.pushViewController(vc, animated: true)
     }
 }

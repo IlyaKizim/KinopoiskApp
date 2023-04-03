@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol MyTableViewCellWillShowDelegate: AnyObject {
     func myTableViewCellWillShowDelegate(cell: MyTableViewCellWillShow, viewModel: Title)
@@ -15,6 +16,7 @@ class MyTableViewCellWillShow: UITableViewCell {
     
     static let identifire = "MyTableViewCellWillShow"
     static var dict: [String: [Title]] = [:]
+    static var willSee = [WillSee]()
     private lazy var myViewModel = MyViewModel()
     weak var delegate: MyTableViewCellWillShowDelegate?
     
@@ -66,27 +68,20 @@ class MyTableViewCellWillShow: UITableViewCell {
 
 extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        MyTableViewCellWillShow.dict.count
+        MyTableViewCellWillShow.willSee.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCellWillShow.identifire, for: indexPath) as? MyCollectionViewCellWillShow else {return UICollectionViewCell()}
         cell.backgroundColor = .red
-        let keys = Array(MyTableViewCellWillShow.dict.keys)
-        let currentKey = keys[indexPath.row]
-        let currentValue = MyTableViewCellWillShow.dict[currentKey]
-        let model = currentValue?[0]
-        guard let models = model else {return UICollectionViewCell()}
-        cell.configuration(with: models)
+        let array = MyTableViewCellWillShow.willSee[indexPath.row]
+        cell.configuration(with: array)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let keys = Array(MyTableViewCellWillShow.dict.keys)
-        let currentKey = keys[indexPath.row]
-        let currentValue = MyTableViewCellWillShow.dict[currentKey]
-        let model = currentValue?[0]
-        guard let models = model else {return}
-        delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: models)
+        let array = MyTableViewCellWillShow.willSee[indexPath.row]
+        let viewModel = Title(id: Int(array.id), originalLanguage: array.originalLanguage, originalTitle: array.originalTitle, posterPath: array.posterPath, overview: array.overview, voteCount: Int(array.voteCount), releaseDate: array.releaseDate, voteAverage: array.voteAverage)
+        delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: viewModel)
     }
 }

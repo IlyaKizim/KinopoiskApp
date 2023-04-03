@@ -116,7 +116,6 @@ class MovieDetailsViewControllers: UIViewController {
         button.setImage(UIImage(systemName: "star"), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 10)
         button.titleLabel?.textAlignment = .center
-        //MARK: ебался чтобы кнопка была с изобращением сверху, а текст снизу, кроме этого варианта ничего не нашел
         button.titleEdgeInsets = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 15)
         button.imageView?.contentMode = .center
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 35, bottom: 25, right: 0)
@@ -183,21 +182,7 @@ class MovieDetailsViewControllers: UIViewController {
     private lazy var titles: [Title] = []
     private lazy var cellDataSource: [ActrosWhoPlaying] = []
     private lazy var flagRate = false
-    private lazy var willSee: [WillSee] = []
-   
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<WillSee> = WillSee.fetchRequest()
-        
-        do {
-            willSee = try context.fetch(fetchRequest)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-    }
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -208,7 +193,6 @@ class MovieDetailsViewControllers: UIViewController {
         addSubviews()
         setConstraint()
         setNavBar()
-//        saveUsers()
     }
     
     private func addSubviews() {
@@ -254,17 +238,6 @@ class MovieDetailsViewControllers: UIViewController {
             self.reloadData()
         }
     }
-    
-    
-    
-//    private func saveUsers() {
-//        let defaults = UserDefaults.standard
-//        if let colorData = defaults.object(forKey: "buttonColor") as? Data {
-//            if let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) {
-//                buttonWillShow.tintColor = color
-//            }
-//        }
-//    }
     
     private func setNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(back))
@@ -362,25 +335,6 @@ class MovieDetailsViewControllers: UIViewController {
         ])
     }
     
-    private func saveWillSee(with title: Title) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "WillSee", in: context) else {return}
-        
-        let taskObject = WillSee(entity: entity, insertInto: context)
-        taskObject.id = Int32(title.id)
-        taskObject.originalTitle = title.originalTitle
-        taskObject.posterPath = title.posterPath
-        
-        do {
-            try context.save()
-            willSee.append(taskObject)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-    }
-    
     static func getmodalll(string: String) {
         MovieDetailsViewControllers.model = string
     }
@@ -408,21 +362,16 @@ class MovieDetailsViewControllers: UIViewController {
     @objc private func addWillSee() {
         if !flagRate {
             MyTableViewCellWillShow.dict[titles[0].originalTitle ?? ""] = [titles[0]]
+            movieDetailViewModel.saveCoreData(with: titles[0])
             buttonWillShow.tintColor = .orange
             flagRate = true
-            saveWillSee(with: titles[0])
+            
         } else {
             buttonWillShow.tintColor = .gray
             MyTableViewCellWillShow.dict.removeValue(forKey: titles[0].originalTitle ?? "")
+            movieDetailViewModel.deleateCoreData(with: titles[0])
             flagRate = false
         }
-//        let defaults = UserDefaults.standard
-//        do {
-//            let colorData = try NSKeyedArchiver.archivedData(withRootObject: buttonWillShow.tintColor as Any, requiringSecureCoding: false)
-//            defaults.set(colorData, forKey: "buttonColor")
-//        } catch {
-//            print("Error: \(error.localizedDescription)")
-//        }
     }
     
     @objc private func share() {
@@ -432,6 +381,7 @@ class MovieDetailsViewControllers: UIViewController {
     }
     
     @objc private func more() {
+        movieDetailViewModel.deleateCoreData(with: titles[0])
         let vc = PresentMoreViewController()
         vc.modalPresentationStyle = .custom
         present(vc, animated: true, completion: nil)
