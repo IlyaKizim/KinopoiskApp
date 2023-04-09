@@ -12,17 +12,28 @@ if you are from Russia, use VPN service to get Json information from TMDb API
 - MVVM
 - Networking
 
-## Demo
+## Screenshots
+<div>
+  <img width="200" height="400" alt="1" src="https://user-images.githubusercontent.com/122359658/230769968-29abe910-3149-4e0f-b6ba-c03daf2e437a.png">
+  <img width="200" height="400" alt="2" src="https://user-images.githubusercontent.com/122359658/230770001-09ebf3a7-074d-4004-aba7-905c973e8ac8.png">
+  <img width="200" height="400" alt="3" src="https://user-images.githubusercontent.com/122359658/230770002-6bac113c-b11c-421b-bf75-c02933d65ac7.png">
+  <img width="200" height="400" alt="4" src="https://user-images.githubusercontent.com/122359658/230770003-09fb7a0a-fa12-4f93-a325-229f049ed8fe.png">
+  <img width="200" height="400" alt="5" src="https://user-images.githubusercontent.com/122359658/230770005-92c280db-f4b1-4509-8191-431bad5b1380.png">
+  <img width="200" height="400" alt="6" src="https://user-images.githubusercontent.com/122359658/230770009-9c716e9a-7f33-46e7-8a36-e6f24a831c4a.png">
+  <img width="200" height="400" alt="7" src="https://user-images.githubusercontent.com/122359658/230770011-09002af7-55c1-4b3f-b44b-88ad31fda525.png"> 
+</div>
 
-| ![1](https://user-images.githubusercontent.com/122359658/226303069-3a0319ed-f53e-4190-96ab-471182bb3a16.mov)| ![2](https://user-images.githubusercontent.com/122359658/226303367-bb64edf4-5e1b-44a3-9a43-647c46e46369.mov) | 
-| --- | --- |
-| ![3](https://user-images.githubusercontent.com/122359658/226303489-7e7dec38-d3c2-4c8f-9f7d-f6e476dfc347.mov) | ![4](https://user-images.githubusercontent.com/122359658/226303570-6d3f6d96-7f0e-493d-841f-ed4d0de89f94.mov) |
-| --- | --- |
-| ![5](https://user-images.githubusercontent.com/122359658/226303781-2127ea54-68c9-4079-846d-64bcdad4f199.mov) | ![6](https://user-images.githubusercontent.com/122359658/226303831-54ec048d-4b8d-4a92-8c42-7af35dd4ecfb.mov) |
-| --- | --- |
-| ![7](https://user-images.githubusercontent.com/122359658/226303867-00dd43e0-f5bc-4855-b4e7-bf0dd76294ca.mov) | ![8](https://user-images.githubusercontent.com/122359658/226303888-b81241eb-24d5-4bec-8177-c28c544af279.mov) |
-| --- | --- |
-| ![9](https://user-images.githubusercontent.com/122359658/226303928-d067fc0c-7d8a-4f4d-abcd-7de2b779d34f.mov) | ![10](https://user-images.githubusercontent.com/122359658/226303955-2b930193-c6aa-488d-8592-62b983b353a2.mov) |
-| --- | --- |
-| ![11](https://user-images.githubusercontent.com/122359658/226303979-ed8af2b7-a974-4c72-b9a4-9ca489375374.mov) | ![12](https://user-images.githubusercontent.com/122359658/226304001-0a58acc5-a154-4320-a395-5b257c757703.mov) |
+## Demo
+<div>
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768933-655dc05a-f7f8-4964-baa5-ae83e515ae07.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768943-3ec1e1c8-8db7-469d-a5e8-bfdd3b7906cb.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768946-b8d1e7cc-5b2a-4dc1-ae92-8373b1855a50.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768949-32596cee-c2c8-434a-800c-9b4c72aabeb1.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768950-579bdd6c-8821-425d-800f-0848d88960dc.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768953-347595a1-64c9-4a65-b075-200e488307f8.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768954-728c7523-8893-48ee-8ad2-7d66f6358a8d.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768955-3f5b8b3d-565a-4ba2-9cf7-de89772a915a.gif">
+  <img width="200" src="https://user-images.githubusercontent.com/122359658/230768956-66f40600-7ad2-4dec-9f76-5b4fd969aecf.gif">
+</div>
+
 
