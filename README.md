@@ -14,12 +14,12 @@ if you are from Russia, use VPN service to get Json information from TMDb API
 
 ## Screenshots
 
-![alt text](<img width="331" alt="2" src="https://user-images.githubusercontent.com/122359658/230769473-ef114386-3889-4d50-82db-b4212d72c2be.png">)
-![alt text](<img width="319" alt="3" src="https://user-images.githubusercontent.com/122359658/230769474-7e265d3d-c348-4585-996c-448973f6769b.png">)
-![alt text](<img width="331" alt="4" src="https://user-images.githubusercontent.com/122359658/230769475-0fc8220a-f04d-444f-842d-f40707aedcb7.png">) 
-![alt text](<img width="329" alt="5" src="https://user-images.githubusercontent.com/122359658/230769477-9eaf22cf-f835-4e35-84a0-c80f5b1f3bc1.png">) 
-![alt text](<img width="331" alt="6" src="https://user-images.githubusercontent.com/122359658/230769481-0eb191c6-0101-426d-8dc3-1a787126e7bc.png">) 
-![alt text](<img width="334" alt="7" src="https://user-images.githubusercontent.com/122359658/230769484-583747a3-81a5-4fe2-8f48-c23bb3492ce3.png">) 
+![alt text](https://user-images.githubusercontent.com/122359658/230769473-ef114386-3889-4d50-82db-b4212d72c2be.png?raw=true "1")
+![alt text](https://user-images.githubusercontent.com/122359658/230769474-7e265d3d-c348-4585-996c-448973f6769b.png?raw=true "2")
+![alt text](https://user-images.githubusercontent.com/122359658/230769475-0fc8220a-f04d-444f-842d-f40707aedcb7.png?raw=true "3") 
+![alt text](https://user-images.githubusercontent.com/122359658/230769477-9eaf22cf-f835-4e35-84a0-c80f5b1f3bc1.png?raw=true "4") 
+![alt text](https://user-images.githubusercontent.com/122359658/230769481-0eb191c6-0101-426d-8dc3-1a787126e7bc.png?raw=true "5") 
+![alt text](https://user-images.githubusercontent.com/122359658/230769484-583747a3-81a5-4fe2-8f48-c23bb3492ce3.png?raw=true "6") 
 
 ## Demo
 
