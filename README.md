@@ -13,13 +13,14 @@ if you are from Russia, use VPN service to get Json information from TMDb API
 - Networking
 
 ## Screenshots
+<img width="250" alt="1" src="https://user-images.githubusercontent.com/122359658/230769968-29abe910-3149-4e0f-b6ba-c03daf2e437a.png">
+<img width="250" alt="2" src="https://user-images.githubusercontent.com/122359658/230770001-09ebf3a7-074d-4004-aba7-905c973e8ac8.png">
+<img width="250" alt="3" src="https://user-images.githubusercontent.com/122359658/230770002-6bac113c-b11c-421b-bf75-c02933d65ac7.png">
 
-![alt text](https://user-images.githubusercontent.com/122359658/230769473-ef114386-3889-4d50-82db-b4212d72c2be.png?raw=true "1")
-![alt text](https://user-images.githubusercontent.com/122359658/230769474-7e265d3d-c348-4585-996c-448973f6769b.png?raw=true "2")
-![alt text](https://user-images.githubusercontent.com/122359658/230769475-0fc8220a-f04d-444f-842d-f40707aedcb7.png?raw=true "3") 
-![alt text](https://user-images.githubusercontent.com/122359658/230769477-9eaf22cf-f835-4e35-84a0-c80f5b1f3bc1.png?raw=true "4") 
-![alt text](https://user-images.githubusercontent.com/122359658/230769481-0eb191c6-0101-426d-8dc3-1a787126e7bc.png?raw=true "5") 
-![alt text](https://user-images.githubusercontent.com/122359658/230769484-583747a3-81a5-4fe2-8f48-c23bb3492ce3.png?raw=true "6") 
+<img width="250" alt="4" src="https://user-images.githubusercontent.com/122359658/230770003-09fb7a0a-fa12-4f93-a325-229f049ed8fe.png">
+<img width="250" alt="5" src="https://user-images.githubusercontent.com/122359658/230770005-92c280db-f4b1-4509-8191-431bad5b1380.png">
+<img width="250" alt="6" src="https://user-images.githubusercontent.com/122359658/230770009-9c716e9a-7f33-46e7-8a36-e6f24a831c4a.png">
+<img width="250" alt="7" src="https://user-images.githubusercontent.com/122359658/230770011-09002af7-55c1-4b3f-b44b-88ad31fda525.png">
 
 ## Demo
 
