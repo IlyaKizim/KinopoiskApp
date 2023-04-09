@@ -13,14 +13,11 @@ if you are from Russia, use VPN service to get Json information from TMDb API
 - Networking
 
 ## Screenshots
-<img width="250" alt="1" src="https://user-images.githubusercontent.com/122359658/230769968-29abe910-3149-4e0f-b6ba-c03daf2e437a.png">
-<img width="250" alt="2" src="https://user-images.githubusercontent.com/122359658/230770001-09ebf3a7-074d-4004-aba7-905c973e8ac8.png">
-<img width="250" alt="3" src="https://user-images.githubusercontent.com/122359658/230770002-6bac113c-b11c-421b-bf75-c02933d65ac7.png">
-
-<img width="250" alt="4" src="https://user-images.githubusercontent.com/122359658/230770003-09fb7a0a-fa12-4f93-a325-229f049ed8fe.png">
-<img width="250" alt="5" src="https://user-images.githubusercontent.com/122359658/230770005-92c280db-f4b1-4509-8191-431bad5b1380.png">
-<img width="250" alt="6" src="https://user-images.githubusercontent.com/122359658/230770009-9c716e9a-7f33-46e7-8a36-e6f24a831c4a.png">
-<img width="250" alt="7" src="https://user-images.githubusercontent.com/122359658/230770011-09002af7-55c1-4b3f-b44b-88ad31fda525.png">
+| ![1](<img width="250" alt="1" src="https://user-images.githubusercontent.com/122359658/230769968-29abe910-3149-4e0f-b6ba-c03daf2e437a.png">) | ![2](<img width="250" alt="2" src="https://user-images.githubusercontent.com/122359658/230770001-09ebf3a7-074d-4004-aba7-905c973e8ac8.png">) | ![3](<img width="250" alt="3" src="https://user-images.githubusercontent.com/122359658/230770002-6bac113c-b11c-421b-bf75-c02933d65ac7.png">) |
+| --- | --- | --- |
+![4](<img width="250" alt="4" src="https://user-images.githubusercontent.com/122359658/230770003-09fb7a0a-fa12-4f93-a325-229f049ed8fe.png">) | ![5](<img width="250" alt="5" src="https://user-images.githubusercontent.com/122359658/230770005-92c280db-f4b1-4509-8191-431bad5b1380.png">) | ![6](<img width="250" alt="6" src="https://user-images.githubusercontent.com/122359658/230770009-9c716e9a-7f33-46e7-8a36-e6f24a831c4a.png">) |
+| --- | --- | --- |
+| ![7](<img width="250" alt="7" src="https://user-images.githubusercontent.com/122359658/230770011-09002af7-55c1-4b3f-b44b-88ad31fda525.png">) |
 
 ## Demo
 
