@@ -8,14 +8,14 @@
 import UIKit
 import Kingfisher
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, MainViewModelDelegate, SetForHeaderDelegate {
     
     private lazy var headerView: UIView = {
         var headerView = UIView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
-     
+    
     private lazy var headerImageView: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +28,6 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = #colorLiteral(red: 0.9986565709, green: 0.3295648098, blue: 0.00157311745, alpha: 1)
-        button.layer.cornerRadius = radius
         button.setImage(UIImage(systemName: "play.fill"), for: .normal)
         button.tintColor = .white
         button.setTitle("  Смотреть", for: .normal)
@@ -42,7 +41,6 @@ class MainViewController: UIViewController {
         button.backgroundColor = .gray
         button.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
         button.addTarget(self, action: #selector(addToInteresting), for: .touchUpInside)
-        button.layer.cornerRadius = radius
         button.tintColor = .white
         return button
     }()
@@ -70,7 +68,6 @@ class MainViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .gray
         button.setImage(UIImage(systemName: "minus.circle"), for: .normal)
-        button.layer.cornerRadius = radius
         button.addTarget(self, action: #selector(deleteFromInteresting), for: .touchUpInside)
         button.tintColor = .white
         return button
@@ -87,11 +84,7 @@ class MainViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var radius: CGFloat = 20
     private lazy var mainViewModel = MainViewModel()
-    private lazy var cellDataSource: [[Title]] = []
-    private lazy var integer = 0
-    private lazy var randomInt = Int.random(in: 0..<integer)
     private lazy var isActivateAdd = false
     private lazy var isActivateDel = false
     private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
@@ -99,17 +92,24 @@ class MainViewController: UIViewController {
     private lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonAddWidth: NSLayoutConstraint = NSLayoutConstraint()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configurationNavBar ()
+        configureCornerRadius()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mainViewModel.getData()
-        configurationNavBar ()
         setUpView()
-        bindindViewModel()
+        
     }
     
     private func setUpView() {
         addSubView()
         configureConstrains()
+        mainViewModel.delegate = self
+        mainViewModel.headerDelegate = self
     }
     
     private func addSubView() {
@@ -178,26 +178,25 @@ class MainViewController: UIViewController {
         ])
     }
     
-    private func bindindViewModel() {
-        mainViewModel.cellDataSource.bind { [weak self] movies in
-            guard let self = self, let movies = movies else {return}
-            self.cellDataSource = movies
-            self.integer = movies[0].count
-            self.configureHeaderView(with: movies)
-            self.reloadData()
-        }
+    func setUp() {
+        configureHeaderView()
     }
     
-    private func configureHeaderView(with model: [[Title]]) {
-        if model[0].count > 1 {
-            let text = model[0]
-            self.headerLabel.text = text[randomInt].originalTitle
-            guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(text[randomInt].posterPath ?? "")") else {
+    private func configureCornerRadius() {
+        buttonPlay.layer.cornerRadius = CGFloat(mainViewModel.radius)
+        buttonDeleteFromInteresting.layer.cornerRadius =  CGFloat(mainViewModel.radius)
+        buttonAddToInteresting.layer.cornerRadius =  CGFloat(mainViewModel.radius)
+    }
+    
+    private func configureHeaderView() {
+        if case let .popular(data) = mainViewModel.movieData[0] {
+            self.headerLabel.text = data[mainViewModel.randomInt].originalTitle
+            guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(data[mainViewModel.randomInt].posterPath ?? "")") else {
                 return
             }
             headerImageView.kf.setImage(with: url)
-            headerOverView.text = text[randomInt].overview
-            mainViewModel.getMovies(indexPath: [0, randomInt], title: text)
+            headerOverView.text = data[mainViewModel.randomInt].overview
+            mainViewModel.getMovies(indexPath: [0, mainViewModel.randomInt], title: data)
             gradientForHeaderImage()
         }
     }
@@ -249,20 +248,20 @@ class MainViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 })
             }
-            let title = cellDataSource[0]
-            let model = title[randomInt]
-            MyTableViewCellWillShow.dict[model.originalTitle ?? "No"] = [model]
+            //            let title = cellDataSource[0]
+            //            let model = title[randomInt]
+            //            MyTableViewCellWillShow.dict[model.originalTitle ?? "No"] = [model]
             self.isActivateDel = true
             
         } else {
             UIView.animate(withDuration: 0.3) {
                 self.buttonAddToInteresting.tintColor = .white
             }
-            let title = cellDataSource[0]
-            let model = title[randomInt]
-            MyTableViewCellWillShow.dict.removeValue(forKey: model.originalTitle ?? "No")
+            //            let title = cellDataSource[0]
+            //            let model = title[randomInt]
+            //            MyTableViewCellWillShow.dict.removeValue(forKey: model.originalTitle ?? "No")
             self.isActivateDel = false
-           
+            
         }
     }
     
@@ -302,10 +301,8 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+    func updateData() {
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -313,7 +310,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        //Это шрифт, текст итд для заголовков в табилце
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
@@ -344,27 +340,35 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.delegate = self
-        if cellDataSource.count > 0 {
-            switch indexPath.section {
-            
-            case MainViewModel.Section.PopularMovies.rawValue:
-                cell.configure(with: cellDataSource[0])
-                
-            case MainViewModel.Section.TopRateMovie.rawValue:
-                cell.configure(with: cellDataSource[1])
-                
-            case MainViewModel.Section.UpComingMovies.rawValue:
-                cell.configure(with: cellDataSource[2])
-                
-            case MainViewModel.Section.PlayingNowMoview.rawValue:
-                cell.configure(with: cellDataSource[3])
-                
-            case MainViewModel.Section.TVshow.rawValue:
-                cell.configure(with: cellDataSource[4])
-                
-            default:
-                return UITableViewCell()
+        
+        switch indexPath.section {
+        case MainViewModel.Section.PopularMovies.rawValue:
+            if case let .popular(data) = mainViewModel.movieData[0] {
+                cell.configure(with: data)
             }
+            
+        case MainViewModel.Section.TopRateMovie.rawValue:
+            if case let .topRated(data) = mainViewModel.movieData[1] {
+                cell.configure(with: data)
+            }
+            
+        case MainViewModel.Section.UpComingMovies.rawValue:
+            if case let .upcoming(data) = mainViewModel.movieData[2] {
+                cell.configure(with: data)
+            }
+            
+        case MainViewModel.Section.PlayingNowMoview.rawValue:
+            if case let .favorites(data) = mainViewModel.movieData[3] {
+                cell.configure(with: data)
+            }
+            
+        case MainViewModel.Section.TVshow.rawValue:
+            if case let .watched(data) = mainViewModel.movieData[4] {
+                cell.configure(with: data)
+            }
+            
+        default:
+            return UITableViewCell()
         }
         return cell
     }
