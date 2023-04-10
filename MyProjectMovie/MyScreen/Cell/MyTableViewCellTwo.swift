@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol  myTableViewCellTwoDelegate {
+protocol  myTableViewCellTwoDelegate: AnyObject {
     func myTableViewCellTwoDelegates()
 }
 
@@ -15,7 +15,7 @@ class MyTableViewCellTwo: UITableViewCell {
     
     static let identifire = "MyTableViewCellTwo"
     private lazy var myViewModel = MyViewModel()
-    var delegate: myTableViewCellTwoDelegate?
+    weak var delegate: myTableViewCellTwoDelegate?
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()

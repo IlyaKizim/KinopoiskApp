@@ -7,13 +7,17 @@
 
 import Foundation
 
+protocol SearchViewModelDelegate: AnyObject {
+    func reloadData()
+}
+
 class SearchViewModel {
     
-    let array = ["Категории", "Популярные персоны", "Родились сегодня"]
-    let searchPlaceholder = "Фильмы, персоны, кинотеатры"
+    lazy var array = ["Категории", "Популярные персоны", "Родились сегодня"]
+    lazy var searchPlaceholder = "Фильмы, персоны, кинотеатры"
+    lazy var dataSourcePopular: [People] = []
+    weak var delegate: SearchViewModelDelegate?
     
-    var cellDataSource: Observable<[People]> = Observable(nil)
-    var dataSourcePopular: [People] = []
     
     func heightForRowAt(indexPath: IndexPath) -> Int {
         switch indexPath.section {
@@ -34,28 +38,27 @@ class SearchViewModel {
     }
     
     func getData() {
-        APICaller.shared.getPopularPeople { result in
+        APICaller.shared.getPopularPeople {[weak self] result in
             switch result {
             case .success(let data):
-                self.dataSourcePopular = data
-                self.mapCellData()
+                DispatchQueue.main.async {
+                    self?.dataSourcePopular = data
+                    self?.delegate?.reloadData()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    func mapCellData() {
-        self.cellDataSource.value = self.dataSourcePopular
-    }
-    
     func getDetailAndMovieActors(with string: String, vc: DetailActorsViewController) {
         APICaller.shared.getDetailActor(with: string) { (result) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 switch result {
                 case .success(let titles):
                     vc.detail = titles
                     vc.configureLabel(with: titles)
+                    self.delegate?.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -66,6 +69,7 @@ class SearchViewModel {
                 switch result {
                 case .success(let result):
                     vc.configureTableView(with: result)
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -79,7 +83,7 @@ class SearchViewModel {
                 switch result {
                 case .success(let titles):
                     resultController.titles = titles
-                    resultController.tableViewForSearch.reloadData()
+                    resultController.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

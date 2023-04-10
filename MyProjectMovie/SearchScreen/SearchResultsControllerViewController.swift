@@ -7,14 +7,12 @@
 
 import UIKit
 
-protocol SearchResultsControllerViewControllerDelegate {
+protocol SearchResultsControllerViewControllerDelegate: AnyObject {
     func searchResultsControllerViewControllerDelegate (model: Title)
 }
 
 class SearchResultsControllerViewController: UIViewController {
     
-    public lazy var titles: [Title] = [Title]()
-    var delegate: SearchResultsControllerViewControllerDelegate?
     private lazy var bgColorView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -30,6 +28,9 @@ class SearchResultsControllerViewController: UIViewController {
         tableView.register(SearchresultTableViewTableViewCell.self, forCellReuseIdentifier: SearchresultTableViewTableViewCell.identifire)
         return tableView
     }()
+    
+    lazy var titles = [Title]()
+    weak var delegate: SearchResultsControllerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,8 +59,12 @@ class SearchResultsControllerViewController: UIViewController {
 
 extension SearchResultsControllerViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func reloadData() {
+        tableViewForSearch.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        titles.count
+       titles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

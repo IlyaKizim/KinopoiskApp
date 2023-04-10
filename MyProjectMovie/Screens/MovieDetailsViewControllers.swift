@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class MovieDetailsViewControllers: UIViewController {
+class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelegate {
     
     private lazy var headerview: UIView = {
         let headerView = UIView()
@@ -176,12 +176,13 @@ class MovieDetailsViewControllers: UIViewController {
         return button
     }()
     
-    private lazy var label = 0.0
-    static var model = ""
-    private lazy var movieDetailViewModel = MovieDetailViewModel()
-    private lazy var titles: [Title] = []
-    private lazy var cellDataSource: [ActrosWhoPlaying] = []
     private lazy var flagRate = false
+    private lazy var movieDetailViewModel = MovieDetailViewModel()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
+    }
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,6 +194,7 @@ class MovieDetailsViewControllers: UIViewController {
         addSubviews()
         setConstraint()
         setNavBar()
+        movieDetailViewModel.movieDelegate = self
     }
     
     private func addSubviews() {
@@ -212,8 +214,7 @@ class MovieDetailsViewControllers: UIViewController {
     
     func setUps(with set: Title) {
         movieDetailViewModel.getData(query: String(set.id))
-        bindindViewModel()
-        self.titles.append(set)
+        movieDetailViewModel.titles.append(set)
         titlelabel.text = set.originalTitle
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(set.posterPath ?? "")") else {
             return
@@ -225,18 +226,10 @@ class MovieDetailsViewControllers: UIViewController {
         let voute = set.voteAverage ?? 0.0
         vouteAverage.textColor = vouteAverage.textColor?.changeRateColor(with: voute)
         vouteAverage.text = String(voute)
-        self.label = voute
+        movieDetailViewModel.label = voute
         let language = set.originalLanguage ?? ""
         originalLanguageLabel.text = "\u{1F50A} \(language)"
         conteinerView.addSubview(posterImageView)
-    }
-   
-    private func bindindViewModel() {
-        movieDetailViewModel.cellDataSource.bind { [weak self] actors in
-            guard let self = self, let actors = actors else {return}
-            self.cellDataSource = actors
-            self.reloadData()
-        }
     }
     
     private func setNavBar() {
@@ -336,7 +329,7 @@ class MovieDetailsViewControllers: UIViewController {
     }
     
     static func getmodalll(string: String) {
-        MovieDetailsViewControllers.model = string
+        MovieDetailViewModel.model = string
     }
     
     
@@ -349,27 +342,27 @@ class MovieDetailsViewControllers: UIViewController {
     @objc func pushToPresent() {
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
-        vc.configure(with: MovieDetailsViewControllers.model)
+        vc.configure(with: MovieDetailViewModel.model)
         present(vc, animated: true, completion: nil)
     }
     
     @objc private func rate() {
         let vc = PresentRateViewController()
         present(vc, animated: true, completion: nil)
-        vc.setUps(with: titles[0])
+        vc.setUps(with: movieDetailViewModel.titles[0])
     }
     
     @objc private func addWillSee() {
         if !flagRate {
-            MyTableViewCellWillShow.dict[titles[0].originalTitle ?? ""] = [titles[0]]
-            movieDetailViewModel.saveCoreData(with: titles[0])
+            MyViewModel.dict[movieDetailViewModel.titles[0].originalTitle ?? ""] = [movieDetailViewModel.titles[0]]
+            movieDetailViewModel.saveCoreData(with: movieDetailViewModel.titles[0])
             buttonWillShow.tintColor = .orange
             flagRate = true
             
         } else {
             buttonWillShow.tintColor = .gray
-            MyTableViewCellWillShow.dict.removeValue(forKey: titles[0].originalTitle ?? "")
-            movieDetailViewModel.deleateCoreData(with: titles[0])
+            MyViewModel.dict.removeValue(forKey: movieDetailViewModel.titles[0].originalTitle ?? "")
+            movieDetailViewModel.deleateCoreData(with: movieDetailViewModel.titles[0])
             flagRate = false
         }
     }
@@ -381,7 +374,7 @@ class MovieDetailsViewControllers: UIViewController {
     }
     
     @objc private func more() {
-        movieDetailViewModel.deleateCoreData(with: titles[0])
+        movieDetailViewModel.deleateCoreData(with: movieDetailViewModel.titles[0])
         let vc = PresentMoreViewController()
         vc.modalPresentationStyle = .custom
         present(vc, animated: true, completion: nil)
@@ -427,11 +420,11 @@ extension MovieDetailsViewControllers: UITableViewDelegate, UITableViewDataSourc
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetailsTableViewCell.identifire, for: indexPath) as? MovieDetailsTableViewCell else {return UITableViewCell()}
             cell.delegate = self
-            cell.configure(with: label, model: titles[0])
+            cell.configure(with: movieDetailViewModel.label, model: movieDetailViewModel.titles[0])
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetailsActorsCellTableView.identifire, for: indexPath) as? MovieDetailsActorsCellTableView else {return UITableViewCell()}
-            cell.configure(with: cellDataSource)
+            cell.configure(with: movieDetailViewModel.dataSourceActors)
             cell.delegate = self
             return cell
         default:
@@ -450,7 +443,7 @@ extension MovieDetailsViewControllers: UITableViewDelegate, UITableViewDataSourc
 extension MovieDetailsViewControllers: MovieDetailsDelegate {
     func presentRate(viewModel: Title) {
         let vc = PresentRateViewController()
-        vc.setUps(with: titles[0])
+        vc.setUps(with: movieDetailViewModel.titles[0])
         present(vc, animated: true, completion: nil)
     }
 }

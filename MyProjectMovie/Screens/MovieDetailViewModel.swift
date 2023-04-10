@@ -7,14 +7,21 @@
 
 import Foundation
 
+protocol MovieDetailViewDelegate: AnyObject {
+    func reloadData()
+}
+
 class MovieDetailViewModel {
     
-    let arrayTitle = ["Рейтинг Кинопоиска", "Актеры"]
-    var cellDataSource: Observable<[ActrosWhoPlaying]> = Observable(nil)
-    var dataSourceActors: [ActrosWhoPlaying] = []
-    
-    var coreDataManagerTwo = CoreDataManagerTwo()
+    lazy var arrayTitle = ["Рейтинг Кинопоиска", "Актеры"]
+    lazy var dataSourceActors: [ActrosWhoPlaying] = []
+    lazy var coreDataManagerTwo = CoreDataManagerTwo()
     weak var delegate: ViewModelDelegate?
+    weak var movieDelegate: MovieDetailViewDelegate?
+    lazy var label = 0.0
+    static var model = ""
+    lazy var titles: [Title] = []
+ 
     
     func heightForRow (indexPath: IndexPath) -> Int {
         switch indexPath.section {
@@ -30,19 +37,15 @@ class MovieDetailViewModel {
     }
     
     func getData(query: String) {
-        APICaller.shared.getActorsWhoPlayingInMovie(with: query) { (result) in
+        APICaller.shared.getActorsWhoPlayingInMovie(with: query) {[weak self] (result) in
             switch result {
             case .success(let results):
-                self.dataSourceActors = results
-                self.mapCellData()
+                self?.dataSourceActors = results
+                self?.movieDelegate?.reloadData()
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
-    }
-    
-    func mapCellData() {
-        self.cellDataSource.value = self.dataSourceActors
     }
     
     func getDataForDetail(with vc: DetailActorsViewController, viewModel: ActrosWhoPlaying) {
@@ -56,6 +59,7 @@ class MovieDetailViewModel {
                 case .success(let titles):
                     vc.detail = titles
                     vc.configureLabel(with: titles)
+                    self.movieDelegate?.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -66,6 +70,7 @@ class MovieDetailViewModel {
                 switch result {
                 case .success(let result):
                     vc.configureTableView(with: result)
+                    self.movieDelegate?.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

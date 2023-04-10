@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol MovieDetailsDelegate {
+protocol MovieDetailsDelegate: AnyObject {
     func presentRate(viewModel: Title)
 }
 
 class MovieDetailsTableViewCell: UITableViewCell {
     
     static let identifire = "MovieDetailsTableViewCell"
-    var delegate: MovieDetailsDelegate?
+    weak var delegate: MovieDetailsDelegate?
     
     private lazy var labelRate: UILabel = {
         let label = UILabel()

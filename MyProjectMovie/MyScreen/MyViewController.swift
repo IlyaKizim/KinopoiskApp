@@ -10,8 +10,6 @@ import CoreData
 
 class MyViewController: UIViewController, ViewModelDelegate {
     
-    private lazy var myViewModel = MyViewModel()
-    
     private lazy var headerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -41,10 +39,11 @@ class MyViewController: UIViewController, ViewModelDelegate {
         return tableView
     }()
     
+    private lazy var myViewModel = MyViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
-        myViewModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +52,7 @@ class MyViewController: UIViewController, ViewModelDelegate {
     }
     
     private func setUp() {
+        myViewModel.delegate = self
         addSubViews()
         addConstraints()
         configureNavBar()
@@ -96,12 +96,6 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.reloadData()
     }
     
-    func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         myViewModel.numberOfRowsInSection()
     }
@@ -115,7 +109,7 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if MyTableViewCellWillShow.willSee.count == 0 {
+        if MyViewModel.willSee.count == 0 {
             return CGFloat(myViewModel.heightForRow(indexPath: indexPath))
         } else {
             return CGFloat(myViewModel.heightForRowWithCount(indexPath: indexPath))
@@ -139,8 +133,8 @@ extension MyViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellWillShow.identifire, for: indexPath) as? MyTableViewCellWillShow else {return UITableViewCell()}
             
-          if MyTableViewCellWillShow.willSee.count > 0 {
-                            cell.configure()
+            if MyViewModel.willSee.count > 0 {
+                cell.configure()
                 cell.delegate = self
             }
             return cell

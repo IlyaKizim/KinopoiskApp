@@ -38,7 +38,7 @@ class CoreDataManager {
         let fetchRequest: NSFetchRequest<RateMovie> = RateMovie.fetchRequest()
         
         do {
-            MyViewControllerTablePackeges.tasks = try context.fetch(fetchRequest)
+            MyViewModel.tasks = try context.fetch(fetchRequest)
         } catch let error as NSError {
             print(error.localizedDescription)
         }

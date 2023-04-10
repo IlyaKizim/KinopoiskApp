@@ -15,9 +15,6 @@ protocol MyTableViewCellWillShowDelegate: AnyObject {
 class MyTableViewCellWillShow: UITableViewCell {
     
     static let identifire = "MyTableViewCellWillShow"
-    static var dict: [String: [Title]] = [:]
-    static var willSee = [WillSee]()
-    private lazy var myViewModel = MyViewModel()
     weak var delegate: MyTableViewCellWillShowDelegate?
     
     private lazy var collectionView: UICollectionView = {
@@ -68,19 +65,19 @@ class MyTableViewCellWillShow: UITableViewCell {
 
 extension MyTableViewCellWillShow: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        MyTableViewCellWillShow.willSee.count
+        MyViewModel.willSee.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCellWillShow.identifire, for: indexPath) as? MyCollectionViewCellWillShow else {return UICollectionViewCell()}
         cell.backgroundColor = .red
-        let array = MyTableViewCellWillShow.willSee[indexPath.row]
+        let array = MyViewModel.willSee[indexPath.row]
         cell.configuration(with: array)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let array = MyTableViewCellWillShow.willSee[indexPath.row]
+        let array = MyViewModel.willSee[indexPath.row]
         let viewModel = Title(id: Int(array.id), originalLanguage: array.originalLanguage, originalTitle: array.originalTitle, posterPath: array.posterPath, overview: array.overview, voteCount: Int(array.voteCount), releaseDate: array.releaseDate, voteAverage: array.voteAverage)
         delegate?.myTableViewCellWillShowDelegate(cell: self, viewModel: viewModel)
     }

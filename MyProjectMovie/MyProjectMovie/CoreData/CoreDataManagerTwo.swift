@@ -25,7 +25,7 @@ class CoreDataManagerTwo {
         taskObject.voteAverage = title.voteAverage ?? 0
         taskObject.releaseDate = title.releaseDate
     
-        MyTableViewCellWillShow.willSee.append(taskObject)
+        MyViewModel.willSee.append(taskObject)
         do {
             try context.save()
             
@@ -50,7 +50,7 @@ class CoreDataManagerTwo {
         let fetchRequest: NSFetchRequest<WillSee> = WillSee.fetchRequest()
         
         do {
-            MyTableViewCellWillShow.willSee = try context.fetch(fetchRequest)
+            MyViewModel.willSee = try context.fetch(fetchRequest)
         } catch let error as NSError {
             print(error.localizedDescription)
         }

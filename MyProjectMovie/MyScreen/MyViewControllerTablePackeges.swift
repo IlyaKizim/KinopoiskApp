@@ -20,17 +20,12 @@ class MyViewControllerTablePackeges: UIViewController, ViewModelDelegate {
         return tableView
     }()
     
-    static var tasks: [RateMovie] = []
     private var myViewModel = MyViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         myViewModel.updateData()
+        setUp()
     }
     
     private func setUp() {
@@ -60,12 +55,12 @@ extension MyViewControllerTablePackeges: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        MyViewControllerTablePackeges.tasks.count
+        MyViewModel.tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MyTableViewCellPackages.identifire, for: indexPath)  as? MyTableViewCellPackages else {return UITableViewCell()}
-        cell.configuration(with: MyViewControllerTablePackeges.tasks[indexPath.row])
+        cell.configuration(with: MyViewModel.tasks[indexPath.row])
         cell.backgroundColor = .black
         return cell
     }
@@ -76,7 +71,7 @@ extension MyViewControllerTablePackeges: UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-            MyViewControllerTablePackeges.tasks.remove(at: indexPath.row)
+            MyViewModel.tasks.remove(at: indexPath.row)
             myViewModel.deleateData(indexPath: indexPath)
         }
     }

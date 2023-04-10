@@ -221,7 +221,7 @@ class MainViewController: UIViewController, MainViewModelDelegate, SetForHeaderD
     @objc private func pushToPresents() {
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
-        vc.configure(with: MovieDetailsViewControllers.model)
+        vc.configure(with: MovieDetailViewModel.model)
         present(vc, animated: true, completion: nil)
     }
     

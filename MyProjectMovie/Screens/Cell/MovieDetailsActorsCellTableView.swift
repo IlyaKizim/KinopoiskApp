@@ -14,8 +14,8 @@ protocol CollectionViewCellDelegate: AnyObject {
 class MovieDetailsActorsCellTableView: UITableViewCell {
     
     static let identifire = "MovieDetailsActorsCellTableView"
-    private var cast: [ActrosWhoPlaying] = [ActrosWhoPlaying]()
-    private let movieDetailViewModel = MovieDetailViewModel()
+    private lazy var cast: [ActrosWhoPlaying] = [ActrosWhoPlaying]()
+    private lazy var movieDetailViewModel = MovieDetailViewModel()
     weak var delegate: CollectionViewCellDelegate?
     
     

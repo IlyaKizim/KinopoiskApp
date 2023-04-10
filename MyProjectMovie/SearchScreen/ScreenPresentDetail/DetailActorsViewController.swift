@@ -9,10 +9,6 @@ import UIKit
 
 class DetailActorsViewController: UIViewController {
     
-    private lazy var detailViewModel = DetailViewModel()
-    var detail: DetailActor?
-    private lazy var listMovieActors: [List] = []
-    
     private lazy var headerView: UIView = {
         let headreView = UIView()
         headreView.backgroundColor = .black
@@ -80,6 +76,10 @@ class DetailActorsViewController: UIViewController {
         tableView.tableHeaderView = headerView
         return tableView
     }()
+    
+    private lazy var detailViewModel = DetailViewModel()
+    var detail: DetailActor?
+    lazy var listMovieActors: [List] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,7 +161,7 @@ class DetailActorsViewController: UIViewController {
     }
     
     func configureTableView(with model: [List]){
-        self.listMovieActors = model
+        listMovieActors = model
         reloadData()
     }
     

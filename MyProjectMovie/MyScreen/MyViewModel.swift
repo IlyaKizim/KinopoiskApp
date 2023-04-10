@@ -13,16 +13,20 @@ protocol ViewModelDelegate: AnyObject {
 
 class MyViewModel {
     
-    let array = ["Буду смотреть", "Загрузки", "Покупки", "Папки"]
-    let title = "МОЁ"
-    let imageArray = ["star.circle", "heart.circle", "hand.thumbsup.fill", "folder.fill", "person.circle"]
-    let labelArray = ["Оценки и просмотры", "Любимые фильмы", "Рекомендуемые фильмы", "Примечания", "Персоны"]
-    let text = "Загружайте фильмы и сериалы, чтобы смотреть их без интернета"
+    lazy var array = ["Буду смотреть", "Загрузки", "Покупки", "Папки"]
+    lazy var title = "МОЁ"
+    lazy var imageArray = ["star.circle", "heart.circle", "hand.thumbsup.fill", "folder.fill", "person.circle"]
+    lazy var labelArray = ["Оценки и просмотры", "Любимые фильмы", "Рекомендуемые фильмы", "Примечания", "Персоны"]
+    lazy var text = "Загружайте фильмы и сериалы, чтобы смотреть их без интернета"
     
-    var coreDataManager = CoreDataManager()
-    var rateMovies: [RateMovie] = []
+    lazy var coreDataManager = CoreDataManager()
+    lazy var rateMovies: [RateMovie] = []
     weak var delegate: ViewModelDelegate?
-    var coreDataManagerTwo = CoreDataManagerTwo()
+    lazy var coreDataManagerTwo = CoreDataManagerTwo()
+    static var tasks: [RateMovie] = []
+    static var dict: [String: [Title]] = [:]
+    static var willSee = [WillSee]()
+    
     func numberOfRowsInSection () -> Int {
         1
     }
@@ -54,7 +58,7 @@ class MyViewModel {
     
     func updateData() {
         coreDataManager.updateData()
-        rateMovies = MyViewControllerTablePackeges.tasks
+        rateMovies = MyViewModel.tasks
         delegate?.didUpdateData()
         }
     

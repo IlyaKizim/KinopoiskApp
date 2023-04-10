@@ -7,10 +7,9 @@
 
 import UIKit
 
-class MediaViewController: UIViewController {
+class MediaViewController: UIViewController, MediaViewModelDelegate {
     
     private lazy var mediaViewModal = MediaViewModal()
-    private lazy var cellDataSource: [News] = []
     
     private lazy var bgColorView: UIView = {
         let view = UIView()
@@ -39,19 +38,19 @@ class MediaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindindViewModel()
+        mediaViewModal.getData()
         setUp()
-        configurationNavBar()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        mediaViewModal.getData()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configurationNavBar()
     }
     
     private func setUp() {
         addSubviews()
         addConstraints()
+        mediaViewModal.delegate = self
     }
     
     private func addSubviews() {
@@ -65,14 +64,6 @@ class MediaViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-    
-    private func bindindViewModel() {
-        mediaViewModal.cellDataSource.bind { [weak self] movies in
-            guard let self = self, let movies = movies else {return}
-            self.cellDataSource = movies
-            self.reloadData()
-        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -99,13 +90,11 @@ class MediaViewController: UIViewController {
 extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
     
     func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        cellDataSource.count
+        mediaViewModal.dataSourceNews.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -116,7 +105,7 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.selectedBackgroundView = bgColorView
         cell.backgroundColor = .black
-        let model = cellDataSource[indexPath.row]
+        let model = mediaViewModal.dataSourceNews[indexPath.row]
         cell.configuration(with: model)
         return cell
     }
@@ -131,7 +120,7 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let url = URL(string: cellDataSource[indexPath.row].url ?? "")  else {return}
+        guard let url = URL(string: mediaViewModal.dataSourceNews[indexPath.row].url ?? "")  else {return}
         UIApplication.shared.open(url)
     }
 }

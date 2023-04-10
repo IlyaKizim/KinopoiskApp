@@ -7,10 +7,14 @@
 
 import Foundation
 
+protocol MediaViewModelDelegate: AnyObject {
+    func reloadData()
+}
+
 class MediaViewModal {
     
-    var cellDataSource: Observable<[News]> = Observable(nil)
-    var dataSourceNews: [News] = []
+    lazy var dataSourceNews: [News] = []
+    weak var delegate: MediaViewModelDelegate?
  
     let titleForHeaderSection = "Новости и статьи"
     let label = "Медиа"
@@ -23,15 +27,13 @@ class MediaViewModal {
         APICaller.shared.getNews { [weak self] result in
             switch result {
             case .success(let data):
-                self?.dataSourceNews = data
-                self?.mapCellData()
+                DispatchQueue.main.async {
+                    self?.dataSourceNews = data
+                    self?.delegate?.reloadData()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
-    }
-    
-    func mapCellData() {
-        self.cellDataSource.value = self.dataSourceNews
     }
 }

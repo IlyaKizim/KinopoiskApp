@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3109B5B1297331BB0032EE5A /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109B5B0297331BB0032EE5A /* Bindable.swift */; };
 		3109B5B929756FB70032EE5A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109B5B829756FB70032EE5A /* MainViewModel.swift */; };
 		3109B5DE2975892A0032EE5A /* MyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109B5DD2975892A0032EE5A /* MyViewModel.swift */; };
 		3109B5E02975895E0032EE5A /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109B5DF2975895E0032EE5A /* MyTableViewCell.swift */; };
@@ -86,7 +85,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3109B5B0297331BB0032EE5A /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		3109B5B829756FB70032EE5A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		3109B5DD2975892A0032EE5A /* MyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewModel.swift; sourceTree = "<group>"; };
 		3109B5DF2975895E0032EE5A /* MyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
@@ -381,7 +379,6 @@
 			isa = PBXGroup;
 			children = (
 				31EE9D78297047CB006EA937 /* Extensions.swift */,
-				3109B5B0297331BB0032EE5A /* Bindable.swift */,
 			);
 			path = Resourses;
 			sourceTree = "<group>";
@@ -492,7 +489,6 @@
 				31A5ED88299D30D5004FE23A /* DetailTableViewCell.swift in Sources */,
 				31EEDBD829A4ECF700235B48 /* News.swift in Sources */,
 				313839E929B75B4500104A68 /* PresentRateViewModel.swift in Sources */,
-				3109B5B1297331BB0032EE5A /* Bindable.swift in Sources */,
 				3195D6F0296D72FB00FA9F6C /* SceneDelegate.swift in Sources */,
 				31756A11299E78E20005E6DE /* DetailActorViewController.swift in Sources */,
 				31E6743129B1E696006E1F91 /* PeopleWhoPlayingInMovieModel.swift in Sources */,

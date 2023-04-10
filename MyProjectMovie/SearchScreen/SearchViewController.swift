@@ -7,10 +7,9 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, SearchViewModelDelegate {
     
     private lazy var searhcViewModel = SearchViewModel()
-    private lazy var cellDataSource: [People] = []
     
     private lazy var bgColorView: UIView = {
         let view = UIView()
@@ -46,15 +45,11 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
-        bindindViewModel()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        searhcViewModel.getData()
     }
     
     private func setUp() {
+        searhcViewModel.delegate = self
+        searhcViewModel.getData()
         addSubviews ()
         setConstraint()
     }
@@ -73,22 +68,12 @@ class SearchViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
-    private func bindindViewModel() {
-        searhcViewModel.cellDataSource.bind { [weak self] movies in
-            guard let self = self, let movies = movies else {return}
-            self.cellDataSource = movies
-            self.reloadData()
-        }
-    }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -114,13 +99,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         case 1: guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifire, for: indexPath) as? SearchTableViewCell else {
             return  UITableViewCell()
         }
-        cell.configure(with: cellDataSource)
+        cell.configure(with: searhcViewModel.dataSourcePopular)
         cell.delegate = self
         return cell
         case 2: guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifire, for: indexPath) as? SearchTableViewCell else {
             return  UITableViewCell()
         }
-        cell.configure(with: cellDataSource)
+        cell.configure(with: searhcViewModel.dataSourcePopular)
         cell.delegate = self
         return cell
         case 0:

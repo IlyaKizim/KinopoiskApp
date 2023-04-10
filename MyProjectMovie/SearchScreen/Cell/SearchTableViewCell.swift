@@ -13,10 +13,6 @@ protocol TableViewCellDelegate: AnyObject {
 
 class SearchTableViewCell: UITableViewCell {
     
-    static let identifire = "SearchTableViewCell"
-    weak var delegate: TableViewCellDelegate?
-    private var titles: [People] = [People]()
-    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 140, height: 200)
@@ -28,6 +24,10 @@ class SearchTableViewCell: UITableViewCell {
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifire)
         return collectionView
     }()
+    
+    static let identifire = "SearchTableViewCell"
+    weak var delegate: TableViewCellDelegate?
+    private var titles: [People] = [People]()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier reuseIdentifiers: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
