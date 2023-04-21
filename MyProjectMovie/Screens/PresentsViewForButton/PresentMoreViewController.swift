@@ -1,10 +1,3 @@
-//
-//  PresentMoreViewController.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 06.03.2023.
-
-
 import UIKit
 
 class PresentMoreViewController: UIViewController {

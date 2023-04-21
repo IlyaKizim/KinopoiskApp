@@ -1,10 +1,3 @@
-//
-//  TitleCollectionViewCell.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 12.01.2023.
-//
-
 import UIKit
 
 class TitleCollectionViewCell: UICollectionViewCell {

@@ -1,10 +1,3 @@
-//
-//  PeopleWhoPlayingInMovieModel.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 03.03.2023.
-//
-
 import Foundation
 
 struct TitleActrosWhoPlaying: Codable {

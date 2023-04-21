@@ -1,10 +1,3 @@
-//
-//  SearchResultsControllerViewController.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 03.02.2023.
-
-
 import UIKit
 
 protocol SearchResultsControllerViewControllerDelegate: AnyObject {

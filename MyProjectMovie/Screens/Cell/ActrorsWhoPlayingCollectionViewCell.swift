@@ -1,10 +1,3 @@
-//
-//  ActrorsWhoPlayingCollectionViewCell.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 03.03.2023.
-
-
 import UIKit
 
 class ActrorsWhoPlayingCollectionViewCell: UICollectionViewCell {

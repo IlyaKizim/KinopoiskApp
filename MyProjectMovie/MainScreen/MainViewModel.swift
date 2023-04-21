@@ -1,11 +1,5 @@
-//
-//  MainViewModel.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 16.01.2023.
-//
-
 import Foundation
+
 
 protocol MainViewModelDelegate: AnyObject {
     func updateData()
@@ -39,7 +33,13 @@ class MainViewModel {
     lazy var radius = 20
     weak var delegate: MainViewModelDelegate?
     weak var headerDelegate: SetForHeaderDelegate?
-    lazy var titleForHeaderSection = ["Популярные фильмы", "Высокий рейтинг", "Скоро в прокате", "Смотрят сейчас", "TV шоу"]
+    lazy var titleForHeaderSection = [
+        "Популярные фильмы",
+        "Высокий рейтинг",
+        "Скоро в прокате",
+        "Смотрят сейчас",
+        "TV шоу"
+    ]
     
     func numberOfRowsInSection() -> Int {
         return 1

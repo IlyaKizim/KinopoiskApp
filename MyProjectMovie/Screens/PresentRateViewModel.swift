@@ -1,10 +1,3 @@
-//
-//  PresentRateViewModel.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 07.03.2023.
-
-
 import Foundation
 
 class PresentRateViewModel {

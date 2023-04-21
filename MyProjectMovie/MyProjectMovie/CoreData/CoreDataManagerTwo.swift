@@ -1,9 +1,3 @@
-//
-//  CoreDataManagerTwo.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 03.04.2023.
-//
 
 import UIKit
 import CoreData

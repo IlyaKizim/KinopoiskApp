@@ -1,10 +1,3 @@
-//
-//  MovieDetailViewModel.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 27.02.2023.
-
-
 import Foundation
 
 protocol MovieDetailViewDelegate: AnyObject {

@@ -1,9 +1,4 @@
-//
-//  CoreDataManager.swift
-//  MyProjectMovie
-//
-//  Created by Яна Угай on 02.04.2023.
-//
+
 import UIKit
 import CoreData
 
