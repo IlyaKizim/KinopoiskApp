@@ -204,6 +204,7 @@ final class PresentRateViewController: UIViewController {
         } else {
             if let title = titles {
             coreDataManager.saveTask(with: title, rate: rate ?? 0)
+            dismiss(animated: true, completion: nil)
             }
         }
     }
