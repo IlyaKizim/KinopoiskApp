@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelegate {
+final class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelegate {
     
     private lazy var headerview: UIView = {
         let headerView = UIView()

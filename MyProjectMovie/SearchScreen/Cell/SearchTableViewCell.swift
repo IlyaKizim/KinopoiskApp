@@ -4,7 +4,7 @@ protocol TableViewCellDelegate: AnyObject {
     func tableViewCellDelegate(cell: SearchTableViewCell, viewModel: People)
 }
 
-class SearchTableViewCell: UITableViewCell {
+final class SearchTableViewCell: UITableViewCell {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()

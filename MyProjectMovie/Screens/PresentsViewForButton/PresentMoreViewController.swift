@@ -1,6 +1,6 @@
 import UIKit
 
-class PresentMoreViewController: UIViewController {
+final class PresentMoreViewController: UIViewController {
 
     private lazy var backdropView: UIView = {
         let bdView = UIView(frame: self.view.bounds)

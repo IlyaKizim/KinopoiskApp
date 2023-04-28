@@ -1,7 +1,7 @@
 import UIKit
 
 
-class MediaTableViewCell: UITableViewCell {
+final class MediaTableViewCell: UITableViewCell {
 
     static let identifire = "MediaTableViewCell"
     

@@ -4,7 +4,7 @@ protocol CollectionViewTableViewCellDelegate: AnyObject {
     func collectionViewTableViewCellDelegate(cell: CollectionViewTableViewCell, viewModel: Title)
 }
 
-class CollectionViewTableViewCell: UITableViewCell {
+final class CollectionViewTableViewCell: UITableViewCell {
     
     static let identifire = "CollectionViewTableViewCell"
     weak var delegate: CollectionViewTableViewCellDelegate?

@@ -4,7 +4,7 @@ protocol MovieDetailViewDelegate: AnyObject {
     func reloadData()
 }
 
-class MovieDetailViewModel {
+final class MovieDetailViewModel {
     
     lazy var arrayTitle = ["Рейтинг Кинопоиска", "Актеры"]
     lazy var dataSourceActors: [ActrosWhoPlaying] = []

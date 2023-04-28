@@ -1,6 +1,6 @@
 import UIKit
 
-class DetailTableViewCell: UITableViewCell {
+final class DetailTableViewCell: UITableViewCell {
 
     static let identifire = "DetailTableViewCell"
     

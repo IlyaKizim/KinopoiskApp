@@ -4,7 +4,7 @@ protocol CollectionViewCellDelegate: AnyObject {
     func CollectionViewCellDelegate(viewModel: ActrosWhoPlaying)
 }
 
-class MovieDetailsActorsCellTableView: UITableViewCell {
+final class MovieDetailsActorsCellTableView: UITableViewCell {
     
     static let identifire = "MovieDetailsActorsCellTableView"
     private lazy var cast: [ActrosWhoPlaying] = [ActrosWhoPlaying]()

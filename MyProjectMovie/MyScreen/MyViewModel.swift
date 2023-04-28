@@ -4,7 +4,7 @@ protocol ViewModelDelegate: AnyObject {
     func didUpdateData()
 }
 
-class MyViewModel {
+final class MyViewModel {
     
     lazy var array = ["Буду смотреть", "Загрузки", "Покупки", "Папки"]
     lazy var title = "МОЁ"

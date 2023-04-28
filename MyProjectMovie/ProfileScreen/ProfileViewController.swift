@@ -1,6 +1,6 @@
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
     private lazy var viewProfile: UIView = {
         let view = UIView()

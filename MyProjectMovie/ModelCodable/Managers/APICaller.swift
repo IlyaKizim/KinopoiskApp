@@ -14,7 +14,7 @@ enum APIError: Error {
     
     case failedTogetData
 }
-class APICaller {
+final class APICaller {
     
     static let shared = APICaller()
     

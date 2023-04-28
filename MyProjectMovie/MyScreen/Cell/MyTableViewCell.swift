@@ -1,6 +1,6 @@
 import UIKit
 
-class MyTableViewCell: UITableViewCell {
+final class MyTableViewCell: UITableViewCell {
     
     static let identifire = "MyTableViewCall"
     

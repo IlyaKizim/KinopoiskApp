@@ -1,6 +1,6 @@
 import UIKit
 
-class TitleCollectionViewCell: UICollectionViewCell {
+final class TitleCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "TitleCollectionViewCell"
     

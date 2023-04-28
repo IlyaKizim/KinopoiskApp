@@ -1,6 +1,6 @@
 import UIKit
 
-class SearchViewController: UIViewController, SearchViewModelDelegate {
+final class SearchViewController: UIViewController, SearchViewModelDelegate {
     
     private lazy var searhcViewModel = SearchViewModel()
     

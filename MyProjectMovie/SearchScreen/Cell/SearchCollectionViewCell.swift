@@ -1,6 +1,6 @@
 import UIKit
 
-class SearchCollectionViewCell: UICollectionViewCell {
+final class SearchCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "SearchCollectionViewCell"
     private var id: Int?

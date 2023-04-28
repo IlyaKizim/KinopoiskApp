@@ -1,6 +1,6 @@
 import UIKit
 
-class SearchresultTableViewTableViewCell: UITableViewCell {
+final class SearchresultTableViewTableViewCell: UITableViewCell {
     
     static let identifire = "SearchresultTableViewTableViewCell"
    

@@ -1,6 +1,6 @@
 import UIKit
 
-class PresentRateCollectionViewCell: UICollectionViewCell {
+final class PresentRateCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "PresentRateCollectionViewCell"
     

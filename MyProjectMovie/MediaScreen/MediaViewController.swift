@@ -1,8 +1,7 @@
 import UIKit
+import RxSwift
 
-class MediaViewController: UIViewController, MediaViewModelDelegate {
-    
-    private lazy var mediaViewModal = MediaViewModal()
+final class MediaViewController: UIViewController {
     
     private lazy var bgColorView: UIView = {
         let view = UIView()
@@ -11,14 +10,14 @@ class MediaViewController: UIViewController, MediaViewModelDelegate {
     }()
     
     private lazy var viewForHeaderInSection: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = mediaViewModal.titleForHeaderSection
         label.textColor = .white
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
         label.backgroundColor = .black
         return label
     }()
-
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +27,10 @@ class MediaViewController: UIViewController, MediaViewModelDelegate {
         tableView.dataSource = self
         return tableView
     }()
+    
+    private lazy var mediaViewModal = MediaViewModal()
+    private lazy var disposeBag = DisposeBag()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +46,9 @@ class MediaViewController: UIViewController, MediaViewModelDelegate {
     private func setUp() {
         addSubviews()
         addConstraints()
-        mediaViewModal.delegate = self
+        mediaViewModal.shouldReloadTableViewPublishSubject.subscribe(onNext: { [weak self] data in
+            self?.tableView.reloadData()
+        }).disposed(by: disposeBag)
     }
     
     private func addSubviews() {
@@ -104,7 +109,7 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat(mediaViewModal.heightForRowAt())
+        80
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

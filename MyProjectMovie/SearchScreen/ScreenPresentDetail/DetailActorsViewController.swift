@@ -1,6 +1,6 @@
 import UIKit
 
-class DetailActorsViewController: UIViewController {
+final class DetailActorsViewController: UIViewController {
     
     private lazy var headerView: UIView = {
         let headreView = UIView()

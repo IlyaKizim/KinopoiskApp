@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 
 
 protocol MainViewModelDelegate: AnyObject {
@@ -9,7 +10,7 @@ protocol SetForHeaderDelegate: AnyObject {
     func setUp()
 }
 
-class MainViewModel {
+final class MainViewModel {
     
     enum Section: Int {
         case PopularMovies = 0

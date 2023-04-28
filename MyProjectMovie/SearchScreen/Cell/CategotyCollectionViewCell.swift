@@ -1,6 +1,6 @@
 import UIKit
 
-class CategotyCollectionViewCell: UICollectionViewCell {
+final class CategotyCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "CategotyCollectionViewCell"
     

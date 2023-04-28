@@ -1,6 +1,6 @@
 import UIKit
 
-class PresentShareViewController: UIViewController {
+final class PresentShareViewController: UIViewController {
     
     private lazy var backdropView: UIView = {
         let bdView = UIView(frame: self.view.bounds)

@@ -1,6 +1,6 @@
 import UIKit
 
-class MyTableViewCellPackages: UITableViewCell {
+final class MyTableViewCellPackages: UITableViewCell {
     
     static let identifire = "MyTableViewCellPackages"
     

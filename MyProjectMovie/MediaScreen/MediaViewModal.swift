@@ -1,20 +1,13 @@
 import Foundation
+import RxSwift
 
-protocol MediaViewModelDelegate: AnyObject {
-    func reloadData()
-}
-
-class MediaViewModal {
+final class MediaViewModal {
     
     lazy var dataSourceNews: [News] = []
-    weak var delegate: MediaViewModelDelegate?
+    private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
  
-    let titleForHeaderSection = "Новости и статьи"
-    let label = "Медиа"
-    
-    func heightForRowAt() -> Int {
-        80
-    }
+    lazy var titleForHeaderSection = "Новости и статьи"
+    lazy var label = "Медиа"
     
     func getData() {
         APICaller.shared.getNews { [weak self] result in
@@ -22,7 +15,7 @@ class MediaViewModal {
             case .success(let data):
                 DispatchQueue.main.async {
                     self?.dataSourceNews = data
-                    self?.delegate?.reloadData()
+                    self?.shouldReloadTableViewPublishSubject.onNext(())
                 }
             case .failure(let error):
                 print(error.localizedDescription)

@@ -4,7 +4,7 @@ protocol  myTableViewCellTwoDelegate: AnyObject {
     func myTableViewCellTwoDelegates()
 }
 
-class MyTableViewCellTwo: UITableViewCell {
+final class MyTableViewCellTwo: UITableViewCell {
     
     static let identifire = "MyTableViewCellTwo"
     private lazy var myViewModel = MyViewModel()

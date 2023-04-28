@@ -4,7 +4,7 @@ protocol SearchViewModelDelegate: AnyObject {
     func reloadData()
 }
 
-class SearchViewModel {
+final class SearchViewModel {
     
     lazy var array = ["Категории", "Популярные персоны", "Родились сегодня"]
     lazy var searchPlaceholder = "Фильмы, персоны, кинотеатры"

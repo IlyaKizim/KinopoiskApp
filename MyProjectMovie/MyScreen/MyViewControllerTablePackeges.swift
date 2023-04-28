@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class MyViewControllerTablePackeges: UIViewController, ViewModelDelegate {
+final class MyViewControllerTablePackeges: UIViewController, ViewModelDelegate {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()

@@ -27,6 +27,7 @@
 		3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */; };
 		3140018029B5FCB800C5B6A0 /* PresentShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */; };
 		3140018329B6031400C5B6A0 /* PresentMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */; };
+		31521EEA29FBAFFD0099D15C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 31521EE929FBAFFD0099D15C /* RxSwift */; };
 		316972C2298D2B9D003B7270 /* SearchResultsControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */; };
 		316972C4298D3623003B7270 /* SearchresultTableViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */; };
 		316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972D0299119A0003B7270 /* SearchViewModel.swift */; };
@@ -155,6 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31521EEA29FBAFFD0099D15C /* RxSwift in Frameworks */,
 				31EE9D9A29707385006EA937 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +412,7 @@
 			name = MyProjectMovie;
 			packageProductDependencies = (
 				31EE9D9929707385006EA937 /* Kingfisher */,
+				31521EE929FBAFFD0099D15C /* RxSwift */,
 			);
 			productName = MyProjectMovie;
 			productReference = 318264A529D9B05E00AE53B3 /* MyProjectMovie.app */;
@@ -440,7 +443,7 @@
 			mainGroup = 3195D6E1296D72FB00FA9F6C;
 			packageReferences = (
 				31EE9D9829707385006EA937 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				3109B5D6297571B40032EE5A /* XCRemoteSwiftPackageReference "RxSwift" */,
+				31521EE829FBAFFD0099D15C /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 3195D6E1296D72FB00FA9F6C;
 			projectDirPath = "";
@@ -728,7 +731,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3109B5D6297571B40032EE5A /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		31521EE829FBAFFD0099D15C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -747,6 +750,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		31521EE929FBAFFD0099D15C /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31521EE829FBAFFD0099D15C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
 		31EE9D9929707385006EA937 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 31EE9D9829707385006EA937 /* XCRemoteSwiftPackageReference "Kingfisher" */;

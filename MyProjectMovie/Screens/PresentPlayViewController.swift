@@ -1,7 +1,7 @@
 import UIKit
 import WebKit
 
-class PresentPlayViewController: UIViewController {
+final class PresentPlayViewController: UIViewController {
 
     private lazy var buttonBack: UIButton = {
         let buttonBack = UIButton()

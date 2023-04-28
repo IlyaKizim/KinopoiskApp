@@ -1,6 +1,6 @@
 import UIKit
 
-class HeaderUIView: UIView {
+final class HeaderUIView: UIView {
     
     private lazy var headerView: UIView = { 
         let headerView = UIView()

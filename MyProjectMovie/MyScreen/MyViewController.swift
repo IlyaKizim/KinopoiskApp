@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class MyViewController: UIViewController, ViewModelDelegate {
+final class MyViewController: UIViewController, ViewModelDelegate {
     
     private lazy var headerView: UIView = {
         let view = UIView()

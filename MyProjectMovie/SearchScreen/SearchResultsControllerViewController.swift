@@ -4,7 +4,7 @@ protocol SearchResultsControllerViewControllerDelegate: AnyObject {
     func searchResultsControllerViewControllerDelegate (model: Title)
 }
 
-class SearchResultsControllerViewController: UIViewController {
+final class SearchResultsControllerViewController: UIViewController {
     
     private lazy var bgColorView: UIView = {
         let view = UIView()

@@ -1,6 +1,6 @@
 import Foundation
 
-class DetailViewModel {
+final class DetailViewModel {
     let header = "Фильмография"
     
     func heightForRowAt() -> Int {

@@ -1,6 +1,6 @@
 import UIKit
 
-class DetailActorViewController: UIViewController {
+final class DetailActorViewController: UIViewController {
     
    private lazy var labelName: UILabel = {
        let label = UILabel()

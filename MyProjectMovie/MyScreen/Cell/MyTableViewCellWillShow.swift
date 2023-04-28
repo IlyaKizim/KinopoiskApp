@@ -5,7 +5,7 @@ protocol MyTableViewCellWillShowDelegate: AnyObject {
     func myTableViewCellWillShowDelegate(cell: MyTableViewCellWillShow, viewModel: Title)
 }
 
-class MyTableViewCellWillShow: UITableViewCell {
+final class MyTableViewCellWillShow: UITableViewCell {
     
     static let identifire = "MyTableViewCellWillShow"
     weak var delegate: MyTableViewCellWillShowDelegate?

@@ -1,6 +1,6 @@
 import UIKit
 
-class CategotyTableViewCell: UITableViewCell {
+final class CategotyTableViewCell: UITableViewCell {
     
     static let identifire = "CategotyTableViewCell"
     private lazy var arrayCategory = ["Фильмы", "Онлайн-кинотеатр", "Жанры", "Страны", "Годы", "Критика", "Сериалы", "Сборы", "Премии", "Направления"]

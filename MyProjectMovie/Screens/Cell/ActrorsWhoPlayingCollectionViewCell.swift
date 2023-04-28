@@ -1,6 +1,6 @@
 import UIKit
 
-class ActrorsWhoPlayingCollectionViewCell: UICollectionViewCell {
+final class ActrorsWhoPlayingCollectionViewCell: UICollectionViewCell {
     
     static let identifire = "ActrorsWhoPlayingCollectionViewCell"
     

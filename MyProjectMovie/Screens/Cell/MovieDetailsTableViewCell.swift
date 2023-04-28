@@ -4,7 +4,7 @@ protocol MovieDetailsDelegate: AnyObject {
     func presentRate(viewModel: Title)
 }
 
-class MovieDetailsTableViewCell: UITableViewCell {
+final class MovieDetailsTableViewCell: UITableViewCell {
     
     static let identifire = "MovieDetailsTableViewCell"
     weak var delegate: MovieDetailsDelegate?

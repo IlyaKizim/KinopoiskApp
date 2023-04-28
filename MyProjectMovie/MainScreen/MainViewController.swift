@@ -1,7 +1,8 @@
 import UIKit
 import Kingfisher
+import RxSwift
 
-class MainViewController: UIViewController, MainViewModelDelegate, SetForHeaderDelegate {
+final class MainViewController: UIViewController, MainViewModelDelegate, SetForHeaderDelegate {
     
     private lazy var headerView: UIView = {
         var headerView = UIView()

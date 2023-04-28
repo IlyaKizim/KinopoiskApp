@@ -1,6 +1,6 @@
 import UIKit
 
-class MyCollectionViewCellWillShow: UICollectionViewCell {
+final class MyCollectionViewCellWillShow: UICollectionViewCell {
     
     static let identifire = "MyCollectionViewCellWillShow"
     
