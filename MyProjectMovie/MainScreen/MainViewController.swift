@@ -1,9 +1,8 @@
-
 import UIKit
 import Kingfisher
 import RxSwift
 
-final class MainViewController: UIViewController, MainViewModelDelegate, SetForHeaderDelegate {
+final class MainViewController: UIViewController, SetForHeaderDelegate {
     
     private lazy var headerView: UIView = {
         var headerView = UIView()
@@ -80,8 +79,7 @@ final class MainViewController: UIViewController, MainViewModelDelegate, SetForH
     }()
     
     private lazy var mainViewModel = MainViewModel()
-    private lazy var isActivateAdd = false
-    private lazy var isActivateDel = false
+    private lazy var disposeBag = DisposeBag()
     private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
@@ -97,14 +95,16 @@ final class MainViewController: UIViewController, MainViewModelDelegate, SetForH
         super.viewDidLoad()
         mainViewModel.getData()
         setUpView()
-        
     }
     
     private func setUpView() {
         addSubView()
         configureConstrains()
-        mainViewModel.delegate = self
+        mainViewModel.shouldReloadTableViewPublishSubject.subscribe(onNext: { [weak self] data in
+            self?.tableView.reloadData()
+        }).disposed(by: disposeBag)
         mainViewModel.headerDelegate = self
+        mainViewModel.delegate = self
     }
     
     private func addSubView() {
@@ -173,7 +173,7 @@ final class MainViewController: UIViewController, MainViewModelDelegate, SetForH
         ])
     }
     
-    func setUp() {
+    internal func setUp() {
         configureHeaderView()
     }
     
@@ -221,76 +221,11 @@ final class MainViewController: UIViewController, MainViewModelDelegate, SetForH
     }
     
     @objc private func addToInteresting() {
-        if !isActivateDel {
-            UIView.animate(withDuration: 0.3) {
-                self.constraintButtonAddWidth.constant = self.view.bounds.width / 1.5
-                self.constraintButtonPlayHeight.constant = 0
-                self.constraintButtonDeleteWidth.constant = 0
-                self.buttonAddToInteresting.setTitle(" Добавлено", for: .normal)
-                self.buttonAddToInteresting.tintColor = .orange
-                self.buttonAddToInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
-                self.view.layoutIfNeeded()
-                UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
-                    self.buttonAddToInteresting.setTitleColor(.orange, for: .normal)
-                    self.constraintButtonAddWidth.constant = 40
-                    self.constraintButtonDeleteWidth.constant = 40
-                    self.constraintButtonPlayHeight.constant = 40
-                    self.buttonPlay.setTitle("", for: .normal)
-                    self.view.layoutIfNeeded()
-                }, completion: {_ in
-                    self.buttonPlay.setTitle("  Смотреть", for: .normal)
-                    self.buttonAddToInteresting.setTitle("", for: .normal)
-                    self.view.layoutIfNeeded()
-                })
-            }
-            //            let title = cellDataSource[0]
-            //            let model = title[randomInt]
-            //            MyTableViewCellWillShow.dict[model.originalTitle ?? "No"] = [model]
-            self.isActivateDel = true
-            
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                self.buttonAddToInteresting.tintColor = .white
-            }
-            //            let title = cellDataSource[0]
-            //            let model = title[randomInt]
-            //            MyTableViewCellWillShow.dict.removeValue(forKey: model.originalTitle ?? "No")
-            self.isActivateDel = false
-            
-        }
+        mainViewModel.addToInteresting()
     }
     
     @objc private func deleteFromInteresting() {
-        if !isActivateAdd {
-            UIView.animate(withDuration: 0.3) {
-                self.constraintButtonDeleteWidth.constant = (self.view.bounds.width / 1.5) + 40
-                self.constraintButtonPlayHeight.constant = 0
-                self.constraintButtonAddHeight.constant = 0
-                self.buttonDeleteFromInteresting.setTitle(" Неинтересно", for: .normal)
-                self.buttonDeleteFromInteresting.tintColor = .orange
-                self.buttonDeleteFromInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
-                self.view.layoutIfNeeded()
-                UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
-                    self.buttonDeleteFromInteresting.setTitleColor(.orange, for: .normal)
-                    self.constraintButtonDeleteWidth.constant = 40
-                    self.constraintButtonPlayHeight.constant = 40
-                    self.constraintButtonAddHeight.constant = 40
-                    self.buttonPlay.setTitle("", for: .normal)
-                    self.view.layoutIfNeeded()
-                }, completion: {_ in
-                    self.buttonPlay.setTitle("  Смотреть", for: .normal)
-                    self.buttonDeleteFromInteresting.setImage(UIImage(systemName: "minus.circle"), for: .normal)
-                    self.buttonDeleteFromInteresting.setTitle("", for: .normal)
-                    self.view.layoutIfNeeded()
-                    self.isActivateAdd = true
-                })
-            }
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                self.buttonDeleteFromInteresting.tintColor = .white
-            }
-            self.isActivateAdd = false
-        }
+        mainViewModel.deleteFromInteresting()
     }
 }
 
@@ -318,15 +253,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        mainViewModel.numberOfRowsInSection()
+        1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat(mainViewModel.heightForRowAt())
+        200
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        CGFloat(mainViewModel.heightForHeaderInSection())
+        40
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -398,5 +333,68 @@ extension MainViewController: CollectionViewTableViewCellDelegate {
         let vc = MovieDetailsViewControllers()
         vc.setUps(with: viewModel)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension MainViewController: MyViewModelDelegate {
+    func didAddToInteresting() {
+        UIView.animate(withDuration: 0.3) {
+            self.constraintButtonAddWidth.constant = self.view.bounds.width / 1.5
+            self.constraintButtonPlayHeight.constant = 0
+            self.constraintButtonDeleteWidth.constant = 0
+            self.buttonAddToInteresting.setTitle(" Добавлено", for: .normal)
+            self.buttonAddToInteresting.tintColor = .orange
+            self.buttonAddToInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
+                self.buttonAddToInteresting.setTitleColor(.orange, for: .normal)
+                self.constraintButtonAddWidth.constant = 40
+                self.constraintButtonDeleteWidth.constant = 40
+                self.constraintButtonPlayHeight.constant = 40
+                self.buttonPlay.setTitle("", for: .normal)
+                self.view.layoutIfNeeded()
+            }, completion: {_ in
+                self.buttonPlay.setTitle("  Смотреть", for: .normal)
+                self.buttonAddToInteresting.setTitle("", for: .normal)
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func didRemoveFromInteresting() {
+        UIView.animate(withDuration: 0.3) {
+            self.buttonAddToInteresting.tintColor = .white
+        }
+    }
+    
+    func didDeleteFromInteresting() {
+        UIView.animate(withDuration: 0.3) {
+            self.constraintButtonDeleteWidth.constant = (self.view.bounds.width / 1.5) + 40
+            self.constraintButtonPlayHeight.constant = 0
+            self.constraintButtonAddHeight.constant = 0
+            self.buttonDeleteFromInteresting.setTitle(" Неинтересно", for: .normal)
+            self.buttonDeleteFromInteresting.tintColor = .orange
+            self.buttonDeleteFromInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
+                self.buttonDeleteFromInteresting.setTitleColor(.orange, for: .normal)
+                self.constraintButtonDeleteWidth.constant = 40
+                self.constraintButtonPlayHeight.constant = 40
+                self.constraintButtonAddHeight.constant = 40
+                self.buttonPlay.setTitle("", for: .normal)
+                self.view.layoutIfNeeded()
+            }, completion: {_ in
+                self.buttonPlay.setTitle("  Смотреть", for: .normal)
+                self.buttonDeleteFromInteresting.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+                self.buttonDeleteFromInteresting.setTitle("", for: .normal)
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func didDeleteRemoveFromInteresting() {
+        UIView.animate(withDuration: 0.3) {
+            self.buttonDeleteFromInteresting.tintColor = .white
+        }
     }
 }
