@@ -11,6 +11,10 @@ if you are from Russia, use VPN service to get Json information from TMDb API
 - CoreData
 - MVVM
 - Networking
+- API
+- RxSwift
+- WebKit
+- Kingfisher
 
 ## Screenshots
 <div>
