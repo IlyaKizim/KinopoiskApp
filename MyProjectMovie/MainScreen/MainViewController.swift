@@ -221,10 +221,24 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
     }
     
     @objc private func addToInteresting() {
+//        mainViewModel.addToInterestingObservable.subscribe(onNext: { [weak self] in
+//            if self?.mainViewModel.isActivated ?? false {
+//                self?.didAddToInteresting()
+//            } else {
+//                self?.didRemoveFromInteresting()
+//            }
+//        }).disposed(by: disposeBag)
         mainViewModel.addToInteresting()
     }
     
     @objc private func deleteFromInteresting() {
+//        mainViewModel.deleteFromInterestingObservable.subscribe(onNext: { [weak self] in
+//            if self?.mainViewModel.isActivatedTwo ?? false {
+//                self?.didDeleteFromInteresting()
+//            } else {
+//                self?.didDeleteRemoveFromInteresting()
+//            }
+//        }).disposed(by: disposeBag)
         mainViewModel.deleteFromInteresting()
     }
 }

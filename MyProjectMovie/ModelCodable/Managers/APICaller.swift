@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 
 struct Constants {
     
@@ -11,16 +12,13 @@ struct Constants {
 }
 
 enum APIError: Error {
-    
     case failedTogetData
+    case invalidURL
+    case invalidResponse
 }
 
-protocol Apiclient {
-    func getPopularMovies(completion: @escaping (Result<[Title], Error>) -> Void)
-    func getTopRateMovie(completion: @escaping (Result<[Title], Error>) -> Void)
-    func getUpComingMovies (completion: @escaping (Result<[Title], Error>) -> Void)
-    func getPlayingNowMoview (completion: @escaping (Result<[Title], Error>) -> Void)
-    func getTVshow (completion: @escaping (Result<[Title], Error>) -> Void)
+protocol Apiclient {  
+   func getTitles(from path: String, completion: @escaping (Result<[Title], Error>) -> Void)
 }
 
 protocol ApiclientSearch {
@@ -53,28 +51,19 @@ protocol ApiclientGetActorsWhoPlaingInMovie {
 
 final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaingInMovie, ApiclientGetNews, ApiclientGetListMoviewsForActors, ApiclientGetDetailActor, ApicleintGetPopularPeople, ApiclientSearch {
     
-    func getPopularMovies(completion: @escaping (Result<[Title], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.basicURL)/3/movie/popular?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
-            guard let data = data, error == nil else{
-                return
-            }
-            do {
-                let results = try JSONDecoder().decode(TitleMovie.self, from: data)
-                completion(.success(results.results))
-            }
-            catch {
-                completion(.failure(APIError.failedTogetData))
-            }
+    func getTitles(from path: String, completion: @escaping (Result<[Title], Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.basicURL)/3/\(path)?api_key=\(Constants.APIKey)&language=en-US&page=1") else {
+            completion(.failure(APIError.invalidURL))
+            return
         }
-        task.resume()
-    }
-    
-    
-    func getTopRateMovie(completion: @escaping (Result<[Title], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.basicURL)/3/movie/top_rated?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
+        
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
             guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
                 return
             }
             do {
@@ -87,65 +76,17 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
         }
         task.resume()
     }
-    
-    func getUpComingMovies (completion: @escaping (Result<[Title], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.basicURL)/3/movie/upcoming?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
-            guard let data = data, error == nil else {
-                return
-            }
-            do {
-                let results = try JSONDecoder().decode(TitleMovie.self, from: data)
-                completion(.success(results.results))
-            }
-            catch {
-                completion(.failure(APIError.failedTogetData))
-            }
-        }
-        task.resume()
-      
-    }
-    
-    func getPlayingNowMoview (completion: @escaping (Result<[Title], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.basicURL)/3/movie/now_playing?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
-            guard let data = data, error == nil else {
-                return
-            }
-            do {
-                let results = try JSONDecoder().decode(TitleMovie.self, from: data)
-                completion(.success(results.results))
-            }
-            catch {
-                completion(.failure(APIError.failedTogetData))
-            }
-        }
-        task.resume()
-      
-    }
-    
-    func getTVshow (completion: @escaping (Result<[Title], Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.basicURL)/3/tv/on_the_air?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
-            guard let data = data, error == nil else {
-                return
-            }
-            do {
-                let results = try JSONDecoder().decode(TitleMovie.self, from: data)
-                completion(.success(results.results))
-            }
-            catch {
-                completion(.failure(APIError.failedTogetData))
-            }
-        }
-        task.resume()
-    }
-    
+
     func getMovie(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void) {
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
         guard let url = URL(string: "\(Constants.YouTubeBaseUrl)q=\(query)&key=\(Constants.YouTubeAPI_Key)") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
             guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
                 return
             }
             do {
@@ -162,8 +103,13 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
     func search (with query: String, completion: @escaping (Result<[Title], Error>) -> Void) {
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
         guard let url = URL(string: "\(Constants.basicURL)/3/search/movie?api_key=\(Constants.APIKey)&query=\(query)") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
             guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
                 return
             }
             do {
@@ -178,8 +124,13 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
     }
     func getPopularPeople(completion: @escaping (Result<[People], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.basicURL)/3/person/popular?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, _, error) in
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
             guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
                 return
             }
             do {
@@ -195,8 +146,15 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
     func getDetailActor(with query: String, completion: @escaping (Result<DetailActor, Error>) -> Void) {
         let query = query 
         guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)?api_key=\(Constants.APIKey)&language=en-US") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) {(data, _, error) in
-            guard let data = data, error == nil else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) {(data, response, error) in
+            guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
+                return
+            }
             do {
                 let results = try JSONDecoder().decode(DetailActor.self, from: data)
                 completion(.success(results))
@@ -210,8 +168,15 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
     
     func getListMoviesForActors(with query: String, completion: @escaping (Result<[List], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)/movie_credits?api_key=\(Constants.APIKey)&language=en-US") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in
-            guard let data = data, error == nil else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, response, error) in
+            guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
+                return
+            }
             do {
                 let results = try JSONDecoder().decode(ListMovie.self, from: data)
                 completion(.success(results.cast))
@@ -224,8 +189,15 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
     }
     func getNews(completion: @escaping (Result<[News], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.BasicURLForNews)q=movies&apiKey=\(Constants.APIKeyForNews)") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in
-            guard let data = data, error == nil else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, response, error) in
+            guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
+                return
+            }
             do {
                 let results = try JSONDecoder().decode(TitleNews.self, from: data)
                 completion(.success(results.articles))
@@ -239,8 +211,15 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
     func getActorsWhoPlayingInMovie(with query: String, completion: @escaping (Result<[ActrosWhoPlaying], Error>) -> Void) {
         let query = query
         guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(query)/credits?api_key=\(Constants.APIKey)&language=en-US") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data,_,error) in
-            guard let data = data, error == nil else {return}
+        let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, response, error) in
+            guard let data = data, error == nil else {
+                completion(.failure(APIError.failedTogetData))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                completion(.failure(APIError.invalidResponse))
+                return
+            }
             do {
                 let results = try JSONDecoder().decode(TitleActrosWhoPlaying.self, from: data)
                 completion(.success(results.cast))
@@ -251,7 +230,7 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
         task.resume()
     }
 }
-    
+
 
 //    func getActorBirthday(completion: @escaping (Result<String, Error>) -> Void) {
 //        let today = Date()

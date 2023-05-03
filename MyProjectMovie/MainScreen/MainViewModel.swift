@@ -35,8 +35,8 @@ final class MainViewModel {
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
     private var apiclient: Apiclient
     private var apiclientGetMovie: ApiclientGetMovie
-    private var isActivated = false
-    private var isActivatedTwo = false
+    private (set) var isActivated = false
+    private (set) var isActivatedTwo = false
     lazy var movieData: [MovieData] = [.popular([]), .topRated([]), .upcoming([]), .favorites([]), .watched([])]
     lazy var integer = 0
     lazy var randomInt = Int.random(in: 0..<integer)
@@ -48,6 +48,16 @@ final class MainViewModel {
         "Смотрят сейчас",
         "TV шоу"
     ]
+//    private let addToInterestingSubject = PublishSubject<Void>()
+//    private let deleteFromInterestingSubject = PublishSubject<Void>()
+//
+//    var addToInterestingObservable: Observable<Void> {
+//        return addToInterestingSubject.asObservable()
+//    }
+//
+//    var deleteFromInterestingObservable: Observable<Void> {
+//        return deleteFromInterestingSubject.asObservable()
+//    }
     
     init(apiclient: Apiclient, apiclientGetMovie: ApiclientGetMovie) {
         self.apiclient = apiclient
@@ -55,27 +65,47 @@ final class MainViewModel {
     }
     
     func addToInteresting() {
-        if !isActivated {
-            isActivated = true
-            delegate?.didAddToInteresting()
-        } else {
-            isActivated = false
-            delegate?.didRemoveFromInteresting()
+            if !isActivated {
+                isActivated = true
+                delegate?.didAddToInteresting()
+            } else {
+                isActivated = false
+                delegate?.didRemoveFromInteresting()
+            }
         }
-    }
+        
+        func deleteFromInteresting() {
+            if !isActivatedTwo {
+                isActivatedTwo = true
+                delegate?.didDeleteFromInteresting()
+            } else {
+                isActivatedTwo = false
+                delegate?.didDeleteRemoveFromInteresting()
+            }
+        }
     
-    func deleteFromInteresting() {
-        if !isActivatedTwo {
-            isActivatedTwo = true
-            delegate?.didDeleteFromInteresting()
-        } else {
-            isActivatedTwo = false
-            delegate?.didDeleteRemoveFromInteresting()
-        }
-    }
+//    func addToInteresting() {
+//        if !isActivated {
+//            isActivated = true
+//            addToInterestingSubject.onNext(())
+//        } else {
+//            isActivated = false
+//            deleteFromInterestingSubject.onNext(())
+//        }
+//    }
+//
+//    func deleteFromInteresting() {
+//        if !isActivatedTwo {
+//            isActivatedTwo = true
+//            deleteFromInterestingSubject.onNext(())
+//        } else {
+//            isActivatedTwo = false
+//            addToInterestingSubject.onNext(())
+//        }
+//    }
     
     func getData() {
-       apiclient.getPopularMovies {[weak self] result in
+        apiclient.getTitles(from: "movie/popular") {[weak self] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -89,7 +119,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getTopRateMovie {[weak self] (result) in
+        apiclient.getTitles(from: "movie/top_rated") {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -101,7 +131,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getUpComingMovies {[weak self] (result) in
+        apiclient.getTitles(from: "movie/upcoming") {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -113,7 +143,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getPlayingNowMoview {[weak self] (result) in
+        apiclient.getTitles(from: "movie/now_playing") {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -125,7 +155,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getTVshow {[weak self] (result) in
+        apiclient.getTitles(from: "tv/on_the_air") {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
