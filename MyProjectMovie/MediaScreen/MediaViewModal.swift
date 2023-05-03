@@ -5,12 +5,16 @@ final class MediaViewModal {
     
     lazy var dataSourceNews: [News] = []
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
- 
+    private var apiclientGetNews: ApiclientGetNews
     lazy var titleForHeaderSection = "Новости и статьи"
     lazy var label = "Медиа"
     
+    init(apiclientGetNews: ApiclientGetNews) {
+        self.apiclientGetNews = apiclientGetNews
+    }
+    
     func getData() {
-        APICaller.shared.getNews { [weak self] result in
+        apiclientGetNews.getNews { [weak self] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -23,3 +27,4 @@ final class MediaViewModal {
         }
     }
 }
+

@@ -78,7 +78,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         return tableView
     }()
     
-    private lazy var mainViewModel = MainViewModel()
+    private lazy var mainViewModel = MainViewModel(apiclient: APICaller(), apiclientGetMovie: APICaller())
     private lazy var disposeBag = DisposeBag()
     private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
@@ -173,7 +173,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         ])
     }
     
-    internal func setUp() {
+    func setUp() {
         configureHeaderView()
     }
     

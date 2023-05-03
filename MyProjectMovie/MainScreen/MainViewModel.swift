@@ -30,12 +30,17 @@ final class MainViewModel {
         case watched([Title])
     }
     
+    weak var headerDelegate: SetForHeaderDelegate?
+    weak var delegate: MyViewModelDelegate?
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
+    private var apiclient: Apiclient
+    private var apiclientGetMovie: ApiclientGetMovie
+    private var isActivated = false
+    private var isActivatedTwo = false
     lazy var movieData: [MovieData] = [.popular([]), .topRated([]), .upcoming([]), .favorites([]), .watched([])]
     lazy var integer = 0
     lazy var randomInt = Int.random(in: 0..<integer)
     lazy var radius = 20
-    weak var headerDelegate: SetForHeaderDelegate?
     lazy var titleForHeaderSection = [
         "Популярные фильмы",
         "Высокий рейтинг",
@@ -43,9 +48,11 @@ final class MainViewModel {
         "Смотрят сейчас",
         "TV шоу"
     ]
-    weak var delegate: MyViewModelDelegate?
-    private var isActivated = false
-    private var isActivatedTwo = false
+    
+    init(apiclient: Apiclient, apiclientGetMovie: ApiclientGetMovie) {
+        self.apiclient = apiclient
+        self.apiclientGetMovie = apiclientGetMovie
+    }
     
     func addToInteresting() {
         if !isActivated {
@@ -68,7 +75,7 @@ final class MainViewModel {
     }
     
     func getData() {
-        APICaller.shared.getPopularMovies {[weak self] result in
+       apiclient.getPopularMovies {[weak self] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -82,7 +89,7 @@ final class MainViewModel {
             }
         }
         
-        APICaller.shared.getTopRateMovie {[weak self] (result) in
+        apiclient.getTopRateMovie {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -94,7 +101,7 @@ final class MainViewModel {
             }
         }
         
-        APICaller.shared.getUpComingMovies {[weak self] (result) in
+        apiclient.getUpComingMovies {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -106,7 +113,7 @@ final class MainViewModel {
             }
         }
         
-        APICaller.shared.getPlayingNowMoview {[weak self] (result) in
+        apiclient.getPlayingNowMoview {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -118,7 +125,7 @@ final class MainViewModel {
             }
         }
         
-        APICaller.shared.getTVshow {[weak self] (result) in
+        apiclient.getTVshow {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -132,7 +139,7 @@ final class MainViewModel {
     }
     
     func getMovies(indexPath: IndexPath, title: [Title]) {
-        APICaller.shared.getMovie(with: title[indexPath.row].originalTitle ?? ""  + " trailer") { (results) in
+        apiclientGetMovie.getMovie(with: title[indexPath.row].originalTitle ?? ""  + " trailer") { (results) in
             switch results {
             case .success(let videoElement):
                 MovieDetailsViewControllers.getmodalll(string: videoElement.id.videoId)

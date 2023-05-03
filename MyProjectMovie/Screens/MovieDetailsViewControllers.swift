@@ -170,7 +170,7 @@ final class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelega
     }()
     
     private lazy var flagRate = false
-    private lazy var movieDetailViewModel = MovieDetailViewModel()
+    private lazy var movieDetailViewModel = MovieDetailViewModel(apiGetActorsWhoPlayingMovie: APICaller(), apiGetDetailActor: APICaller(), apiGetMoviesForActor: APICaller())
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

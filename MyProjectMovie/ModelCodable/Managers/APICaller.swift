@@ -14,9 +14,44 @@ enum APIError: Error {
     
     case failedTogetData
 }
-final class APICaller {
-    
-    static let shared = APICaller()
+
+protocol Apiclient {
+    func getPopularMovies(completion: @escaping (Result<[Title], Error>) -> Void)
+    func getTopRateMovie(completion: @escaping (Result<[Title], Error>) -> Void)
+    func getUpComingMovies (completion: @escaping (Result<[Title], Error>) -> Void)
+    func getPlayingNowMoview (completion: @escaping (Result<[Title], Error>) -> Void)
+    func getTVshow (completion: @escaping (Result<[Title], Error>) -> Void)
+}
+
+protocol ApiclientSearch {
+    func search (with query: String, completion: @escaping (Result<[Title], Error>) -> Void)
+}
+
+protocol ApicleintGetPopularPeople {
+    func getPopularPeople(completion: @escaping (Result<[People], Error>) -> Void)
+}
+
+protocol ApiclientGetDetailActor {
+    func getDetailActor(with query: String, completion: @escaping (Result<DetailActor, Error>) -> Void)
+}
+
+protocol  ApiclientGetMovie {
+    func getMovie(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void)
+}
+
+protocol ApiclientGetListMoviewsForActors {
+    func getListMoviesForActors(with query: String, completion: @escaping (Result<[List], Error>) -> Void)
+}
+
+protocol ApiclientGetNews {
+    func getNews(completion: @escaping (Result<[News], Error>) -> Void)
+}
+
+protocol ApiclientGetActorsWhoPlaingInMovie {
+    func getActorsWhoPlayingInMovie(with query: String, completion: @escaping (Result<[ActrosWhoPlaying], Error>) -> Void)
+}
+
+final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaingInMovie, ApiclientGetNews, ApiclientGetListMoviewsForActors, ApiclientGetDetailActor, ApicleintGetPopularPeople, ApiclientSearch {
     
     func getPopularMovies(completion: @escaping (Result<[Title], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.basicURL)/3/movie/popular?api_key=\(Constants.APIKey)&language=en-US&page=1") else {return}
@@ -172,6 +207,7 @@ final class APICaller {
         }
         task.resume()
     }
+    
     func getListMoviesForActors(with query: String, completion: @escaping (Result<[List], Error>) -> Void) {
         guard let url = URL(string: "\(Constants.basicURL)/3/person/\(query)/movie_credits?api_key=\(Constants.APIKey)&language=en-US") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)){(data, _, error) in

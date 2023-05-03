@@ -9,7 +9,7 @@ final class CollectionViewTableViewCell: UITableViewCell {
     static let identifire = "CollectionViewTableViewCell"
     weak var delegate: CollectionViewTableViewCellDelegate?
     private var titles: [Title] = [Title]()
-    private let mainViewModel = MainViewModel()
+    private let mainViewModel = MainViewModel(apiclient: APICaller(), apiclientGetMovie: APICaller())
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()

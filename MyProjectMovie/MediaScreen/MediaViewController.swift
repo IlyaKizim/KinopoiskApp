@@ -28,7 +28,7 @@ final class MediaViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var mediaViewModal = MediaViewModal()
+    private lazy var mediaViewModal = MediaViewModal(apiclientGetNews: APICaller())
     private lazy var disposeBag = DisposeBag()
     
     

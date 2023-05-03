@@ -8,7 +8,7 @@ final class MovieDetailsActorsCellTableView: UITableViewCell {
     
     static let identifire = "MovieDetailsActorsCellTableView"
     private lazy var cast: [ActrosWhoPlaying] = [ActrosWhoPlaying]()
-    private lazy var movieDetailViewModel = MovieDetailViewModel()
+    private lazy var movieDetailViewModel = MovieDetailViewModel(apiGetActorsWhoPlayingMovie: APICaller(), apiGetDetailActor: APICaller(), apiGetMoviesForActor: APICaller())
     weak var delegate: CollectionViewCellDelegate?
     
     

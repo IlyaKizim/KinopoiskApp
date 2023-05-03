@@ -14,8 +14,15 @@ final class MovieDetailViewModel {
     lazy var label = 0.0
     static var model = ""
     lazy var titles: [Title] = []
+    private var apiGetActorsWhoPlayingMovie: ApiclientGetActorsWhoPlaingInMovie
+    private var apiGetDetailActor: ApiclientGetDetailActor
+    private var apiGetMoviesForActor: ApiclientGetListMoviewsForActors
  
-    
+    init(apiGetActorsWhoPlayingMovie: ApiclientGetActorsWhoPlaingInMovie, apiGetDetailActor: ApiclientGetDetailActor, apiGetMoviesForActor: ApiclientGetListMoviewsForActors){
+        self.apiGetActorsWhoPlayingMovie = apiGetActorsWhoPlayingMovie
+        self.apiGetDetailActor = apiGetDetailActor
+        self.apiGetMoviesForActor = apiGetMoviesForActor
+    }
     func heightForRow (indexPath: IndexPath) -> Int {
         switch indexPath.section {
         case 0: return 200
@@ -30,7 +37,7 @@ final class MovieDetailViewModel {
     }
     
     func getData(query: String) {
-        APICaller.shared.getActorsWhoPlayingInMovie(with: query) {[weak self] (result) in
+        apiGetActorsWhoPlayingMovie.getActorsWhoPlayingInMovie(with: query) {[weak self] (result) in
             switch result {
             case .success(let results):
                 self?.dataSourceActors = results
@@ -46,24 +53,24 @@ final class MovieDetailViewModel {
         vc.setUpForAnotherWay(with: viewModel)
         vc.navigationItem.leftBarButtonItem?.tintColor = .white
         guard let id = viewModel.id else {return}
-        APICaller.shared.getDetailActor(with: String(id)) { (result) in
+        apiGetDetailActor.getDetailActor(with: String(id)) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let titles):
                     vc.detail = titles
                     vc.configureLabel(with: titles)
-                    self.movieDelegate?.reloadData()
+                    self?.movieDelegate?.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         }
-        APICaller.shared.getListMoviesForActors(with: String(id)) { (result) in
+        apiGetMoviesForActor.getListMoviesForActors(with: String(id)) {[weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let result):
                     vc.configureTableView(with: result)
-                    self.movieDelegate?.reloadData()
+                    self?.movieDelegate?.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
