@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  MyProjectMovie
+
+  Created by Яна Угай on 05.05.2023.
+  
+*/
+" Watch" = " Смотреть";
+" Added" = " Добавлено";
+" Not interesting" = " Неинтересно";
+"Popular" = "Популярные фильмы";
+"Top Rate" = "Высокий рейтинг";
+"Upcoming" = "Скоро в прокате";
+"Favorites" = "Смотрят сейчас";
+"TV" = "TV шоу";

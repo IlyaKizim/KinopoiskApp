@@ -24,7 +24,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         button.backgroundColor = #colorLiteral(red: 0.9986565709, green: 0.3295648098, blue: 0.00157311745, alpha: 1)
         button.setImage(UIImage(systemName: "play.fill"), for: .normal)
         button.tintColor = .white
-        button.setTitle("  Смотреть", for: .normal)
+        button.setTitle(NSLocalizedString(" Watch", comment: ""), for: .normal)
         button.addTarget(self, action: #selector(pushToPresents), for: .touchUpInside)
         return button
     }()
@@ -250,7 +250,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        mainViewModel.titleForHeaderSection[section]
+        NSLocalizedString(mainViewModel.titleForHeaderSection[section], comment: "")
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -356,7 +356,7 @@ extension MainViewController: MyViewModelDelegate {
             self.constraintButtonAddWidth.constant = self.view.bounds.width / 1.5
             self.constraintButtonPlayHeight.constant = 0
             self.constraintButtonDeleteWidth.constant = 0
-            self.buttonAddToInteresting.setTitle(" Добавлено", for: .normal)
+            self.buttonAddToInteresting.setTitle(NSLocalizedString(" Added", comment: ""), for: .normal)
             self.buttonAddToInteresting.tintColor = .orange
             self.buttonAddToInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
             self.view.layoutIfNeeded()
@@ -368,7 +368,7 @@ extension MainViewController: MyViewModelDelegate {
                 self.buttonPlay.setTitle("", for: .normal)
                 self.view.layoutIfNeeded()
             }, completion: {_ in
-                self.buttonPlay.setTitle("  Смотреть", for: .normal)
+                self.buttonPlay.setTitle(NSLocalizedString(" Watch", comment: ""), for: .normal)
                 self.buttonAddToInteresting.setTitle("", for: .normal)
                 self.view.layoutIfNeeded()
             })
@@ -386,7 +386,7 @@ extension MainViewController: MyViewModelDelegate {
             self.constraintButtonDeleteWidth.constant = (self.view.bounds.width / 1.5) + 40
             self.constraintButtonPlayHeight.constant = 0
             self.constraintButtonAddHeight.constant = 0
-            self.buttonDeleteFromInteresting.setTitle(" Неинтересно", for: .normal)
+            self.buttonDeleteFromInteresting.setTitle(NSLocalizedString(" Not interesting", comment: ""), for: .normal)
             self.buttonDeleteFromInteresting.tintColor = .orange
             self.buttonDeleteFromInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
             self.view.layoutIfNeeded()
@@ -398,7 +398,7 @@ extension MainViewController: MyViewModelDelegate {
                 self.buttonPlay.setTitle("", for: .normal)
                 self.view.layoutIfNeeded()
             }, completion: {_ in
-                self.buttonPlay.setTitle("  Смотреть", for: .normal)
+                self.buttonPlay.setTitle(NSLocalizedString(" Watch", comment: ""), for: .normal)
                 self.buttonDeleteFromInteresting.setImage(UIImage(systemName: "minus.circle"), for: .normal)
                 self.buttonDeleteFromInteresting.setTitle("", for: .normal)
                 self.view.layoutIfNeeded()

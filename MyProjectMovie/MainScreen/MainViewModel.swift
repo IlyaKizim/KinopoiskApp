@@ -30,6 +30,14 @@ final class MainViewModel {
         case watched([Title])
     }
     
+    enum APIString: String {
+        case popular = "movie/popular"
+        case topRate = "movie/top_rated"
+        case upcoming = "movie/upcoming"
+        case favorites = "movie/now_playing"
+        case wathed = "tv/on_the_air"
+    }
+    
     weak var headerDelegate: SetForHeaderDelegate?
     weak var delegate: MyViewModelDelegate?
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
@@ -42,11 +50,11 @@ final class MainViewModel {
     lazy var randomInt = Int.random(in: 0..<integer)
     lazy var radius = 20
     lazy var titleForHeaderSection = [
-        "Популярные фильмы",
-        "Высокий рейтинг",
-        "Скоро в прокате",
-        "Смотрят сейчас",
-        "TV шоу"
+        "Popular",
+        "Top Rate",
+        "Upcoming",
+        "Favorites",
+        "TV"
     ]
 //    private let addToInterestingSubject = PublishSubject<Void>()
 //    private let deleteFromInterestingSubject = PublishSubject<Void>()
@@ -105,7 +113,7 @@ final class MainViewModel {
 //    }
     
     func getData() {
-        apiclient.getTitles(from: "movie/popular") {[weak self] result in
+        apiclient.getTitles(from: APIString.popular.rawValue) {[weak self] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -119,7 +127,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getTitles(from: "movie/top_rated") {[weak self] (result) in
+        apiclient.getTitles(from: APIString.topRate.rawValue) {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -131,7 +139,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getTitles(from: "movie/upcoming") {[weak self] (result) in
+        apiclient.getTitles(from: APIString.upcoming.rawValue) {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -143,7 +151,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getTitles(from: "movie/now_playing") {[weak self] (result) in
+        apiclient.getTitles(from: APIString.favorites.rawValue) {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -155,7 +163,7 @@ final class MainViewModel {
             }
         }
         
-        apiclient.getTitles(from: "tv/on_the_air") {[weak self] (result) in
+        apiclient.getTitles(from: APIString.wathed.rawValue) {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {

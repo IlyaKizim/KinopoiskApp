@@ -6,8 +6,8 @@ class ViewController: UITabBarController {
         super.viewDidLoad()
         view.backgroundColor = .black
         createTabBar ()
-       
     }
+    
     private func createTabBar () {
         let vcOne = UINavigationController(rootViewController: MainViewController())
         let vcTwo = UINavigationController(rootViewController: MediaViewController())
