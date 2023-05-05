@@ -22,7 +22,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = #colorLiteral(red: 0.9986565709, green: 0.3295648098, blue: 0.00157311745, alpha: 1)
-        button.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        button.setImage(UIImage(systemName: SystemName.play.rawValue), for: .normal)
         button.tintColor = .white
         button.setTitle(NSLocalizedString(" Watch", comment: ""), for: .normal)
         button.addTarget(self, action: #selector(pushToPresents), for: .touchUpInside)
@@ -33,7 +33,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .gray
-        button.setImage(UIImage(systemName: "note.text.badge.plus"), for: .normal)
+        button.setImage(UIImage(systemName: SystemName.addInteresting.rawValue), for: .normal)
         button.addTarget(self, action: #selector(addToInteresting), for: .touchUpInside)
         button.tintColor = .white
         return button
@@ -45,7 +45,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = .black
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
+        label.font = UIFont(name: Font.helveticaBold.rawValue, size: 20)
         return label
     }()
     
@@ -61,7 +61,7 @@ final class MainViewController: UIViewController, SetForHeaderDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .gray
-        button.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+        button.setImage(UIImage(systemName: SystemName.minus.rawValue), for: .normal)
         button.addTarget(self, action: #selector(deleteFromInteresting), for: .touchUpInside)
         button.tintColor = .white
         return button
@@ -255,7 +255,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
-        header.textLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        header.textLabel?.font = UIFont(name: Font.helveticaBold.rawValue, size: 18)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
         header.textLabel?.textColor = .white
         header.contentView.backgroundColor = .black
@@ -320,7 +320,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= view.safeAreaInsets.top + 40 {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: nil, style: .done, target: self, action: nil)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Главная", style: .done, target: self, action: #selector(back))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Main", comment: ""), style: .done, target: self, action: #selector(back))
             navigationItem.leftBarButtonItem?.tintColor = .white
         } else if scrollView.contentOffset.y == view.safeAreaInsets.top {
             var image = UIImage(named: "logo")
@@ -399,7 +399,7 @@ extension MainViewController: MyViewModelDelegate {
                 self.view.layoutIfNeeded()
             }, completion: {_ in
                 self.buttonPlay.setTitle(NSLocalizedString(" Watch", comment: ""), for: .normal)
-                self.buttonDeleteFromInteresting.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+                self.buttonDeleteFromInteresting.setImage(UIImage(systemName: SystemName.minus.rawValue), for: .normal)
                 self.buttonDeleteFromInteresting.setTitle("", for: .normal)
                 self.view.layoutIfNeeded()
             })

@@ -12,6 +12,16 @@ protocol MyViewModelDelegate: AnyObject {
     func didDeleteRemoveFromInteresting()
 }
 
+enum SystemName: String {
+    case play = "play.fill"
+    case addInteresting = "note.text.badge.plus"
+    case minus = "minus.circle"
+}
+
+enum Font: String {
+    case helveticaBold = "HelveticaNeue-Bold"
+}
+
 final class MainViewModel {
     
     enum Section: Int {
