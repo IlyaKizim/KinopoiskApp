@@ -321,11 +321,6 @@ final class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelega
         ])
     }
     
-    static func getmodalll(string: String) {
-        MovieDetailViewModel.model = string
-    }
-    
-    
     @objc private func back() {
         navigationController?.popToRootViewController(animated: true)
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -335,7 +330,7 @@ final class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelega
     @objc func pushToPresent() {
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
-        vc.configure(with: MovieDetailViewModel.model)
+        vc.configure(with: titlelabel.text ?? "")
         present(vc, animated: true, completion: nil)
     }
     

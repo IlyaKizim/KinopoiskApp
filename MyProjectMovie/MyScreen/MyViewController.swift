@@ -41,14 +41,14 @@ final class MyViewController: UIViewController, ViewModelDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        myViewModel.updateCoreData()  
+        myViewModel.updateCoreData()
+        configureNavBar()
     }
     
     private func setUp() {
         myViewModel.delegate = self
         addSubViews()
         addConstraints()
-        configureNavBar()
     }
     
     private func addSubViews() {

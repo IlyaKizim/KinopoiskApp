@@ -48,7 +48,7 @@ final class SearchViewController: UIViewController, SearchViewModelDelegate {
     }
     
     private func addSubviews () {
-        let header = HeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 1))
         view.addSubview(header)
         view.addSubview(tableView)
     }

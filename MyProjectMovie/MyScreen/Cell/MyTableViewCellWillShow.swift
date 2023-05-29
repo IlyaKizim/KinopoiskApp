@@ -20,6 +20,7 @@ final class MyTableViewCellWillShow: UITableViewCell {
         collectionView.register(MyCollectionViewCellWillShow.self, forCellWithReuseIdentifier: MyCollectionViewCellWillShow.identifire)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .black
         return collectionView
     }()
     

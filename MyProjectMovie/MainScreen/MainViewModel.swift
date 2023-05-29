@@ -1,36 +1,7 @@
 import Foundation
 import RxSwift
 
-protocol SetForHeaderDelegate: AnyObject {
-    func setUp()
-}
-
-protocol MyViewModelDelegate: AnyObject {
-    func didAddToInteresting()
-    func didRemoveFromInteresting()
-    func didDeleteFromInteresting()
-    func didDeleteRemoveFromInteresting()
-}
-
-enum SystemName: String {
-    case play = "play.fill"
-    case addInteresting = "note.text.badge.plus"
-    case minus = "minus.circle"
-}
-
-enum Font: String {
-    case helveticaBold = "HelveticaNeue-Bold"
-}
-
 final class MainViewModel {
-    
-    enum Section: Int {
-        case PopularMovies = 0
-        case TopRateMovie
-        case UpComingMovies
-        case PlayingNowMoview
-        case TVshow
-    }
     
     enum MovieData {
         case popular([Title])
@@ -40,21 +11,13 @@ final class MainViewModel {
         case watched([Title])
     }
     
-    enum APIString: String {
-        case popular = "movie/popular"
-        case topRate = "movie/top_rated"
-        case upcoming = "movie/upcoming"
-        case favorites = "movie/now_playing"
-        case wathed = "tv/on_the_air"
-    }
-    
-    weak var headerDelegate: SetForHeaderDelegate?
-    weak var delegate: MyViewModelDelegate?
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
+    private (set) var headerTitleSubject = PublishSubject<[Title]>()
+    private (set) var isActivated = true
+    private (set) var isActivatedTwo = true
+    private lazy var disposeBag = DisposeBag()
     private var apiclient: Apiclient
     private var apiclientGetMovie: ApiclientGetMovie
-    private (set) var isActivated = false
-    private (set) var isActivatedTwo = false
     lazy var movieData: [MovieData] = [.popular([]), .topRated([]), .upcoming([]), .favorites([]), .watched([])]
     lazy var integer = 0
     lazy var randomInt = Int.random(in: 0..<integer)
@@ -66,131 +29,110 @@ final class MainViewModel {
         "Favorites",
         "TV"
     ]
-//    private let addToInterestingSubject = PublishSubject<Void>()
-//    private let deleteFromInterestingSubject = PublishSubject<Void>()
-//
-//    var addToInterestingObservable: Observable<Void> {
-//        return addToInterestingSubject.asObservable()
-//    }
-//
-//    var deleteFromInterestingObservable: Observable<Void> {
-//        return deleteFromInterestingSubject.asObservable()
-//    }
+    private let addToInterestingSubject = PublishSubject<Void>()
+    private let deleteFromAddToInterestingSubject = PublishSubject<Void>()
+    private let deleteFromInterestingSubject = PublishSubject<Void>()
+    private let removeFromInterestingSubject = PublishSubject<Void>()
+    
+    var addToInterestingObservable: Observable<Void> {
+        return addToInterestingSubject.asObservable()
+    }
+    var deleteFromAddToInterestingObservable: Observable<Void> {
+        return deleteFromAddToInterestingSubject.asObservable()
+    }
+    var deleteFromInterestingObservable: Observable<Void> {
+        return deleteFromInterestingSubject.asObservable()
+    }
+    var removeFromInterestingObservable: Observable<Void> {
+        return removeFromInterestingSubject.asObservable()
+    }
     
     init(apiclient: Apiclient, apiclientGetMovie: ApiclientGetMovie) {
         self.apiclient = apiclient
         self.apiclientGetMovie = apiclientGetMovie
+        getData()
     }
     
     func addToInteresting() {
-            if !isActivated {
-                isActivated = true
-                delegate?.didAddToInteresting()
-            } else {
-                isActivated = false
-                delegate?.didRemoveFromInteresting()
-            }
+        if isActivated {
+            addToInterestingSubject.onNext(())
+        } else {
+            deleteFromAddToInterestingSubject.onNext(())
         }
-        
-        func deleteFromInteresting() {
-            if !isActivatedTwo {
-                isActivatedTwo = true
-                delegate?.didDeleteFromInteresting()
-            } else {
-                isActivatedTwo = false
-                delegate?.didDeleteRemoveFromInteresting()
-            }
-        }
-    
-//    func addToInteresting() {
-//        if !isActivated {
-//            isActivated = true
-//            addToInterestingSubject.onNext(())
-//        } else {
-//            isActivated = false
-//            deleteFromInterestingSubject.onNext(())
-//        }
-//    }
-//
-//    func deleteFromInteresting() {
-//        if !isActivatedTwo {
-//            isActivatedTwo = true
-//            deleteFromInterestingSubject.onNext(())
-//        } else {
-//            isActivatedTwo = false
-//            addToInterestingSubject.onNext(())
-//        }
-//    }
-    
-    func getData() {
-        apiclient.getTitles(from: APIString.popular.rawValue) {[weak self] result in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self?.movieData[0] = .popular(data)
-                    self?.integer = data.count
-                    self?.headerDelegate?.setUp()
-                    self?.shouldReloadTableViewPublishSubject.onNext(())
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
-        apiclient.getTitles(from: APIString.topRate.rawValue) {[weak self] (result) in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self?.movieData[1] = .topRated(data)
-                    self?.shouldReloadTableViewPublishSubject.onNext(())
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
-        apiclient.getTitles(from: APIString.upcoming.rawValue) {[weak self] (result) in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self?.movieData[2] = .upcoming(data)
-                    self?.shouldReloadTableViewPublishSubject.onNext(())
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
-        apiclient.getTitles(from: APIString.favorites.rawValue) {[weak self] (result) in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self?.movieData[3] = .favorites(data)
-                    self?.shouldReloadTableViewPublishSubject.onNext(())
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
-        apiclient.getTitles(from: APIString.wathed.rawValue) {[weak self] (result) in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self?.movieData[4] = .watched(data)
-                    self?.shouldReloadTableViewPublishSubject.onNext(())
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+        isActivated.toggle()
     }
     
-    func getMovies(indexPath: IndexPath, title: [Title]) {
-        apiclientGetMovie.getMovie(with: title[indexPath.row].originalTitle ?? ""  + " trailer") { (results) in
+    func deleteFromInteresting() {
+        if isActivatedTwo {
+            deleteFromInterestingSubject.onNext(())
+        } else {
+            removeFromInterestingSubject.onNext(())
+        }
+        isActivatedTwo.toggle()
+    }
+    
+    func getData() {
+        apiclient.getTitles(from: APIString.popular.rawValue)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] titles in
+                self?.movieData[0] = .popular(titles)
+                self?.integer = titles.count
+                self?.headerTitleSubject.onNext(titles)
+                self?.shouldReloadTableViewPublishSubject.onNext(())
+                self?.getMovie(string: titles.first?.originalTitle ?? "")
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        apiclient.getTitles(from: APIString.topRate.rawValue)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] titles in
+                self?.movieData[1] = .topRated(titles)
+                self?.shouldReloadTableViewPublishSubject.onNext(())
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        apiclient.getTitles(from: APIString.upcoming.rawValue)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] titles in
+                self?.movieData[2] = .upcoming(titles)
+                self?.shouldReloadTableViewPublishSubject.onNext(())
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        apiclient.getTitles(from: APIString.favorites.rawValue)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] titles in
+                self?.movieData[3] = .favorites(titles)
+                self?.shouldReloadTableViewPublishSubject.onNext(())
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        apiclient.getTitles(from: APIString.wathed.rawValue)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] titles in
+                self?.movieData[4] = .watched(titles)
+                self?.shouldReloadTableViewPublishSubject.onNext(())
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func getMovie(string: String) {
+        apiclientGetMovie.getMovie(with: string  + " trailer") { (results) in
             switch results {
             case .success(let videoElement):
-                MovieDetailsViewControllers.getmodalll(string: videoElement.id.videoId)
+                DispatchQueue.main.async {
+                    VideoId.id = videoElement.id.videoId
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }

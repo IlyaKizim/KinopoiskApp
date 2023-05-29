@@ -13,7 +13,7 @@ final class MediaViewController: UIViewController {
         let label = UILabel()
         label.text = mediaViewModal.titleForHeaderSection
         label.textColor = .white
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
+        label.font = UIFont(name: Font.helveticaBold.rawValue, size: 20)
         label.backgroundColor = .black
         return label
     }()
@@ -34,7 +34,6 @@ final class MediaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mediaViewModal.getData()
         setUp()
     }
     
@@ -46,22 +45,13 @@ final class MediaViewController: UIViewController {
     private func setUp() {
         addSubviews()
         addConstraints()
-        mediaViewModal.shouldReloadTableViewPublishSubject.subscribe(onNext: { [weak self] data in
+        binding()
+    }
+    
+    private func binding() {
+        mediaViewModal.shouldReloadTableViewPublishSubject.subscribe(onNext: { [weak self] _ in
             self?.tableView.reloadData()
         }).disposed(by: disposeBag)
-    }
-    
-    private func addSubviews() {
-        view.addSubview(tableView)
-    }
-    
-    private func addConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -120,5 +110,20 @@ extension MediaViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let url = URL(string: mediaViewModal.dataSourceNews[indexPath.row].url ?? "")  else {return}
         UIApplication.shared.open(url)
+    }
+}
+
+extension MediaViewController {
+    private func addSubviews() {
+        view.addSubview(tableView)
+    }
+    
+    private func addConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 }

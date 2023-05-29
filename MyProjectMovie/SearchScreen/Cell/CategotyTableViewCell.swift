@@ -16,6 +16,7 @@ final class CategotyTableViewCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .black
         collectionView.register(CategotyCollectionViewCell.self, forCellWithReuseIdentifier: CategotyCollectionViewCell.identifire)
         return collectionView
     }()

@@ -22,6 +22,7 @@ final class MovieDetailsActorsCellTableView: UITableViewCell {
         collectionView.register(ActrorsWhoPlayingCollectionViewCell.self, forCellWithReuseIdentifier: ActrorsWhoPlayingCollectionViewCell.identifire)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .black
         return collectionView
     }()
     

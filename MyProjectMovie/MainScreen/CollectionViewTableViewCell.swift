@@ -9,7 +9,7 @@ final class CollectionViewTableViewCell: UITableViewCell {
     static let identifire = "CollectionViewTableViewCell"
     weak var delegate: CollectionViewTableViewCellDelegate?
     private var titles: [Title] = [Title]()
-    private let mainViewModel = MainViewModel(apiclient: APICaller(), apiclientGetMovie: APICaller())
+    private let presentPlayViewModel: PresentPlayViewModel
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -21,10 +21,12 @@ final class CollectionViewTableViewCell: UITableViewCell {
         collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifire)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .black
         return collectionView
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier reuseIdentifiers: String?) {
+        self.presentPlayViewModel = PresentPlayViewModel(apiclientGetMovie: APICaller())
         super.init(style: style, reuseIdentifier: reuseIdentifiers)
         setUp()
     }
@@ -75,10 +77,10 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let model = titles[indexPath.row]
+        presentPlayViewModel.getMovies(string: model.originalTitle ?? "")
         
-        mainViewModel.getMovies(indexPath: indexPath, title: titles)
-        
-        let viewModel = Title(id: titles[indexPath.row].id, originalLanguage: titles[indexPath.row].originalLanguage, originalTitle: titles[indexPath.row].originalTitle, posterPath: titles[indexPath.row].posterPath, overview: titles[indexPath.row].overview, voteCount: titles[indexPath.row].voteCount, releaseDate: titles[indexPath.row].releaseDate, voteAverage: titles[indexPath.row].voteAverage)
+        let viewModel = Title(id: model.id, originalLanguage: model.originalLanguage, originalTitle: model.originalTitle, posterPath: model.posterPath, overview: model.overview, voteCount: model.voteCount, releaseDate: model.releaseDate, voteAverage: model.voteAverage)
         
         delegate?.collectionViewTableViewCellDelegate(cell: self, viewModel: viewModel)
     }

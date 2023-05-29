@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,7 +29,6 @@
 		3140017E29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017D29B4C76300C5B6A0 /* MyCollectionViewCellWillShow.swift */; };
 		3140018029B5FCB800C5B6A0 /* PresentShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140017F29B5FCB800C5B6A0 /* PresentShareViewController.swift */; };
 		3140018329B6031400C5B6A0 /* PresentMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3140018229B6031400C5B6A0 /* PresentMoreViewController.swift */; };
-		31521EEA29FBAFFD0099D15C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 31521EE929FBAFFD0099D15C /* RxSwift */; };
 		316972C2298D2B9D003B7270 /* SearchResultsControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C1298D2B9D003B7270 /* SearchResultsControllerViewController.swift */; };
 		316972C4298D3623003B7270 /* SearchresultTableViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972C3298D3623003B7270 /* SearchresultTableViewTableViewCell.swift */; };
 		316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316972D0299119A0003B7270 /* SearchViewModel.swift */; };
@@ -46,7 +45,6 @@
 		3195D70C296D736D00FA9F6C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195D70B296D736D00FA9F6C /* SearchViewController.swift */; };
 		3195D70F296D737900FA9F6C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195D70E296D737900FA9F6C /* ProfileViewController.swift */; };
 		3195D712296D739600FA9F6C /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195D711296D739600FA9F6C /* CollectionViewTableViewCell.swift */; };
-		3195D715296D73AD00FA9F6C /* HeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195D714296D73AD00FA9F6C /* HeaderUIView.swift */; };
 		3195D71B296D936D00FA9F6C /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195D71A296D936D00FA9F6C /* APICaller.swift */; };
 		3195D721296D9F7600FA9F6C /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3195D720296D9F7600FA9F6C /* Title.swift */; };
 		31A5ED82299CF24F004FE23A /* ModelPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A5ED81299CF24F004FE23A /* ModelPeople.swift */; };
@@ -61,7 +59,6 @@
 		31E8CA5229DAD9FC0077E780 /* CoreDataManagerTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E8CA5129DAD9FC0077E780 /* CoreDataManagerTwo.swift */; };
 		31EE9D79297047CB006EA937 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EE9D78297047CB006EA937 /* Extensions.swift */; };
 		31EE9D8329705F69006EA937 /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EE9D8229705F69006EA937 /* TitleCollectionViewCell.swift */; };
-		31EE9D9A29707385006EA937 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 31EE9D9929707385006EA937 /* Kingfisher */; };
 		31EEDBD829A4ECF700235B48 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEDBD729A4ECF700235B48 /* News.swift */; };
 		31EEDBDA29A4EED100235B48 /* MediaViewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEDBD929A4EED100235B48 /* MediaViewModal.swift */; };
 		31EEDBDD29A4EEF600235B48 /* MediaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEDBDC29A4EEF600235B48 /* MediaTableViewCell.swift */; };
@@ -70,6 +67,11 @@
 		31FCA7EC29D990E20013DB6C /* MyViewControllerTablePackeges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FCA7EB29D990E20013DB6C /* MyViewControllerTablePackeges.swift */; };
 		31FCA7EE29D9911B0013DB6C /* MyTableViewCellPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FCA7ED29D9911B0013DB6C /* MyTableViewCellPackages.swift */; };
 		31FCA7F129D99FB40013DB6C /* MyProjectMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31FCA7EF29D99FB40013DB6C /* MyProjectMovie.xcdatamodeld */; };
+		B9D1F80A2A220862000167E3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D1F8092A220862000167E3 /* Enums.swift */; };
+		B9D1F80E2A2221BE000167E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D1F80D2A2221BE000167E3 /* Constants.swift */; };
+		B9D1F8112A2248D8000167E3 /* PresentPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D1F8102A2248D8000167E3 /* PresentPlayViewModel.swift */; };
+		B9EF11A52A163588003F33E8 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B9EF11A42A163588003F33E8 /* RxSwift */; };
+		B9EF11AA2A1635C2003F33E8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B9EF11A92A1635C2003F33E8 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -127,7 +129,6 @@
 		3195D70B296D736D00FA9F6C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		3195D70E296D737900FA9F6C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		3195D711296D739600FA9F6C /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
-		3195D714296D73AD00FA9F6C /* HeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderUIView.swift; sourceTree = "<group>"; };
 		3195D71A296D936D00FA9F6C /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		3195D720296D9F7600FA9F6C /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
 		31A5ED81299CF24F004FE23A /* ModelPeople.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelPeople.swift; sourceTree = "<group>"; };
@@ -150,6 +151,9 @@
 		31FCA7EB29D990E20013DB6C /* MyViewControllerTablePackeges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewControllerTablePackeges.swift; sourceTree = "<group>"; };
 		31FCA7ED29D9911B0013DB6C /* MyTableViewCellPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCellPackages.swift; sourceTree = "<group>"; };
 		31FCA7F029D99FB40013DB6C /* RateMovie.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RateMovie.xcdatamodel; sourceTree = "<group>"; };
+		B9D1F8092A220862000167E3 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		B9D1F80D2A2221BE000167E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B9D1F8102A2248D8000167E3 /* PresentPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentPlayViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,8 +161,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31521EEA29FBAFFD0099D15C /* RxSwift in Frameworks */,
-				31EE9D9A29707385006EA937 /* Kingfisher in Frameworks */,
+				B9EF11AA2A1635C2003F33E8 /* Kingfisher in Frameworks */,
+				B9EF11A52A163588003F33E8 /* RxSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +194,6 @@
 			children = (
 				3195D702296D733F00FA9F6C /* MainViewController.swift */,
 				3109B5B829756FB70032EE5A /* MainViewModel.swift */,
-				3195D714296D73AD00FA9F6C /* HeaderUIView.swift */,
 				316972C7298F0D6B003B7270 /* Cell */,
 				3195D711296D739600FA9F6C /* CollectionViewTableViewCell.swift */,
 				31EE9D8229705F69006EA937 /* TitleCollectionViewCell.swift */,
@@ -212,6 +215,7 @@
 				3130F94D29ACFD8A001364CC /* MovieDetailViewModel.swift */,
 				31756A10299E78E20005E6DE /* DetailActorViewController.swift */,
 				313A7BA6297B029C003ACAD1 /* PresentPlayViewController.swift */,
+				B9D1F80F2A2248BC000167E3 /* PresentPlatViewModel */,
 				3130F94F29AD003C001364CC /* PresentRateViewController.swift */,
 				313839E829B75B4500104A68 /* PresentRateViewModel.swift */,
 				3140018129B602E000C5B6A0 /* PresentsViewForButton */,
@@ -321,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				3195D71A296D936D00FA9F6C /* APICaller.swift */,
+				B9D1F80D2A2221BE000167E3 /* Constants.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -382,6 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				31EE9D78297047CB006EA937 /* Extensions.swift */,
+				B9D1F8092A220862000167E3 /* Enums.swift */,
 			);
 			path = Resourses;
 			sourceTree = "<group>";
@@ -392,6 +398,14 @@
 				31EEDBDC29A4EEF600235B48 /* MediaTableViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		B9D1F80F2A2248BC000167E3 /* PresentPlatViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B9D1F8102A2248D8000167E3 /* PresentPlayViewModel.swift */,
+			);
+			path = PresentPlatViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,8 +426,8 @@
 			);
 			name = MyProjectMovie;
 			packageProductDependencies = (
-				31EE9D9929707385006EA937 /* Kingfisher */,
-				31521EE929FBAFFD0099D15C /* RxSwift */,
+				B9EF11A42A163588003F33E8 /* RxSwift */,
+				B9EF11A92A1635C2003F33E8 /* Kingfisher */,
 			);
 			productName = MyProjectMovie;
 			productReference = 318264A529D9B05E00AE53B3 /* MyProjectMovie.app */;
@@ -425,8 +439,9 @@
 		3195D6E2296D72FB00FA9F6C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					3195D6E9296D72FB00FA9F6C = {
 						CreatedOnToolsVersion = 12.4;
@@ -444,8 +459,8 @@
 			);
 			mainGroup = 3195D6E1296D72FB00FA9F6C;
 			packageReferences = (
-				31EE9D9829707385006EA937 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				31521EE829FBAFFD0099D15C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				B9EF11A32A163588003F33E8 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				B9EF11A82A1635C2003F33E8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 3195D6E1296D72FB00FA9F6C;
 			projectDirPath = "";
@@ -494,6 +509,7 @@
 				31A5ED88299D30D5004FE23A /* DetailTableViewCell.swift in Sources */,
 				31EEDBD829A4ECF700235B48 /* News.swift in Sources */,
 				313839E929B75B4500104A68 /* PresentRateViewModel.swift in Sources */,
+				B9D1F80A2A220862000167E3 /* Enums.swift in Sources */,
 				3195D6F0296D72FB00FA9F6C /* SceneDelegate.swift in Sources */,
 				31756A11299E78E20005E6DE /* DetailActorViewController.swift in Sources */,
 				31E6743129B1E696006E1F91 /* PeopleWhoPlayingInMovieModel.swift in Sources */,
@@ -508,6 +524,7 @@
 				31EE9D8329705F69006EA937 /* TitleCollectionViewCell.swift in Sources */,
 				31E6743529B1F0C9006E1F91 /* ActrorsWhoPlayingCollectionViewCell.swift in Sources */,
 				312CE9D0297EA84A0086390A /* SearchCollectionViewCell.swift in Sources */,
+				B9D1F80E2A2221BE000167E3 /* Constants.swift in Sources */,
 				31EEDBDA29A4EED100235B48 /* MediaViewModal.swift in Sources */,
 				316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */,
 				3195D709296D736000FA9F6C /* MyViewController.swift in Sources */,
@@ -519,13 +536,13 @@
 				31A5ED90299E4131004FE23A /* MovieListActor.swift in Sources */,
 				3130F94C29ACBA86001364CC /* MovieDetailsTableViewCell.swift in Sources */,
 				3109B6352978751E0032EE5A /* MovieDetailsViewControllers.swift in Sources */,
+				B9D1F8112A2248D8000167E3 /* PresentPlayViewModel.swift in Sources */,
 				31E6743329B1F069006E1F91 /* MovieDetailsActorsCellTableView.swift in Sources */,
 				316972C2298D2B9D003B7270 /* SearchResultsControllerViewController.swift in Sources */,
 				31FCA7F129D99FB40013DB6C /* MyProjectMovie.xcdatamodeld in Sources */,
 				3130F94E29ACFD8A001364CC /* MovieDetailViewModel.swift in Sources */,
 				3195D703296D733F00FA9F6C /* MainViewController.swift in Sources */,
 				31FCA7EC29D990E20013DB6C /* MyViewControllerTablePackeges.swift in Sources */,
-				3195D715296D73AD00FA9F6C /* HeaderUIView.swift in Sources */,
 				31EE9D79297047CB006EA937 /* Extensions.swift in Sources */,
 				313A7BA9297C0C6D003ACAD1 /* YouTubeModel.swift in Sources */,
 				31A5ED8A299D4D4A004FE23A /* DetailViewModel.swift in Sources */,
@@ -728,33 +745,33 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		31521EE829FBAFFD0099D15C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		B9EF11A32A163588003F33E8 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.5.0;
+				minimumVersion = 6.6.0;
 			};
 		};
-		31EE9D9829707385006EA937 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		B9EF11A82A1635C2003F33E8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.5.0;
+				minimumVersion = 7.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		31521EE929FBAFFD0099D15C /* RxSwift */ = {
+		B9EF11A42A163588003F33E8 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31521EE829FBAFFD0099D15C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = B9EF11A32A163588003F33E8 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
-		31EE9D9929707385006EA937 /* Kingfisher */ = {
+		B9EF11A92A1635C2003F33E8 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31EE9D9829707385006EA937 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = B9EF11A82A1635C2003F33E8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */

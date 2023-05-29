@@ -12,7 +12,6 @@ final class MovieDetailViewModel {
     weak var delegate: ViewModelDelegate?
     weak var movieDelegate: MovieDetailViewDelegate?
     lazy var label = 0.0
-    static var model = ""
     lazy var titles: [Title] = []
     private var apiGetActorsWhoPlayingMovie: ApiclientGetActorsWhoPlaingInMovie
     private var apiGetDetailActor: ApiclientGetDetailActor
