@@ -1,38 +1,43 @@
+
 import Foundation
 import RxSwift
 
 final class MainViewModel {
     
-    enum MovieData {
-        case popular([Title])
-        case topRated([Title])
-        case upcoming([Title])
-        case favorites([Title])
-        case watched([Title])
-    }
+    //MARK: Observable properties
     
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
     private (set) var headerTitleSubject = PublishSubject<[Title]>()
+    
+    //MARK: Flags
+    
     private (set) var isActivated = true
     private (set) var isActivatedTwo = true
-    private lazy var disposeBag = DisposeBag()
+    
+    //MARK: Properties
+    
     private var apiclient: Apiclient
-    private var apiclientGetMovie: ApiclientGetMovie
+    private lazy var disposeBag = DisposeBag()
     lazy var movieData: [MovieData] = [.popular([]), .topRated([]), .upcoming([]), .favorites([]), .watched([])]
     lazy var integer = 0
     lazy var randomInt = Int.random(in: 0..<integer)
     lazy var radius = 20
-    lazy var titleForHeaderSection = [
-        "Popular",
-        "Top Rate",
-        "Upcoming",
-        "Favorites",
-        "TV"
+    lazy var titleForHeaderSection: [String] = [
+        TitleHeaderSection.popular.rawValue,
+        TitleHeaderSection.topRated.rawValue,
+        TitleHeaderSection.upcoming.rawValue,
+        TitleHeaderSection.favorites.rawValue,
+        TitleHeaderSection.tv.rawValue
     ]
+    
+    //MARK: Subjects
+    
     private let addToInterestingSubject = PublishSubject<Void>()
     private let deleteFromAddToInterestingSubject = PublishSubject<Void>()
     private let deleteFromInterestingSubject = PublishSubject<Void>()
     private let removeFromInterestingSubject = PublishSubject<Void>()
+    
+    //MARK: Event Tracking Properties
     
     var addToInterestingObservable: Observable<Void> {
         return addToInterestingSubject.asObservable()
@@ -47,11 +52,14 @@ final class MainViewModel {
         return removeFromInterestingSubject.asObservable()
     }
     
-    init(apiclient: Apiclient, apiclientGetMovie: ApiclientGetMovie) {
+    //MARK: Initialization
+    
+    init(apiclient: Apiclient) {
         self.apiclient = apiclient
-        self.apiclientGetMovie = apiclientGetMovie
         getData()
     }
+    
+    //MARK: Metods
     
     func addToInteresting() {
         if isActivated {
@@ -70,6 +78,8 @@ final class MainViewModel {
         }
         isActivatedTwo.toggle()
     }
+    
+    //MARK: - Get Data
     
     func getData() {
         apiclient.getTitles(from: APIString.popular.rawValue)
@@ -127,16 +137,19 @@ final class MainViewModel {
     }
     
     func getMovie(string: String) {
-        apiclientGetMovie.getMovie(with: string  + " trailer") { (results) in
-            switch results {
-            case .success(let videoElement):
-                DispatchQueue.main.async {
+        apiclient.getMovie(with: string + " trailer")
+            .observe(on: MainScheduler.instance)
+            .subscribe { event in
+                switch event {
+                case .next(let videoElement):
                     VideoId.id = videoElement.id.videoId
+                case .error(let error):
+                    print(error.localizedDescription)
+                case .completed:
+                    break
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
-        }
+            .disposed(by: disposeBag)
     }
 }
 

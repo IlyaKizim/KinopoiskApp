@@ -33,4 +33,40 @@ enum Section: Int {
     case TVshow
 }
 
+enum TitleHeaderSection: String {
+    case popular = "Popular"
+    case topRated = "Top Rate"
+    case upcoming = "Upcoming"
+    case favorites = "Favorites"
+    case tv = "TV"
+}
 
+enum MovieData {
+    case popular([Title])
+    case topRated([Title])
+    case upcoming([Title])
+    case favorites([Title])
+    case watched([Title])
+}
+
+enum MovieError: Error, CustomNSError {
+    case apiError
+    case invalidEndPoint
+    case invalidResponce
+    case noData
+    case serializationError
+    
+    var localizeDescription: String {
+        switch self {
+        case .apiError: return "Failed to fetch data"
+        case .invalidEndPoint: return "Invalid endPoint"
+        case .invalidResponce: return "Invalid responce"
+        case .noData: return "No data"
+        case .serializationError: return "Failed to decode data"
+        }
+    }
+    
+    var errorUserInfo: [String : Any] {
+        [NSLocalizedDescriptionKey: localizeDescription]
+    }
+}

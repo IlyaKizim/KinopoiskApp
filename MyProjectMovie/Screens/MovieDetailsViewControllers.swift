@@ -170,7 +170,7 @@ final class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelega
     }()
     
     private lazy var flagRate = false
-    private lazy var movieDetailViewModel = MovieDetailViewModel(apiGetActorsWhoPlayingMovie: APICaller(), apiGetDetailActor: APICaller(), apiGetMoviesForActor: APICaller())
+    private lazy var movieDetailViewModel = MovieDetailViewModel(apiGetActorsWhoPlayingMovie: APICaller())
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -330,7 +330,7 @@ final class MovieDetailsViewControllers: UIViewController, MovieDetailViewDelega
     @objc func pushToPresent() {
         let vc = PresentPlayViewController()
         vc.modalPresentationStyle = .fullScreen
-        vc.configure(with: titlelabel.text ?? "")
+        vc.configure(with: VideoId.id)
         present(vc, animated: true, completion: nil)
     }
     

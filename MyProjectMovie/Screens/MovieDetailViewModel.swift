@@ -13,15 +13,14 @@ final class MovieDetailViewModel {
     weak var movieDelegate: MovieDetailViewDelegate?
     lazy var label = 0.0
     lazy var titles: [Title] = []
-    private var apiGetActorsWhoPlayingMovie: ApiclientGetActorsWhoPlaingInMovie
-    private var apiGetDetailActor: ApiclientGetDetailActor
-    private var apiGetMoviesForActor: ApiclientGetListMoviewsForActors
+    private var apiGetActorsWhoPlayingMovie: Apiclient
+//    private var apiGetDetailActor: ApiclientGetDetailActor
+//    private var apiGetMoviesForActor: ApiclientGetListMoviewsForActors
  
-    init(apiGetActorsWhoPlayingMovie: ApiclientGetActorsWhoPlaingInMovie, apiGetDetailActor: ApiclientGetDetailActor, apiGetMoviesForActor: ApiclientGetListMoviewsForActors){
+    init(apiGetActorsWhoPlayingMovie: Apiclient){
         self.apiGetActorsWhoPlayingMovie = apiGetActorsWhoPlayingMovie
-        self.apiGetDetailActor = apiGetDetailActor
-        self.apiGetMoviesForActor = apiGetMoviesForActor
     }
+    
     func heightForRow (indexPath: IndexPath) -> Int {
         switch indexPath.section {
         case 0: return 200
@@ -52,7 +51,7 @@ final class MovieDetailViewModel {
         vc.setUpForAnotherWay(with: viewModel)
         vc.navigationItem.leftBarButtonItem?.tintColor = .white
         guard let id = viewModel.id else {return}
-        apiGetDetailActor.getDetailActor(with: String(id)) { [weak self] (result) in
+        apiGetActorsWhoPlayingMovie.getDetailActor(with: String(id)) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let titles):
@@ -64,7 +63,7 @@ final class MovieDetailViewModel {
                 }
             }
         }
-        apiGetMoviesForActor.getListMoviesForActors(with: String(id)) {[weak self] (result) in
+        apiGetActorsWhoPlayingMovie.getListMoviesForActors(with: String(id)) {[weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let result):

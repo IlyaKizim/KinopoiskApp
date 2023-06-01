@@ -67,6 +67,11 @@
 		31FCA7EC29D990E20013DB6C /* MyViewControllerTablePackeges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FCA7EB29D990E20013DB6C /* MyViewControllerTablePackeges.swift */; };
 		31FCA7EE29D9911B0013DB6C /* MyTableViewCellPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FCA7ED29D9911B0013DB6C /* MyTableViewCellPackages.swift */; };
 		31FCA7F129D99FB40013DB6C /* MyProjectMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31FCA7EF29D99FB40013DB6C /* MyProjectMovie.xcdatamodeld */; };
+		B96434FF2A261BBC00660536 /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96434FE2A261BBC00660536 /* AnimationHelper.swift */; };
+		B96435012A261D1000660536 /* ScrollHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96435002A261D1000660536 /* ScrollHelper.swift */; };
+		B96435032A2625C000660536 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96435022A2625C000660536 /* ViewFactory.swift */; };
+		B96435052A2634AE00660536 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96435042A2634AE00660536 /* NetworkService.swift */; };
+		B96435072A26374000660536 /* CellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96435062A26374000660536 /* CellFactory.swift */; };
 		B9D1F80A2A220862000167E3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D1F8092A220862000167E3 /* Enums.swift */; };
 		B9D1F80E2A2221BE000167E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D1F80D2A2221BE000167E3 /* Constants.swift */; };
 		B9D1F8112A2248D8000167E3 /* PresentPlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D1F8102A2248D8000167E3 /* PresentPlayViewModel.swift */; };
@@ -151,6 +156,11 @@
 		31FCA7EB29D990E20013DB6C /* MyViewControllerTablePackeges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewControllerTablePackeges.swift; sourceTree = "<group>"; };
 		31FCA7ED29D9911B0013DB6C /* MyTableViewCellPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCellPackages.swift; sourceTree = "<group>"; };
 		31FCA7F029D99FB40013DB6C /* RateMovie.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RateMovie.xcdatamodel; sourceTree = "<group>"; };
+		B96434FE2A261BBC00660536 /* AnimationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
+		B96435002A261D1000660536 /* ScrollHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollHelper.swift; sourceTree = "<group>"; };
+		B96435022A2625C000660536 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
+		B96435042A2634AE00660536 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		B96435062A26374000660536 /* CellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellFactory.swift; sourceTree = "<group>"; };
 		B9D1F8092A220862000167E3 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		B9D1F80D2A2221BE000167E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B9D1F8102A2248D8000167E3 /* PresentPlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentPlayViewModel.swift; sourceTree = "<group>"; };
@@ -194,9 +204,13 @@
 			children = (
 				3195D702296D733F00FA9F6C /* MainViewController.swift */,
 				3109B5B829756FB70032EE5A /* MainViewModel.swift */,
+				B96434FE2A261BBC00660536 /* AnimationHelper.swift */,
+				B96435002A261D1000660536 /* ScrollHelper.swift */,
+				B96435022A2625C000660536 /* ViewFactory.swift */,
 				316972C7298F0D6B003B7270 /* Cell */,
 				3195D711296D739600FA9F6C /* CollectionViewTableViewCell.swift */,
 				31EE9D8229705F69006EA937 /* TitleCollectionViewCell.swift */,
+				B96435062A26374000660536 /* CellFactory.swift */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
@@ -325,6 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				3195D71A296D936D00FA9F6C /* APICaller.swift */,
+				B96435042A2634AE00660536 /* NetworkService.swift */,
 				B9D1F80D2A2221BE000167E3 /* Constants.swift */,
 			);
 			path = Managers;
@@ -497,6 +512,7 @@
 				312CE9D6297ECFCD0086390A /* CategotyTableViewCell.swift in Sources */,
 				3195D6F2296D72FB00FA9F6C /* ViewController.swift in Sources */,
 				3195D70C296D736D00FA9F6C /* SearchViewController.swift in Sources */,
+				B96434FF2A261BBC00660536 /* AnimationHelper.swift in Sources */,
 				312CE9D8297ECFEE0086390A /* CategotyCollectionViewCell.swift in Sources */,
 				3195D706296D735400FA9F6C /* MediaViewController.swift in Sources */,
 				316972C4298D3623003B7270 /* SearchresultTableViewTableViewCell.swift in Sources */,
@@ -528,8 +544,11 @@
 				31EEDBDA29A4EED100235B48 /* MediaViewModal.swift in Sources */,
 				316972D1299119A0003B7270 /* SearchViewModel.swift in Sources */,
 				3195D709296D736000FA9F6C /* MyViewController.swift in Sources */,
+				B96435032A2625C000660536 /* ViewFactory.swift in Sources */,
 				3195D70F296D737900FA9F6C /* ProfileViewController.swift in Sources */,
+				B96435052A2634AE00660536 /* NetworkService.swift in Sources */,
 				3195D71B296D936D00FA9F6C /* APICaller.swift in Sources */,
+				B96435072A26374000660536 /* CellFactory.swift in Sources */,
 				31A5ED82299CF24F004FE23A /* ModelPeople.swift in Sources */,
 				31EEDBE129A8D3AB00235B48 /* MyTableViewCellTwo.swift in Sources */,
 				31FCA7EE29D9911B0013DB6C /* MyTableViewCellPackages.swift in Sources */,
@@ -544,6 +563,7 @@
 				3195D703296D733F00FA9F6C /* MainViewController.swift in Sources */,
 				31FCA7EC29D990E20013DB6C /* MyViewControllerTablePackeges.swift in Sources */,
 				31EE9D79297047CB006EA937 /* Extensions.swift in Sources */,
+				B96435012A261D1000660536 /* ScrollHelper.swift in Sources */,
 				313A7BA9297C0C6D003ACAD1 /* YouTubeModel.swift in Sources */,
 				31A5ED8A299D4D4A004FE23A /* DetailViewModel.swift in Sources */,
 				3109B5B929756FB70032EE5A /* MainViewModel.swift in Sources */,

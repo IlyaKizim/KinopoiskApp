@@ -1,46 +1,8 @@
 import Foundation
 import RxSwift
 
-enum APIError: Error {
-    case failedTogetData
-    case invalidURL
-    case invalidResponse
-}
 
-protocol Apiclient {  
-    func getTitles(from path: String) -> Observable<[Title]>
-}
-
-protocol ApiclientSearch {
-    func search (with query: String, completion: @escaping (Result<[Title], Error>) -> Void)
-}
-
-protocol ApicleintGetPopularPeople {
-    func getPopularPeople(completion: @escaping (Result<[People], Error>) -> Void)
-}
-
-protocol ApiclientGetDetailActor {
-    func getDetailActor(with query: String, completion: @escaping (Result<DetailActor, Error>) -> Void)
-}
-
-protocol  ApiclientGetMovie {
-    func getMovie(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void)
-}
-
-protocol ApiclientGetListMoviewsForActors {
-    func getListMoviesForActors(with query: String, completion: @escaping (Result<[List], Error>) -> Void)
-}
-
-protocol ApiclientGetNews {
-    func getNews() -> Observable<[News]>
-}
-
-protocol ApiclientGetActorsWhoPlaingInMovie {
-    func getActorsWhoPlayingInMovie(with query: String, completion: @escaping (Result<[ActrosWhoPlaying], Error>) -> Void)
-}
-
-final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaingInMovie, ApiclientGetNews, ApiclientGetListMoviewsForActors, ApiclientGetDetailActor, ApicleintGetPopularPeople, ApiclientSearch {
-    
+final class APICaller: Apiclient {
     
     func getTitles(from path: String) -> Observable<[Title]> {
         return Observable.create { observer in
@@ -77,27 +39,42 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
         }
     }
     
-    func getMovie(with query: String, completion: @escaping (Result<VideoElement, Error>) -> Void) {
-        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
-        guard let url = URL(string: "\(ConstantsURL.YouTubeBaseUrl)q=\(query)&key=\(ConstantsURL.YouTubeAPI_Key)") else {return}
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
-            guard let data = data, error == nil else {
-                completion(.failure(APIError.failedTogetData))
-                return
+    func getMovie(with query: String) -> Observable<VideoElement> {
+        
+        return Observable.create { observer in
+            guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+                observer.onError(APIError.invalidQuery)
+                return Disposables.create()
             }
-            guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
-                completion(.failure(APIError.invalidResponse))
-                return
+            guard let url = URL(string: "\(ConstantsURL.YouTubeBaseUrl)q=\(query)&key=\(ConstantsURL.YouTubeAPI_Key)") else {
+                observer.onError(APIError.invalidURL)
+                return Disposables.create()
             }
-            do {
-                let results = try JSONDecoder().decode(YoutubeModel.self, from: data)
-                completion(.success(results.items[0]))
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                guard let data = data, error == nil else {
+                    observer.onError(APIError.failedTogetData)
+                    return
+                }
+                guard let httpResponse = response as? HTTPURLResponse, 200 ..< 300 ~= httpResponse.statusCode else {
+                    observer.onError(APIError.invalidResponse)
+                    return
+                }
+                do {
+                    let results = try JSONDecoder().decode(YoutubeModel.self, from: data)
+                    if let videoElement = results.items.first {
+                        observer.onNext(videoElement)
+                        observer.onCompleted()
+                    }
+                } catch {
+                    observer.onError(APIError.failedTogetData)
+                }
             }
-            catch {
-                completion(.failure(error))
+            task.resume()
+            
+            return Disposables.create {
+                task.cancel()
             }
         }
-        task.resume()
     }
     
     func search (with query: String, completion: @escaping (Result<[Title], Error>) -> Void) {
@@ -122,6 +99,7 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
         }
         task.resume()
     }
+    
     func getPopularPeople(completion: @escaping (Result<[People], Error>) -> Void) {
         guard let url = URL(string: "\(ConstantsURL.basicURL)/3/person/popular?api_key=\(ConstantsURL.APIKey)&language=en-US&page=1") else {return}
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
@@ -143,6 +121,7 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
         }
         task.resume()
     }
+    
     func getDetailActor(with query: String, completion: @escaping (Result<DetailActor, Error>) -> Void) {
         let query = query
         guard let url = URL(string: "\(ConstantsURL.basicURL)/3/person/\(query)?api_key=\(ConstantsURL.APIKey)&language=en-US") else {return}
@@ -242,4 +221,38 @@ final class APICaller: Apiclient, ApiclientGetMovie, ApiclientGetActorsWhoPlaing
         task.resume()
     }
 }
+    
+    //    private func loadUrlAndDecode<D: Decodable>(url: URL, params: [String: String]? = nil, completion: @escaping(Result<D, MovieError>) -> ()) {
+    //
+    //        Constants.urlSession.dataTask(with: url) {[weak self] (data, responce, error) in
+    //            guard let self = self else { return }
+    //            if error != nil {
+    //                self.executeCompletionhendlerMainThread(with: .failure(.apiError), completion: completion)
+    //                return
+    //            }
+    //
+    //            guard let httpResponce = responce as? HTTPURLResponse, 200..<300 ~= httpResponce.statusCode else {
+    //                self.executeCompletionhendlerMainThread(with: .failure(.invalidResponce), completion: completion)
+    //                return
+    //            }
+    //
+    //            guard let data = data else {
+    //                self.executeCompletionhendlerMainThread(with: .failure(.noData), completion: completion)
+    //                return
+    //            }
+    //
+    //            do {
+    //                let decoderResponce = try Constants.jsonDecoder.decode(D.self, from: data)
+    //                self.executeCompletionhendlerMainThread(with: .success(decoderResponce), completion: completion)
+    //            } catch {
+    //                self.executeCompletionhendlerMainThread(with: .failure(.serializationError), completion: completion)
+    //            }
+    //        }.resume()
+    //    }
+    //
+    //    private func executeCompletionhendlerMainThread<D: Decodable>(with result: Result<D, MovieError>, completion: @escaping(Result<D, MovieError>) -> ()) {
+    //        DispatchQueue.main.async {
+    //            completion(result)
+    //        }
+    //    }
 

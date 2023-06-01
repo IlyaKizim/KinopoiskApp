@@ -6,25 +6,33 @@
 //
 
 import Foundation
+import RxSwift
 
 class PresentPlayViewModel {
     
-    private var apiclientGetMovie: ApiclientGetMovie
+    private var apiclientGetMovie: Apiclient
+    lazy var disposeBag = DisposeBag()
     
-    init(apiclientGetMovie: ApiclientGetMovie) {
+    init(apiclientGetMovie: Apiclient) {
         self.apiclientGetMovie = apiclientGetMovie
     }
     
-    func getMovies(string: String) {
-        apiclientGetMovie.getMovie(with: string  + " trailer") { (results) in
-            switch results {
-            case .success(let videoElement):
-                DispatchQueue.main.async {
+    func getMovie(string: String) {
+        apiclientGetMovie.getMovie(with: string + " trailer")
+            .observe(on: MainScheduler.instance)
+            .subscribe { event in
+                
+                switch event {
+                case .next(let videoElement):
                     VideoId.id = videoElement.id.videoId
+                    print(VideoId.id )
+                case .error(let error):
+                    print(error.localizedDescription)
+                case .completed:
+                    // Handle completion if needed
+                    break
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
-        }
+            .disposed(by: disposeBag)
     }
 }

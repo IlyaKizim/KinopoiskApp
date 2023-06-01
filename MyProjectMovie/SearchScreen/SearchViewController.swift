@@ -2,7 +2,7 @@ import UIKit
 
 final class SearchViewController: UIViewController, SearchViewModelDelegate {
     
-    private lazy var searhcViewModel = SearchViewModel(apiclientGetPopularPeople: APICaller(), apiclientGetDetailActor: APICaller(), apiclientgetListMoviesForActors: APICaller(), apiclientSearch: APICaller())
+    private lazy var searhcViewModel = SearchViewModel(apiclientGetPopularPeople: APICaller())
     
     private lazy var bgColorView: UIView = {
         let view = UIView()

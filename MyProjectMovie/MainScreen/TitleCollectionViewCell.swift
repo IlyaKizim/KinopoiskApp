@@ -1,37 +1,17 @@
+
 import UIKit
 
 final class TitleCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
     static let identifire = "TitleCollectionViewCell"
+    private lazy var posterImageView: UIImageView = CellFactory.posterImageView()
+    private lazy var conteinerView: UIView = CellFactory.conteinerView()
+    private lazy var label: UILabel = CellFactory.label()
+    private lazy var labelForRate: UILabel = CellFactory.labelForRate()
     
-    private lazy var posterImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-    
-    private lazy var conteinerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private lazy var label: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .black
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private lazy var labelForRate: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .green
-        label.tintColor = .black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    //MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,11 +21,21 @@ final class TitleCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+extension TitleCollectionViewCell {
+    
+    //MARK: - Setup UI
     
     private func setUp() {
         addSubviews()
         setConstraints()
     }
+}
+
+extension TitleCollectionViewCell {
+    
+    //MARK: - AddSubviews
     
     private func addSubviews() {
         contentView.addSubview(conteinerView)
@@ -53,6 +43,11 @@ final class TitleCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(labelForRate)
         conteinerView.addSubview(posterImageView)
     }
+}
+
+extension TitleCollectionViewCell {
+    
+    //MARK: - Constraints
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
@@ -80,8 +75,14 @@ final class TitleCollectionViewCell: UICollectionViewCell {
             labelForRate.heightAnchor.constraint(equalToConstant: 25)
         ])
     }
+}
+
+extension TitleCollectionViewCell {
+    
+    //MARK: - Configuration
+    
     func configuration(with model: Title) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterPath ?? "")") else {
+        guard let url = URL(string: "\(ConstantsURL.image)\(model.posterPath ?? "")") else {
             return
         }
         posterImageView.kf.setImage(with: url)

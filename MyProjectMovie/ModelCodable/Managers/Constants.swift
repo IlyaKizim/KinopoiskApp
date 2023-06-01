@@ -19,7 +19,8 @@ enum ConstantsURL {
 }
 
 enum Constants {
-    
+    static let jsonDecoder = JSONDecoder()
+    static let urlSession = URLSession.shared
     static let watch = " Watch"
     static let logo = "logo"
     static let main = "Main"

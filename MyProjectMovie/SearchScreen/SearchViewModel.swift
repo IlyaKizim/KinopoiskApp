@@ -10,17 +10,14 @@ final class SearchViewModel {
     lazy var searchPlaceholder = "Фильмы, персоны, кинотеатры"
     lazy var dataSourcePopular: [People] = []
     weak var delegate: SearchViewModelDelegate?
-    private var apiclientGetPopularPeople: ApicleintGetPopularPeople
-    private var apiclientGetDetailActor: ApiclientGetDetailActor
-    private var apiclientgetListMoviesForActors: ApiclientGetListMoviewsForActors
-    private var apiclientSearch: ApiclientSearch
+    private var apiclientGetPopularPeople: Apiclient
+//    private var apiclientGetDetailActor: ApiclientGetDetailActor
+//    private var apiclientgetListMoviesForActors: ApiclientGetListMoviewsForActors
+//    private var apiclientSearch: ApiclientSearch
+//    ApicleintGetPopularPeople, apiclientGetDetailActor: ApiclientGetDetailActor, apiclientgetListMoviesForActors: ApiclientGetListMoviewsForActors, apiclientSearch: ApiclientSearch)
     
-    
-    init(apiclientGetPopularPeople: ApicleintGetPopularPeople, apiclientGetDetailActor: ApiclientGetDetailActor, apiclientgetListMoviesForActors: ApiclientGetListMoviewsForActors, apiclientSearch: ApiclientSearch) {
+    init(apiclientGetPopularPeople: Apiclient) {
         self.apiclientGetPopularPeople = apiclientGetPopularPeople
-        self.apiclientGetDetailActor = apiclientGetDetailActor
-        self.apiclientgetListMoviesForActors = apiclientgetListMoviesForActors
-        self.apiclientSearch = apiclientSearch
     }
     
     func heightForRowAt(indexPath: IndexPath) -> Int {
@@ -56,7 +53,7 @@ final class SearchViewModel {
     }
     
     func getDetailAndMovieActors(with string: String, vc: DetailActorsViewController) {
-        apiclientGetDetailActor.getDetailActor(with: string) { (result) in
+        apiclientGetPopularPeople.getDetailActor(with: string) { (result) in
             DispatchQueue.main.async { [self] in
                 switch result {
                 case .success(let titles):
@@ -68,7 +65,7 @@ final class SearchViewModel {
                 }
             }
         }
-        apiclientgetListMoviesForActors.getListMoviesForActors(with: string) { (result) in
+        apiclientGetPopularPeople.getListMoviesForActors(with: string) { (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let result):
@@ -82,7 +79,7 @@ final class SearchViewModel {
     }
     
     func getSearch(with query: String, resultController: SearchResultsControllerViewController) {
-        apiclientSearch.search(with: query ) { (result) in
+        apiclientGetPopularPeople.search(with: query ) { (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let titles):

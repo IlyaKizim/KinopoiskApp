@@ -6,11 +6,11 @@ final class MediaViewModal {
     lazy var dataSourceNews: [News] = []
     private (set) var shouldReloadTableViewPublishSubject = PublishSubject<Void>()
     private lazy var disposeBag = DisposeBag()
-    private var apiclientGetNews: ApiclientGetNews
+    private var apiclientGetNews: Apiclient
     lazy var titleForHeaderSection = "Новости и статьи"
     lazy var label = "Медиа"
     
-    init(apiclientGetNews: ApiclientGetNews) {
+    init(apiclientGetNews: Apiclient) {
         self.apiclientGetNews = apiclientGetNews
         getData()
     }

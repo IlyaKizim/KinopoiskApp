@@ -1,89 +1,31 @@
+
 import UIKit
 import Kingfisher
 import RxSwift
 
 final class MainViewController: UIViewController {
     
-    private lazy var headerView: UIView = {
-        var headerView = UIView()
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        return headerView
-    }()
+// MARK: - UI Setup
     
-    private lazy var headerImageView: UIImageView = {
-        let image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        return image
-    }()
+    private lazy var headerView: UIView = ViewFactory.createHeaderView()
+    private lazy var headerImageView: UIImageView = ViewFactory.createHeaderImageView()
+    private lazy var headerLabel: UILabel = ViewFactory.createHeaderLabel()
+    private lazy var headerOverView: UITextView = ViewFactory.createHeaderOverView()
+    private lazy var tableView: UITableView = ViewFactory.createTableView()
+    lazy var buttonDeleteFromInteresting: UIButton = ViewFactory.createButtonDeleteFromInteresting(target: self, action: #selector(deleteFromInteresting))
+    lazy var buttonPlay: UIButton = ViewFactory.createButtonPlay(target: self, action: #selector(pushToPresents))
+    lazy var buttonAddToInteresting: UIButton = ViewFactory.createButtonAddToInteresting(target: self, action: #selector(addToInteresting))
+
+// MARK: - Properties
     
-    private lazy var buttonPlay: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = #colorLiteral(red: 0.9986565709, green: 0.3295648098, blue: 0.00157311745, alpha: 1)
-        button.setImage(UIImage(systemName: SystemName.play.rawValue), for: .normal)
-        button.tintColor = .white
-        button.setTitle(NSLocalizedString(Constants.watch, comment: ""), for: .normal)
-        button.addTarget(self, action: #selector(pushToPresents), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var buttonAddToInteresting: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .gray
-        button.setImage(UIImage(systemName: SystemName.addInteresting.rawValue), for: .normal)
-        button.addTarget(self, action: #selector(addToInteresting), for: .touchUpInside)
-        button.tintColor = .white
-        return button
-    }()
-    
-    private lazy var headerLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
-        label.textAlignment = .center
-        label.backgroundColor = .black
-        label.font = UIFont(name: Font.helveticaBold.rawValue, size: 20)
-        return label
-    }()
-    
-    private lazy var headerOverView: UITextView = {
-        let text = UITextView()
-        text.translatesAutoresizingMaskIntoConstraints = false
-        text.backgroundColor = .black
-        text.textColor = .white
-        return text
-    }()
-    
-    private lazy var buttonDeleteFromInteresting: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .gray
-        button.setImage(UIImage(systemName: SystemName.minus.rawValue), for: .normal)
-        button.addTarget(self, action: #selector(deleteFromInteresting), for: .touchUpInside)
-        button.tintColor = .white
-        return button
-    }()
-    
-    private lazy var tableView: UITableView = {
-        var tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifire)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = .black
-        tableView.tableHeaderView = headerView
-        return tableView
-    }()
-    
-    private lazy var mainViewModel = MainViewModel(apiclient: APICaller(), apiclientGetMovie: APICaller())
+    private lazy var mainViewModel = MainViewModel(apiclient: APICaller())
     private lazy var disposeBag = DisposeBag()
-    private lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
-    private lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
-    private lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
-    private lazy var constraintButtonAddWidth: NSLayoutConstraint = NSLayoutConstraint()
+    lazy var constraintButtonDeleteWidth: NSLayoutConstraint = NSLayoutConstraint()
+    lazy var constraintButtonPlayHeight: NSLayoutConstraint = NSLayoutConstraint()
+    lazy var constraintButtonAddHeight: NSLayoutConstraint = NSLayoutConstraint()
+    lazy var constraintButtonAddWidth: NSLayoutConstraint = NSLayoutConstraint()
+    
+// MARK: - Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -95,18 +37,162 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setUpView()
     }
+}
+
+//MARK: - UITableViewDelegate
+
+extension MainViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        NSLocalizedString(mainViewModel.titleForHeaderSection[section], comment: "")
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else {return}
+        header.setupHeader(header: header)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        200
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        40
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension MainViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        mainViewModel.titleForHeaderSection.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifire , for: indexPath) as? CollectionViewTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.delegate = self
+        
+        switch indexPath.section {
+        case Section.PopularMovies.rawValue:
+            if case let .popular(data) = mainViewModel.movieData[0] {
+                cell.bind(with: Observable.just(data))
+            }
+            
+        case Section.TopRateMovie.rawValue:
+            if case let .topRated(data) = mainViewModel.movieData[1] {
+                cell.bind(with: Observable.just(data))
+            }
+            
+        case Section.UpComingMovies.rawValue:
+            if case let .upcoming(data) = mainViewModel.movieData[2] {
+                cell.bind(with: Observable.just(data))
+            }
+            
+        case Section.PlayingNowMoview.rawValue:
+            if case let .favorites(data) = mainViewModel.movieData[3] {
+                cell.bind(with: Observable.just(data))
+            }
+            
+        case Section.TVshow.rawValue:
+            if case let .watched(data) = mainViewModel.movieData[4] {
+                cell.bind(with: Observable.just(data))
+            }
+            
+        default:
+            return UITableViewCell()
+        }
+        return cell
+    }
+    
+    func updateData() {
+        tableView.reloadData()
+    }
+}
+
+//MARK: - UIScrollViewDelegate
+
+extension MainViewController: UIScrollViewDelegate {
+    
+    @objc private func back() {
+        tableView.scrollToTop()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        ScrollHelper.updateNavigationBarAppearance(scrollView.contentOffset.y, safeAreaInsetsTop: view.safeAreaInsets.top, navigationItem: navigationItem, backButtonAction: #selector(back))
+    }
+}
+
+extension MainViewController {
+    
+// MARK: - View Setup
     
     private func setUpView() {
         addSubView()
         configureConstrains()
         binding()
+        signDelegate()
     }
+    
+}
+
+extension MainViewController {
+    
+// MARK: - UI Configuration
     
     private func configureCornerRadius() {
         buttonPlay.layer.cornerRadius = CGFloat(mainViewModel.radius)
         buttonDeleteFromInteresting.layer.cornerRadius =  CGFloat(mainViewModel.radius)
         buttonAddToInteresting.layer.cornerRadius =  CGFloat(mainViewModel.radius)
     }
+    
+    private func gradientForHeaderImage() {
+        headerImageView.gradient(imageView: headerImageView)
+    }
+    
+    private func configurationNavBar () {
+        var image = UIImage(named: Constants.logo)
+        image = image?.withRenderingMode(.alwaysOriginal)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        navigationController?.navigationBar.isTranslucent = false
+    }
+    
+    private func signDelegate() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+}
+
+extension MainViewController {
+    
+// MARK: - Event Handlers
+    
+    @objc private func pushToPresents() {
+            let vc = PresentPlayViewController()
+            vc.modalPresentationStyle = .fullScreen
+            vc.configure(with: VideoId.id)
+            present(vc, animated: true, completion: nil)
+        }
+    
+    @objc private func addToInteresting() {
+        mainViewModel.addToInteresting()
+    }
+    
+    @objc private func deleteFromInteresting() {
+        mainViewModel.deleteFromInteresting()
+    }
+}
+
+extension MainViewController {
+    
+// MARK: - Data Binding
     
     private func binding() {
         mainViewModel.headerTitleSubject.subscribe(onNext: { [weak self] titles in
@@ -140,203 +226,34 @@ final class MainViewController: UIViewController {
             self?.didDeleteRemoveFromInteresting()
         }).disposed(by: disposeBag)
     }
-    
-    private func gradientForHeaderImage() {
-        let imageHeight = headerImageView.image?.size.height ?? 300
-        let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
-        gradient.locations = [0, 1]
-        gradient.frame = CGRect(x: 0, y: imageHeight * 0.8, width: headerImageView.bounds.width, height: imageHeight * 0.2)
-        headerImageView.layer.addSublayer(gradient)
-    }
-    
-    private func configurationNavBar () {
-        var image = UIImage(named: Constants.logo)
-        image = image?.withRenderingMode(.alwaysOriginal)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        navigationController?.navigationBar.isTranslucent = false
-    }
-    
-    @objc private func pushToPresents() {
-        let vc = PresentPlayViewController()
-        vc.modalPresentationStyle = .fullScreen
-        vc.configure(with: VideoId.id)
-        present(vc, animated: true, completion: nil)
-    }
-    
-    @objc private func addToInteresting() {
-        mainViewModel.addToInteresting()
-    }
-    
-    @objc private func deleteFromInteresting() {
-        mainViewModel.deleteFromInteresting()
-    }
-}
-
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func updateData() {
-        tableView.reloadData()
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        NSLocalizedString(mainViewModel.titleForHeaderSection[section], comment: "")
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let header = view as? UITableViewHeaderFooterView else {return}
-        header.textLabel?.font = UIFont(name: Font.helveticaBold.rawValue, size: 18)
-        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
-        header.textLabel?.textColor = .white
-        header.contentView.backgroundColor = .black
-        header.textLabel?.text = header.textLabel?.text?.capitilizeFirstLetter()
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        mainViewModel.titleForHeaderSection.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        200
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        40
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifire , for: indexPath) as? CollectionViewTableViewCell else {
-            return UITableViewCell()
-        }
-        cell.delegate = self
-        
-        switch indexPath.section {
-        case Section.PopularMovies.rawValue:
-            if case let .popular(data) = mainViewModel.movieData[0] {
-                cell.configure(with: data)
-            }
-            
-        case Section.TopRateMovie.rawValue:
-            if case let .topRated(data) = mainViewModel.movieData[1] {
-                cell.configure(with: data)
-            }
-            
-        case Section.UpComingMovies.rawValue:
-            if case let .upcoming(data) = mainViewModel.movieData[2] {
-                cell.configure(with: data)
-            }
-            
-        case Section.PlayingNowMoview.rawValue:
-            if case let .favorites(data) = mainViewModel.movieData[3] {
-                cell.configure(with: data)
-            }
-            
-        case Section.TVshow.rawValue:
-            if case let .watched(data) = mainViewModel.movieData[4] {
-                cell.configure(with: data)
-            }
-            
-        default:
-            return UITableViewCell()
-        }
-        return cell
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= view.safeAreaInsets.top + 40 {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: nil, style: .done, target: self, action: nil)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString(Constants.main, comment: ""), style: .done, target: self, action: #selector(back))
-            navigationItem.leftBarButtonItem?.tintColor = .white
-        } else if scrollView.contentOffset.y == view.safeAreaInsets.top {
-            var image = UIImage(named: Constants.logo)
-            image = image?.withRenderingMode(.alwaysOriginal)
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
-        }
-    }
-    
-    @objc private func back() {
-        tableView.scrollToTop()
-    }
-}
-
-extension MainViewController: CollectionViewTableViewCellDelegate {
-    func collectionViewTableViewCellDelegate(cell: CollectionViewTableViewCell, viewModel: Title) {
-        let vc = MovieDetailsViewControllers()
-        vc.setUps(with: viewModel)
-        navigationController?.pushViewController(vc, animated: true)
-    }
 }
 
 extension MainViewController {
+    
+// MARK: - Animation Button
+    
     func didAddToInteresting() {
-        UIView.animate(withDuration: 0.3) {
-            self.constraintButtonAddWidth.constant = self.view.bounds.width / 1.5
-            self.constraintButtonPlayHeight.constant = 0
-            self.constraintButtonDeleteWidth.constant = 0
-            self.buttonAddToInteresting.setTitle(NSLocalizedString(Constants.added, comment: ""), for: .normal)
-            self.buttonAddToInteresting.tintColor = .orange
-            self.buttonAddToInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
-            self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
-                self.buttonAddToInteresting.setTitleColor(.orange, for: .normal)
-                self.constraintButtonAddWidth.constant = 40
-                self.constraintButtonDeleteWidth.constant = 40
-                self.constraintButtonPlayHeight.constant = 40
-                self.buttonPlay.setTitle("", for: .normal)
-                self.view.layoutIfNeeded()
-            }, completion: {_ in
-                self.buttonPlay.setTitle(NSLocalizedString(Constants.watch, comment: ""), for: .normal)
-                self.buttonAddToInteresting.setTitle("", for: .normal)
-                self.view.layoutIfNeeded()
-            })
-        }
+        AnimationHelper.animateAddToInteresting(on: self)
     }
     
     func didRemoveFromInteresting() {
-        UIView.animate(withDuration: 0.3) {
-            self.buttonAddToInteresting.tintColor = .white
-        }
+        AnimationHelper.animateRemoveFromInteresting(on: self)
     }
     
     func didDeleteFromInteresting() {
-        UIView.animate(withDuration: 0.3) {
-            self.constraintButtonDeleteWidth.constant = (self.view.bounds.width / 1.5) + 40
-            self.constraintButtonPlayHeight.constant = 0
-            self.constraintButtonAddHeight.constant = 0
-            self.buttonDeleteFromInteresting.setTitle(NSLocalizedString(Constants.notInteresting, comment: ""), for: .normal)
-            self.buttonDeleteFromInteresting.tintColor = .orange
-            self.buttonDeleteFromInteresting.titleLabel?.adjustsFontSizeToFitWidth = true
-            self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.3, delay: 2.5, options: [], animations: {
-                self.buttonDeleteFromInteresting.setTitleColor(.orange, for: .normal)
-                self.constraintButtonDeleteWidth.constant = 40
-                self.constraintButtonPlayHeight.constant = 40
-                self.constraintButtonAddHeight.constant = 40
-                self.buttonPlay.setTitle("", for: .normal)
-                self.view.layoutIfNeeded()
-            }, completion: {_ in
-                self.buttonPlay.setTitle(NSLocalizedString(Constants.watch, comment: ""), for: .normal)
-                self.buttonDeleteFromInteresting.setImage(UIImage(systemName: SystemName.minus.rawValue), for: .normal)
-                self.buttonDeleteFromInteresting.setTitle("", for: .normal)
-                self.view.layoutIfNeeded()
-            })
-        }
+        AnimationHelper.animateDeleteFromInteresting(on: self)
     }
     
     func didDeleteRemoveFromInteresting() {
-        UIView.animate(withDuration: 0.3) {
-            self.buttonDeleteFromInteresting.tintColor = .white
-        }
+        AnimationHelper.animateDeleteRemoveFromInteresting(on: self)
     }
 }
 
 
 extension MainViewController {
+    
+// MARK: - Constraints
+    
     private func configureConstrains() {
         constraintButtonDeleteWidth = buttonDeleteFromInteresting.widthAnchor.constraint(equalToConstant: 40)
         constraintButtonPlayHeight = buttonPlay.heightAnchor.constraint(equalToConstant: 40)
@@ -395,8 +312,12 @@ extension MainViewController {
 }
 
 extension MainViewController {
+    
+// MARK: - AddSubView
+    
     private func addSubView() {
         view.addSubview(tableView)
+        tableView.tableHeaderView = headerView
         headerView.addSubview(headerImageView)
         headerView.addSubview(headerLabel)
         headerView.addSubview(headerOverView)
@@ -404,4 +325,14 @@ extension MainViewController {
         headerView.addSubview(buttonDeleteFromInteresting)
         headerView.addSubview(buttonAddToInteresting)
     }
+}
+
+//MARK: - Navigation
+
+extension MainViewController: TitleSelectionDelegate {
+    func didSelectTitle(_ title: Title) {
+            let movieDetailsVC = MovieDetailsViewControllers()
+            movieDetailsVC.setUps(with: title)
+            navigationController?.pushViewController(movieDetailsVC, animated: true)
+        }
 }
