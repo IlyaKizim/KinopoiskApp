@@ -49,4 +49,5 @@ final class CellFactory {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
+    
 }
