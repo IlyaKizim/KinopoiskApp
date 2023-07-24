@@ -192,6 +192,7 @@ extension MainViewController {
 
 extension MainViewController {
     
+    
 // MARK: - Data Binding
     
     private func binding() {
